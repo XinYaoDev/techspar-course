@@ -1,0 +1,3556 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TechSpar 交互式课程 — 学会 AI 面试训练闭环的底层逻辑</title>
+
+  <!-- Google Fonts: Bricolage Grotesque · DM Sans · JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400;1,9..40,500&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+
+  <!--
+    CUSTOMIZE PER COURSE
+    Vermillion palette (default)
+  -->
+  <style>
+    :root {
+      --color-accent:       #D94F30;
+      --color-accent-hover: #C4432A;
+      --color-accent-light: #FDEEE9;
+      --color-accent-muted: #E8836C;
+    }
+  </style>
+
+  <script src="main.js" defer></script>
+</head>
+<body>
+
+  <nav class="nav" id="nav">
+    <div class="progress-bar" id="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+    <div class="nav-inner">
+      <span class="nav-title">TechSpar 交互式课程</span>
+      <div class="nav-dots" id="nav-dots" role="tablist">
+        <button class="nav-dot" data-target="module-1" data-tooltip="TechSpar 是什么" role="tab" aria-label="Module 1: TechSpar 是什么"></button>
+        <button class="nav-dot" data-target="module-2" data-tooltip="长期记忆系统" role="tab" aria-label="Module 2: 长期记忆系统"></button>
+        <button class="nav-dot" data-target="module-3" data-tooltip="SM-2 算法" role="tab" aria-label="Module 3: SM-2 算法"></button>
+        <button class="nav-dot" data-target="module-4" data-tooltip="简历面试状态机" role="tab" aria-label="Module 4: 简历面试状态机"></button>
+        <button class="nav-dot" data-target="module-5" data-tooltip="实时 Copilot" role="tab" aria-label="Module 5: 实时 Copilot"></button>
+        <button class="nav-dot" data-target="module-6" data-tooltip="架构全景" role="tab" aria-label="Module 6: 架构全景"></button>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main">
+    <!-- modules/*.html content is assembled here by build.sh -->
+<section class="module" id="module-1" lang="zh-CN">
+
+  <!-- ══════════════════════════════════════════════
+       MODULE HEADER
+  ══════════════════════════════════════════════ -->
+  <div class="module-header">
+    <span class="module-badge">模块 1</span>
+    <h1 class="module-title">TechSpar 是什么——持续进化的面试训练闭环</h1>
+    <p class="module-subtitle">你用过其他 AI 面试工具吗？每次进去都像第一次用它，毫无记忆。TechSpar 不一样——它记得你上次哪里答得差。</p>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       SCREEN 1-1: HOOK — 传统工具 vs TechSpar 对比
+  ══════════════════════════════════════════════ -->
+  <div class="screen" id="m1-s1">
+
+    <div class="screen-label">Screen 1 / 6</div>
+
+    <h2 class="screen-title">每次进去都像第一次？</h2>
+    <p class="screen-desc">这是大多数 AI 面试工具的通病——像一个失忆的面试官。而 TechSpar 是那个"记住你每个弱点的搭档"。</p>
+
+    <div class="compare-grid">
+
+      <!-- 传统工具 -->
+      <div class="compare-card compare-old">
+        <div class="compare-card-header">
+          <span class="compare-icon">🏚️</span>
+          <h3>传统 AI 面试工具</h3>
+          <span class="compare-tag compare-tag-bad">无记忆</span>
+        </div>
+        <div class="compare-symptom-list">
+          <div class="compare-symptom">
+            <span class="symptom-emoji">😩</span>
+            <p>上周图神经网络答得差？这周继续问同一道题</p>
+          </div>
+          <div class="compare-symptom">
+            <span class="symptom-emoji">🤷</span>
+            <p>简历刚聊过项目经历，下一轮又从头问起</p>
+          </div>
+          <div class="compare-symptom">
+            <span class="symptom-emoji">🚪</span>
+            <p>每个训练模式各自独立，数据互不相通</p>
+          </div>
+        </div>
+        <div class="compare-diagram">
+          <div class="compare-node">用户</div>
+          <div class="compare-arrow">→</div>
+          <div class="compare-node compare-node-dim">工具<span>（无记忆）</span></div>
+          <div class="compare-arrow">→</div>
+          <div class="compare-node compare-node-dim">反馈</div>
+          <div class="compare-cross">✗</div>
+          <div class="compare-no-loop">没有"下次更精准"的机制</div>
+        </div>
+      </div>
+
+      <!-- TechSpar -->
+      <div class="compare-card compare-new">
+        <div class="compare-card-header">
+          <span class="compare-icon">🏆</span>
+          <h3>TechSpar</h3>
+          <span class="compare-tag compare-tag-good">持续进化</span>
+        </div>
+        <div class="compare-symptom-list">
+          <div class="compare-symptom">
+            <span class="symptom-emoji">🎯</span>
+            <p>上周图神经网络答得差？这周重点追问相关延伸题</p>
+          </div>
+          <div class="compare-symptom">
+            <span class="symptom-emoji">🧠</span>
+            <p>记住你的简历内容、项目难点、个人薄弱点</p>
+          </div>
+          <div class="compare-symptom">
+            <span class="symptom-emoji">🔗</span>
+            <p>五个训练模式共用同一份用户画像</p>
+          </div>
+        </div>
+        <div class="compare-diagram">
+          <div class="compare-node">用户</div>
+          <div class="compare-arrow">→</div>
+          <div class="compare-node">TechSpar<span>（有记忆）</span></div>
+          <div class="compare-arrow">→</div>
+          <div class="compare-node">反馈</div>
+          <div class="compare-loop-arrow">↻</div>
+          <div class="compare-loop-label">画像更新 → 下轮更精准</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="callout callout-accent">
+      <div class="callout-icon">💡</div>
+      <div class="callout-content">
+        <strong class="callout-title">核心区别</strong>
+        <p>普通工具是"一次性的问答机"。TechSpar 是一个<span class="term" data-definition="一个不断自我改进的系统：做完一件事 → 记住结果 → 下次做得更好。就像健身一样，每次训练后记录你的体能变化，下次训练就更有针对性。">闭环</span>——它把每次训练的结果变成下次训练的依据。</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       SCREEN 1-2: 5个训练模式卡片
+  ══════════════════════════════════════════════ -->
+  <div class="screen" id="m1-s2">
+
+    <div class="screen-label">Screen 2 / 6</div>
+
+    <h2 class="screen-title">5 个训练模式，同一个大脑</h2>
+    <p class="screen-desc">专项训练、简历面试、JD备面、实时Copilot、录音复盘——看起来是五个独立页面，实际上共享同一套记忆系统。</p>
+
+    <div class="pattern-cards">
+
+      <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+        <div class="pattern-icon" style="background: var(--color-actor-1)">🎯</div>
+        <h4 class="pattern-title">专项强化训练</h4>
+        <p class="pattern-desc">针对某个技术主题（如<span class="term" data-definition="深度学习的一个分支，专门处理图结构数据（比如社交网络、分子结构）。面试中常问：GNN 的核心思想是什么？有哪些经典的图神经网络模型？">图神经网络</span>、系统设计等）反复练习，直到掌握。</p>
+      </div>
+
+      <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+        <div class="pattern-icon" style="background: var(--color-actor-2)">📄</div>
+        <h4 class="pattern-title">简历模拟面试</h4>
+        <p class="pattern-desc">AI 读取你的简历，针对项目经历深挖细节——比如"这个项目用了什么架构？为什么这样设计？"</p>
+      </div>
+
+      <div class="pattern-card" style="border-top: 3px solid var(--color-actor-3)">
+        <div class="pattern-icon" style="background: var(--color-actor-3)">🎯</div>
+        <h4 class="pattern-title">JD 定向备面</h4>
+        <p class="pattern-desc">粘贴目标岗位的<span class="term" data-definition="Job Description，岗位描述。包含职位名称、职责、技能要求、薪资范围等信息。面试前必读，用来针对性准备。">JD</span>，系统分析该岗位所需技能，主动安排相关问题。</p>
+      </div>
+
+      <div class="pattern-card" style="border-top: 3px solid var(--color-actor-4)">
+        <div class="pattern-icon" style="background: var(--color-actor-4)">⚡</div>
+        <h4 class="pattern-title">实时 Copilot</h4>
+        <p class="pattern-desc">在真实面试中打开，实时识别面试官追问方向，提前预警你可能答不好的点。</p>
+      </div>
+
+      <div class="pattern-card" style="border-top: 3px solid var(--color-actor-5)">
+        <div class="pattern-icon" style="background: var(--color-actor-5)">🎙️</div>
+        <h4 class="pattern-title">录音复盘</h4>
+        <p class="pattern-desc">上传面试录音，自动转写并分析薄弱点，写入你的长期记忆，供下次训练使用。</p>
+      </div>
+
+    </div>
+
+    <div class="callout callout-info">
+      <div class="callout-icon">ℹ️</div>
+      <div class="callout-content">
+        <strong class="callout-title">关键洞察</strong>
+        <p>这五个模式不是"五个不同的工具"，而是<span class="term" data-definition="一个中央数据结构，保存了用户的技能掌握情况、历史薄弱点、训练进度等信息。每次训练后都会更新这份档案，下次训练时读取它来决定该练什么。">同一个 Profile</span>的五个不同入口——它们共享同一份数据，通过统一的 <span class="term" data-definition="Application Programming Interface，应用程序编程接口。就像餐厅的服务员：用户（顾客）不需要直接进厨房（系统内部），只需要告诉服务员（API）你要什么，服务员帮你去内部处理并返回结果。">API</span> 读写记忆——它们一起构成了 TechSpar 的完整训练闭环。</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       SCREEN 1-3: 闭环循环图
+  ══════════════════════════════════════════════ -->
+  <div class="screen" id="m1-s3">
+
+    <div class="screen-label">Screen 3 / 6</div>
+
+    <h2 class="screen-title">闭环是如何运转的？</h2>
+    <p class="screen-desc">从"第一次训练"到"越来越懂你"，整个过程在背后自动发生。</p>
+
+    <!-- Data Flow Animation -->
+    <div class="flow-animation"
+         data-steps='[
+           {"highlight":"flow-actor-1","label":"用户开始第一次训练"},
+           {"highlight":"flow-actor-1","label":"系统评估回答质量，记录薄弱点","packet":true,"from":"actor-1","to":"actor-2"},
+           {"highlight":"flow-actor-2","label":"评估模块分析答案，找出差距","packet":true,"from":"actor-2","to":"actor-3"},
+           {"highlight":"flow-actor-3","label":"更新用户 Profile，写回记忆系统","packet":true,"from":"actor-3","to":"actor-4"},
+           {"highlight":"flow-actor-4","label":"第二次训练，系统读取 Profile","packet":true,"from":"actor-4","to":"actor-1"},
+           {"highlight":"flow-actor-1","label":"训练更精准——针对真实薄弱点"}
+         ]'>
+      <div class="flow-actors">
+        <div class="flow-actor" id="flow-actor-1">
+          <div class="flow-actor-icon">🏋️</div>
+          <span>用户训练</span>
+        </div>
+        <div class="flow-actor" id="flow-actor-2">
+          <div class="flow-actor-icon">🔍</div>
+          <span>评估模块</span>
+        </div>
+        <div class="flow-actor" id="flow-actor-3">
+          <div class="flow-actor-icon">🧠</div>
+          <span>Profile 更新</span>
+        </div>
+        <div class="flow-actor" id="flow-actor-4">
+          <div class="flow-actor-icon">💾</div>
+          <span>记忆系统</span>
+        </div>
+      </div>
+      <div class="flow-packet" id="flow-packet"></div>
+      <div class="flow-step-label" id="flow-label">点击"下一步"开始演示</div>
+      <div class="flow-controls">
+        <button class="btn flow-next-btn">下一步</button>
+        <button class="btn flow-reset-btn">重新开始</button>
+        <span class="flow-progress"></span>
+      </div>
+    </div>
+
+    <!-- Static loop diagram for reference -->
+    <div class="flow-steps loop-flow">
+      <div class="flow-step loop-step">
+        <div class="flow-step-num">1</div>
+        <p><strong>训练</strong>——用户选择一个模式开始练习</p>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step loop-step">
+        <div class="flow-step-num">2</div>
+        <p><strong>评估</strong>——AI 分析回答质量与薄弱点</p>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step loop-step">
+        <div class="flow-step-num">3</div>
+        <p><strong>记忆</strong>——更新用户 Profile 与掌握度数据</p>
+      </div>
+      <div class="flow-arrow loop-back">↻</div>
+      <div class="flow-step loop-step loop-step-final">
+        <div class="flow-step-num">4</div>
+        <p><strong>精准训练</strong>——下次训练自动针对真实弱点</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       SCREEN 1-4: Code ↔ English 翻译块
+  ══════════════════════════════════════════════ -->
+  <div class="screen" id="m1-s4">
+
+    <div class="screen-label">Screen 4 / 6</div>
+
+    <h2 class="screen-title">底层代码说了什么？</h2>
+    <p class="screen-desc">以下是 <span class="term" data-definition="TechSpar 的后端主入口文件，使用 Python 的 FastAPI 框架构建，负责启动整个应用服务。">backend/main.py</span> 中的核心导入语句——它们连接了五大训练模式与记忆系统的关键管道。</p>
+
+    <div class="translation-block animate-in">
+      <div class="translation-code">
+        <span class="translation-label">CODE</span>
+        <pre><code><span class="code-line"><span class="code-keyword">from</span> backend.graphs.resume_interview <span class="code-keyword">import</span> create_resume_interview_graph</span>
+<span class="code-line"><span class="code-keyword">from</span> backend.graphs.topic_training <span class="code-keyword">import</span> create_topic_training_graph</span>
+<span class="code-line"><span class="code-keyword">from</span> backend.memory <span class="code-keyword">import</span> get_profile_summary, update_profile</span>
+<span class="code-line"><span class="code-keyword">from</span> backend.spaced_repetition <span class="code-keyword">import</span> get_due_reviews, sm2_update</span></code></pre>
+      </div>
+      <div class="translation-english">
+        <span class="translation-label">PLAIN ENGLISH</span>
+        <div class="translation-lines">
+          <p class="tl">Bring in the resume interview <span class="term" data-definition="一个用 LangGraph 构建的有状态工作流，专门管理简历面试的对话流程——从开场、项目深挖到追问，全由它控制。">graph</span> (a <span class="term" data-definition="状态机：一种计算模型，系统在不同状态之间跳转，并根据当前状态决定下一步做什么。就像红绿灯：绿灯时允许通行，红灯时停止——系统的行为完全由当前状态决定。">state machine</span> that runs the resume interview conversation).</p>
+          <p class="tl">Bring in the topic training graph — handles focused practice on a specific subject.</p>
+          <p class="tl">Bring in two memory functions: one reads the user's profile, the other writes updates to it.</p>
+          <p class="tl">Bring in the spaced repetition engine: get_due_reviews finds what you should review today, and sm2_update records your new performance level so the algorithm knows when to ask again.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout-info">
+      <div class="callout-icon">ℹ️</div>
+      <div class="callout-content">
+        <strong class="callout-title">关键组件一览</strong>
+        <p>这四行代码揭示了 TechSpar 的核心架构：<span class="term" data-definition="LangGraph 是 LangChain 生态中的图结构框架，用来构建多步骤的有状态 AI 应用。每个节点是一个步骤，边定义状态如何流转。">LangGraph</span> 负责训练流程编排，<span class="term" data-definition="一个负责持久化存储用户画像和记忆数据的模块。保存用户的技能掌握度、历史薄弱点、训练记录等信息。">backend.memory</span> 负责读写用户记忆，<span class="term" data-definition="一种基于遗忘曲线的复习调度算法。由 SuperMemo 的创始人设计，根据你每次答对或答错的间隔，自动计算出下次该什么时候复习同一道题。">SM-2</span> 算法负责决定"什么时候该复习什么"。</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       SCREEN 1-5: Group Chat Animation
+  ══════════════════════════════════════════════ -->
+  <div class="screen" id="m1-s5">
+
+    <div class="screen-label">Screen 5 / 6</div>
+
+    <h2 class="screen-title">五个模式"认出同一个人"</h2>
+    <p class="screen-desc">切换训练模式时，每个模块都会从同一份 Profile 读取你的信息——就像五个同事共享同一份档案。</p>
+
+    <div class="chat-window" id="chat-m1-profile">
+      <div class="chat-messages">
+
+        <div class="chat-message" data-msg="0" data-sender="actor-1" style="display:none">
+          <div class="chat-avatar" style="background: var(--color-actor-1)">🎯</div>
+          <div class="chat-bubble">
+            <span class="chat-sender" style="color: var(--color-actor-1)">专项训练</span>
+            <p>用户上周图神经网络答得差，这周继续主攻这个弱点！</p>
+          </div>
+        </div>
+
+        <div class="chat-message" data-msg="1" data-sender="actor-2" style="display:none">
+          <div class="chat-avatar" style="background: var(--color-actor-2)">📄</div>
+          <div class="chat-bubble">
+            <span class="chat-sender" style="color: var(--color-actor-2)">简历面试</span>
+            <p>我读了他的简历，注意到项目描述很简洁，待会深入问。</p>
+          </div>
+        </div>
+
+        <div class="chat-message" data-msg="2" data-sender="actor-3" style="display:none">
+          <div class="chat-avatar" style="background: var(--color-actor-3)">🎯</div>
+          <div class="chat-bubble">
+            <span class="chat-sender" style="color: var(--color-actor-3)">JD 备面</span>
+            <p>这个岗位要求分布式系统经验，我来安排几道相关问题。</p>
+          </div>
+        </div>
+
+        <div class="chat-message" data-msg="3" data-sender="actor-4" style="display:none">
+          <div class="chat-avatar" style="background: var(--color-actor-4)">⚡</div>
+          <div class="chat-bubble">
+            <span class="chat-sender" style="color: var(--color-actor-4)">Copilot</span>
+            <p>我在面试现场呢，有什么高危追问方向要我提前预警吗？</p>
+          </div>
+        </div>
+
+        <div class="chat-message" data-msg="4" data-sender="actor-5" style="display:none">
+          <div class="chat-avatar" style="background: var(--color-actor-5)">🎙️</div>
+          <div class="chat-bubble">
+            <span class="chat-sender" style="color: var(--color-actor-5)">录音复盘</span>
+            <p>上次用户在说项目时总是被追问为什么，你的薄弱点记录更新了吗？</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="chat-typing" id="chat-m1-profile-typing" style="display:none">
+        <div class="chat-avatar" id="chat-m1-profile-typing-avatar">?</div>
+        <div class="chat-typing-dots">
+          <span class="typing-dot"></span>
+          <span class="typing-dot"></span>
+          <span class="typing-dot"></span>
+        </div>
+      </div>
+
+      <div class="chat-controls">
+        <button class="btn chat-next-btn">下一条</button>
+        <button class="btn chat-all-btn">播放全部</button>
+        <button class="btn chat-reset-btn">重播</button>
+        <span class="chat-progress"></span>
+      </div>
+    </div>
+
+    <div class="callout callout-accent">
+      <div class="callout-icon">💡</div>
+      <div class="callout-content">
+        <strong class="callout-title">五个模式，一个 Profile</strong>
+        <p>无论是简历面试还是实时 Copilot，它们都在读同一份用户数据、往同一份档案里写记录。这就是 TechSpar 能做到"越来越懂你"的技术基础。</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       SCREEN 1-6: Quiz
+  ══════════════════════════════════════════════ -->
+  <div class="screen" id="m1-s6">
+
+    <div class="screen-label">Screen 6 / 6</div>
+
+    <h2 class="screen-title">小测：学以致用</h2>
+    <p class="screen-desc">以下场景题，考察你是否真正理解了这个闭环的工作原理。</p>
+
+    <div class="quiz-container" id="quiz-m1">
+
+      <!-- Q1 -->
+      <div class="quiz-question-block"
+           data-correct="option-b"
+           data-explanation-right="对！问题出在记忆组件——get_profile_summary 和 update_profile 就是用来跨次读取和写入用户历史数据的。没有这两个函数，每次训练都会从零开始。">
+        <h3 class="quiz-question">题目 1：你发现工具每次都像重置新人，没有记忆。该修哪个组件？</h3>
+        <div class="quiz-options">
+          <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>resume_interview graph</span>
+          </button>
+          <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>backend.memory（get_profile_summary / update_profile）</span>
+          </button>
+          <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>topic_training graph</span>
+          </button>
+          <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>spaced_repetition</span>
+          </button>
+        </div>
+        <div class="quiz-feedback"></div>
+      </div>
+
+      <!-- Q2 -->
+      <div class="quiz-question-block"
+           data-correct="option-c"
+           data-explanation-right="正确！训练→评估→记忆→下轮精准，这个四步循环就是 TechSpar 的核心闭环。每一步都在为下一步提供输入，形成持续进化的飞轮。">
+        <h3 class="quiz-question">题目 2：TechSpar 的"闭环"具体指哪几个步骤在循环？</h3>
+        <div class="quiz-options">
+          <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>用户提问 → AI 回答 → 结束</span>
+          </button>
+          <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>打开页面 → 选择模式 → 关闭页面</span>
+          </button>
+          <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>训练 → 评估 → 记忆更新 → 下轮更精准</span>
+          </button>
+          <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>简历上传 → JD 粘贴 → 生成问题</span>
+          </button>
+        </div>
+        <div class="quiz-feedback"></div>
+      </div>
+
+      <!-- Q3 -->
+      <div class="quiz-question-block"
+           data-correct="option-d"
+           data-explanation-right="正确！sm2_update 会记录这次正确的回答，按照 SM-2 算法推迟下次复习这道题的时间（因为你掌握了这个点）。同时 Profile 中该技能的掌握度也会提升。">
+        <h3 class="quiz-question">题目 3：用户 A 答对了一道系统设计题，系统接下来会怎么做？</h3>
+        <div class="quiz-options">
+          <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>立刻出一道更难的题来测试</span>
+          </button>
+          <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>不做任何处理，下次还是随机出题</span>
+          </button>
+          <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>把这道题从题库里永久删除</span>
+          </button>
+          <button class="quiz-option" data-value="option-d" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>调用 sm2_update 记录掌握度，下次适当延长复习间隔</span>
+          </button>
+        </div>
+        <div class="quiz-feedback"></div>
+      </div>
+
+      <div class="quiz-actions">
+        <button class="quiz-check-btn" onclick="checkQuiz('quiz-m1')">提交答案</button>
+        <button class="quiz-reset-btn" onclick="resetQuiz('quiz-m1')">重新作答</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       MODULE FOOTER
+  ══════════════════════════════════════════════ -->
+  <div class="module-footer">
+    <div class="module-nav">
+      <span class="module-nav-prev">← 引导页</span>
+      <span class="module-nav-current">模块 1 完成</span>
+      <span class="module-nav-next">模块 2：长期记忆系统 →</span>
+    </div>
+    <div class="module-progress-bar">
+      <div class="module-progress-fill" style="width: 16.6%"></div>
+    </div>
+  </div>
+
+</section>
+<section class="module" id="module-2" lang="zh-CN">
+
+<!-- ============================================================
+     SCREEN 2-1 — HOOK
+     profile.json file screenshot simulation
+     ============================================================ -->
+<div class="screen" id="screen-2-1">
+
+  <div class="screen-header">
+    <span class="screen-tag">模块 2 · 第一屏</span>
+    <h2 class="screen-title">你的 AI 画像，打开看看？</h2>
+  </div>
+
+  <div class="hook-block animate-in">
+
+    <div class="file-screenshot">
+      <div class="file-screenshot-bar">
+        <span class="file-dot" style="background:#FF5F56"></span>
+        <span class="file-dot" style="background:#FFBD2E"></span>
+        <span class="file-dot" style="background:#27C93F"></span>
+        <span class="file-screenshot-path">data/users/u_7k3m9/profile.json</span>
+      </div>
+      <pre class="file-screenshot-content"><code><span class="code-punctuation">{</span>
+  <span class="code-string">"name"</span><span class="code-punctuation">:</span> <span class="code-string">""</span><span class="code-punctuation">,</span>
+  <span class="code-string">"target_role"</span><span class="code-punctuation">:</span> <span class="code-string">"AI 应用开发实习生"</span><span class="code-punctuation">,</span>
+  <span class="code-keyword-highlight">"topic_mastery"</span><span class="code-punctuation">:</span> <span class="code-punctuation">{</span> <span class="code-string">"LLM"</span><span class="code-punctuation">:</span> <span class="code-punctuation">{</span><span class="code-string">"level"</span><span class="code-punctuation">:</span> <span class="code-number">3</span><span class="code-punctuation">,</span> <span class="code-string">"notes"</span><span class="code-punctuation">:</span> <span class="code-string">"能讲清楚基本原理"</span><span class="code-punctuation">}</span> <span class="code-punctuation">}</span><span class="code-punctuation">,</span>
+  <span class="code-keyword-highlight">"weak_points"</span><span class="code-punctuation">:</span> <span class="code-punctuation">[</span>
+    <span class="code-punctuation">{</span><span class="code-string">"point"</span><span class="code-punctuation">:</span> <span class="code-string">"对比类问题缺乏结构"</span><span class="code-punctuation">,</span> <span class="code-string">"topic"</span><span class="code-punctuation">:</span> <span class="code-string">"System Design"</span><span class="code-punctuation">,</span> <span class="code-string">"times_seen"</span><span class="code-punctuation">:</span> <span class="code-number">4</span> <span class="code-punctuation">}</span>
+  <span class="code-punctuation">]</span><span class="code-punctuation">,</span>
+  <span class="code-string">"communication"</span><span class="code-punctuation">:</span> <span class="code-punctuation">{</span>
+    <span class="code-string">"style"</span><span class="code-punctuation">:</span> <span class="code-string">"回答偏短，缺少具体例子"</span><span class="code-punctuation">,</span>
+    <span class="code-string">"habits"</span><span class="code-punctuation">:</span> <span class="code-punctuation">[</span><span class="code-string">"紧张时语速加快"</span><span class="code-punctuation">]</span>
+  <span class="code-punctuation">}</span><span class="code-punctuation">,</span>
+  <span class="code-string">"stats"</span><span class="code-punctuation">:</span> <span class="code-punctuation">{</span>
+    <span class="code-string">"total_sessions"</span><span class="code-punctuation">:</span> <span class="code-number">12</span><span class="code-punctuation">,</span>
+    <span class="code-string">"avg_score"</span><span class="code-punctuation">:</span> <span class="code-number">6.8</span>
+  <span class="code-punctuation">}</span>
+<span class="code-punctuation">}</span></code></pre>
+    </div>
+
+    <div class="hook-callout">
+      <div class="callout-icon">⚡</div>
+      <div class="callout-content">
+        <p>这是你每次训练后留下的"简历"。不是存在某个黑箱里——就躺在 <span class="term" data-definition="JSON 是一种轻量级数据格式，全称 JavaScript Object Notation，用于存储和交换结构化数据。类似于一本有格式的笔记本，每页都有固定字段，可以被程序读取和写入。">JSON</span> 文件里。</p>
+        <p class="hook-question">你知道里面写了什么吗？</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="nav-hint">
+    <span>滚动继续</span>
+    <span class="nav-arrow">↓</span>
+  </div>
+
+</div><!-- /screen-2-1 -->
+
+
+<!-- ============================================================
+     SCREEN 2-2 — PROFILE FIVE ZONES
+     ============================================================ -->
+<div class="screen" id="screen-2-2">
+
+  <div class="screen-header">
+    <span class="screen-tag">模块 2 · 第二屏</span>
+    <h2 class="screen-title">Profile 的五个分区</h2>
+    <p class="screen-subtitle">每个分区记录你不同维度的表现，像一份精密的职业档案</p>
+  </div>
+
+  <div class="zone-cards animate-in">
+
+    <div class="zone-card" style="border-top: 3px solid #DDA0DD">
+      <div class="zone-icon" style="background:#DDA0DD">🎯</div>
+      <div class="zone-body">
+        <h4 class="zone-title">Topic Mastery<span class="term" data-definition="技术掌握度 — 你对某个技术主题的实际水平评分（1-5分）。系统根据你的回答质量动态更新。">*</span></h4>
+        <p class="zone-desc">每个技术主题 + 你的真实水平 + 备注</p>
+        <div class="zone-example">
+          <span class="zone-badge">LLM: 3/5</span>
+          <span class="zone-badge">System Design: 2/5</span>
+          <span class="zone-badge">Python: 4/5</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="zone-card" style="border-top: 3px solid #F38BA8">
+      <div class="zone-icon" style="background:#F38BA8">⚠️</div>
+      <div class="zone-body">
+        <h4 class="zone-title">Weak Points<span class="term" data-definition="薄弱点 — 面试中反复暴露的结构性弱点。系统自动记录低分场景，次数越多说明问题越根深蒂固。">*</span></h4>
+        <p class="zone-desc">每次答不好的地方都被记下来，还会追踪出现次数</p>
+        <div class="zone-example">
+          <span class="zone-badge error">对比类问题缺乏结构 ×4</span>
+          <span class="zone-badge error">项目深度追问答不上来 ×2</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="zone-card" style="border-top: 3px solid #A6E3A1">
+      <div class="zone-icon" style="background:#A6E3A1">✅</div>
+      <div class="zone-body">
+        <h4 class="zone-title">Strong Points<span class="term" data-definition="强项 — 面试中稳定发挥的亮点。系统记录你在哪些方面从不失手，是你的核心竞争力。">*</span></h4>
+        <p class="zone-desc">你真正拿得出手的东西</p>
+        <div class="zone-example">
+          <span class="zone-badge success">能用类比解释抽象概念</span>
+          <span class="zone-badge success">代码题思路清晰</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="zone-card" style="border-top: 3px solid #89B4FA">
+      <div class="zone-icon" style="background:#89B4FA">💬</div>
+      <div class="zone-body">
+        <h4 class="zone-title">Communication<span class="term" data-definition="表达特征 — 你的回答风格、习惯性表达方式，以及针对性改进建议。这是纯语言层面的分析，与技术内容无关。">*</span></h4>
+        <p class="zone-desc">表达风格 + 习惯 + 改进建议</p>
+        <div class="zone-example">
+          <span class="zone-badge">习惯：喜欢用类比</span>
+          <span class="zone-badge">建议：多用 STAR 法</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="zone-card" style="border-top: 3px solid #F9E2AF">
+      <div class="zone-icon" style="background:#F9E2AF">📊</div>
+      <div class="zone-body">
+        <h4 class="zone-title">Stats<span class="term" data-definition="面试统计 — 历史训练记录，包括总场次、平均分、每次的评分明细。相当于你的面试成绩单。">*</span></h4>
+        <p class="zone-desc">总场次、平均分、每次评分历史</p>
+        <div class="zone-example">
+          <span class="zone-badge">12 场训练</span>
+          <span class="zone-badge">平均 6.8 分</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="callout callout-accent">
+    <div class="callout-icon">💡</div>
+    <div class="callout-content">
+      <p><strong>设计哲学：文件即真相</strong></p>
+      <p>这些数据不是藏在某个黑箱模型里。你可以用任何文本编辑器打开 <code>profile.json</code>，直接看，直接改。</p>
+    </div>
+  </div>
+
+</div><!-- /screen-2-2 -->
+
+
+<!-- ============================================================
+     SCREEN 2-3 — CODE ↔ ENGLISH
+     DEFAULT_PROFILE dictionary translation
+     ============================================================ -->
+<div class="screen" id="screen-2-3">
+
+  <div class="screen-header">
+    <span class="screen-tag">模块 2 · 第三屏</span>
+    <h2 class="screen-title">DEFAULT_PROFILE 代码逐行翻译</h2>
+    <p class="screen-subtitle">这份代码定义了"新人用户"的标准画像长什么样</p>
+  </div>
+
+  <div class="translation-block animate-in">
+
+    <div class="translation-code">
+      <span class="translation-label">CODE</span>
+      <pre><code><span class="code-line"><span class="code-punctuation">{</span></span>
+<span class="code-line">  <span class="code-string">"name"</span><span class="code-punctuation">:</span> <span class="code-string">""</span><span class="code-punctuation">,</span></span>
+<span class="code-line">  <span class="code-string">"target_role"</span><span class="code-punctuation">:</span> <span class="code-string">"AI 应用开发实习生"</span><span class="code-punctuation">,</span></span>
+<span class="code-line"></span>
+<span class="code-line-highlight">  <span class="code-string">"topic_mastery"</span><span class="code-punctuation">:</span> <span class="code-punctuation">{}</span><span class="code-comment">  # topic → {level: 1-5, notes: str}</span></span>
+<span class="code-line">  <span class="code-comment"># Empty at start — will be filled in as you train</span></span>
+<span class="code-line"></span>
+<span class="code-line-highlight">  <span class="code-string">"weak_points"</span><span class="code-punctuation">:</span> <span class="code-punctuation">[]</span><span class="code-comment">  # list of {point, topic, first_seen, ...}</span></span>
+<span class="code-line"></span>
+<span class="code-line-highlight">  <span class="code-string">"strong_points"</span><span class="code-punctuation">:</span> <span class="code-punctuation">[]</span><span class="code-comment">  # list of {point, topic, first_seen}</span></span>
+<span class="code-line"></span>
+<span class="code-line">  <span class="code-string">"communication"</span><span class="code-punctuation">:</span> <span class="code-punctuation">{</span></span>
+<span class="code-line">    <span class="code-string">"style"</span><span class="code-punctuation">:</span> <span class="code-string">""</span><span class="code-punctuation">,</span></span>
+<span class="code-line">    <span class="code-string">"habits"</span><span class="code-punctuation">:</span> <span class="code-punctuation">[]</span><span class="code-punctuation">,</span></span>
+<span class="code-line">    <span class="code-string">"suggestions"</span><span class="code-punctuation">:</span> <span class="code-punctuation">[]</span><span class="code-punctuation">,</span></span>
+<span class="code-line">  <span class="code-punctuation">}</span><span class="code-punctuation">,</span></span>
+<span class="code-line"></span>
+<span class="code-line">  <span class="code-string">"thinking_patterns"</span><span class="code-punctuation">:</span> <span class="code-punctuation">{</span></span>
+<span class="code-line">    <span class="code-string">"strengths"</span><span class="code-punctuation">:</span> <span class="code-punctuation">[]</span><span class="code-punctuation">,</span></span>
+<span class="code-line">    <span class="code-string">"gaps"</span><span class="code-punctuation">:</span> <span class="code-punctuation">[]</span><span class="code-punctuation">,</span></span>
+<span class="code-line">  <span class="code-punctuation">}</span><span class="code-punctuation">,</span></span>
+<span class="code-line"></span>
+<span class="code-line">  <span class="code-string">"stats"</span><span class="code-punctuation">:</span> <span class="code-punctuation">{</span></span>
+<span class="code-line">    <span class="code-string">"total_sessions"</span><span class="code-punctuation">:</span> <span class="code-number">0</span><span class="code-punctuation">,</span></span>
+<span class="code-line">    <span class="code-string">"avg_score"</span><span class="code-punctuation">:</span> <span class="code-number">0</span><span class="code-punctuation">,</span></span>
+<span class="code-line">    <span class="code-string">"score_history"</span><span class="code-punctuation">:</span> <span class="code-punctuation">[]</span><span class="code-comment">  # [{date, mode, topic, avg_score}]</span></span>
+<span class="code-line">  <span class="code-punctuation">}</span><span class="code-punctuation">,</span></span>
+<span class="code-line"><span class="code-punctuation">}</span></span>
+</code></pre>
+    </div>
+
+    <div class="translation-english">
+      <span class="translation-label">PLAIN ENGLISH</span>
+      <div class="translation-lines">
+
+        <p class="tl">Opening brace — this is where the profile object starts.</p>
+
+        <p class="tl">Name field starts blank — we'll fill this in from the user's info.</p>
+        <p class="tl">Target role is set to "AI 应用开发实习生" by default — the role we're training for.</p>
+
+        <p class="tl highlight-line"><strong>topic_mastery</strong> — a dictionary that maps each topic to your skill level (1 to 5) and a notes field. Starts empty for new users.</p>
+        <p class="tl">As you answer questions, the system fills this in automatically.</p>
+
+        <p class="tl highlight-line"><strong>weak_points</strong> — a list of your weaknesses. Each entry records: what the issue is, which topic it belongs to, when it was first seen, when last seen, and how many times it appeared.</p>
+
+        <p class="tl highlight-line"><strong>strong_points</strong> — a list of your strengths. Simpler than weak_points: just the strength description, the topic, and when it was first spotted.</p>
+
+        <p class="tl">communication — tracks how you express yourself, including your answer style, your speaking habits, and personalized improvement suggestions.</p>
+        <p class="tl">style: e.g. "回答偏短，缺少具体例子" — a direct summary of your pattern.</p>
+        <p class="tl">habits: e.g. ["紧张时语速加快", "喜欢用类比解释"] — your verbal tendencies.</p>
+        <p class="tl">suggestions: e.g. ["多用 STAR 法描述项目"] — coaching tips generated for you.</p>
+
+        <p class="tl">thinking_patterns — how your brain approaches problems.</p>
+        <p class="tl">strengths: e.g. ["能用类比解释抽象概念"] — things you do well in terms of reasoning structure.</p>
+        <p class="tl">gaps: e.g. ["对比类问题缺乏结构"] — types of questions where your thinking lacks structure.</p>
+
+        <p class="tl">stats — your training scorecard.</p>
+        <p class="tl">total_sessions: starts at 0, counts up with every training session.</p>
+        <p class="tl">avg_score: your running average across all sessions.</p>
+        <p class="tl">score_history: a list of every past session's details — date, mode, topic, and average score.</p>
+
+        <p class="tl">Closing brace — end of the profile object.</p>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="callout callout-info">
+    <div class="callout-icon">📝</div>
+    <div class="callout-content">
+      <p><strong>English in code comments?</strong> 因为这是给 AI 看和写的代码，所以注释用英文——这是行业惯例。注释里的中文是给你做翻译用的。</p>
+    </div>
+  </div>
+
+</div><!-- /screen-2-3 -->
+
+
+<!-- ============================================================
+     SCREEN 2-4 — GROUP CHAT + DATA FLOW
+     ============================================================ -->
+<div class="screen" id="screen-2-4">
+
+  <div class="screen-header">
+    <span class="screen-tag">模块 2 · 第四屏</span>
+    <h2 class="screen-title">两个模块的对话</h2>
+    <p class="screen-subtitle">评估模块发现你某方面不行 → Profile 模块记录下来 → 下次训练就会多练那一项</p>
+  </div>
+
+  <!-- Data Flow Diagram -->
+  <div class="flow-steps animate-in" style="margin-bottom: var(--space-10)">
+    <div class="flow-step">
+      <div class="flow-step-num">1</div>
+      <p>面试结束</p>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-num">2</div>
+      <p>评估模块评分</p>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-num">3</div>
+      <p>写入 profile.json</p>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-num">4</div>
+      <p>下次训练读取 Profile</p>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <div class="flow-step-num">5</div>
+      <p>精准训练</p>
+    </div>
+  </div>
+
+  <!-- Group Chat -->
+  <div class="chat-window" id="chat-module2">
+
+    <div class="chat-header">
+      <span class="chat-title">System Group Chat</span>
+    </div>
+
+    <div class="chat-messages">
+      <div class="chat-message" data-msg="0" data-sender="evaluator" style="display:none">
+        <div class="chat-avatar" style="background: #F38BA8">评</div>
+        <div class="chat-bubble">
+          <span class="chat-sender" style="color:#F38BA8">面试评估模块</span>
+          <p>用户对比类问题总答不好，评分 4/10，已记录。</p>
+        </div>
+      </div>
+
+      <div class="chat-message" data-msg="1" data-sender="profile-module" style="display:none">
+        <div class="chat-avatar" style="background: #89B4FA">档</div>
+        <div class="chat-bubble">
+          <span class="chat-sender" style="color:#89B4FA">Profile 更新模块</span>
+          <p>收到。已将 "对比类问题缺乏结构" 记录为 gap，更新 topic_mastery 中 System Design 等级。</p>
+        </div>
+      </div>
+
+      <div class="chat-message" data-msg="2" data-sender="evaluator" style="display:none">
+        <div class="chat-avatar" style="background: #F38BA8">评</div>
+        <div class="chat-bubble">
+          <span class="chat-sender" style="color:#F38BA8">面试评估模块</span>
+          <p>下次训练建议：主动出对比类题，系统自动提升 System Design 权重。</p>
+        </div>
+      </div>
+
+      <div class="chat-message" data-msg="3" data-sender="profile-module" style="display:none">
+        <div class="chat-avatar" style="background: #89B4FA">档</div>
+        <div class="chat-bubble">
+          <span class="chat-sender" style="color:#89B4FA">Profile 更新模块</span>
+          <p>更新完毕。数据写入 <span class="code-inline">data/users/{user_id}/profile.json</span>，随时可查阅。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="chat-typing" id="chat-module2-typing" style="display:none">
+      <div class="chat-avatar">档</div>
+      <div class="chat-typing-dots">
+        <span class="typing-dot"></span>
+        <span class="typing-dot"></span>
+        <span class="typing-dot"></span>
+      </div>
+    </div>
+
+    <div class="chat-controls">
+      <button class="btn chat-next-btn">Next Message</button>
+      <button class="btn chat-all-btn">Play All</button>
+      <button class="btn chat-reset-btn">Replay</button>
+      <span class="chat-progress"></span>
+    </div>
+  </div>
+
+  <div class="callout callout-accent" style="margin-top: var(--space-8)">
+    <div class="callout-icon">💡</div>
+    <div class="callout-content">
+      <p><strong>为什么文件存储比黑箱更好？</strong></p>
+      <p>你可以打开文件看。也可以直接改。比如你知道自己 System Design 其实有 4 分水平，那就直接打开文件把 level 改成 4——不用等系统慢慢学。这是 AI 辅助学习，你才是主人。</p>
+    </div>
+  </div>
+
+</div><!-- /screen-2-4 -->
+
+
+<!-- ============================================================
+     SCREEN 2-5 — QUIZ
+     ============================================================ -->
+<div class="screen" id="screen-2-5">
+
+  <div class="screen-header">
+    <span class="screen-tag">模块 2 · 第五屏</span>
+    <h2 class="screen-title">小测验</h2>
+    <p class="screen-subtitle">用今天学的内容来解决这几个场景</p>
+  </div>
+
+  <div class="quiz-container" id="quiz-module2">
+
+    <!-- Q1 -->
+    <div class="quiz-question-block"
+         data-correct="q1-b"
+         data-explanation-right="完全正确！profile.json 就在那里，你可以用任何文本编辑器打开，直接把 level 改成 4。不用问任何人，这才是'文件即真相'的意义。"
+         data-explanation-wrong="不太对哦。注意题目里的提示——'不是问AI'。profile.json 是普通文件，就在 data/users/{user_id}/ 目录下。你可以直接打开看、直接改，不需要通过任何 AI 或系统界面。">
+      <h3 class="quiz-question">Q1：用户发现自己 topic_mastery 里 System Design 显示 level=3，但她觉得实际应该有 level=4。她应该怎么做？</h3>
+      <p class="quiz-hint">提示：想想 profile.json 在哪里，以及"文件即真相"是什么意思。</p>
+      <div class="quiz-options">
+        <button class="quiz-option" data-value="q1-a" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>去问 TechSpar 客服，请他们修改</span>
+        </button>
+        <button class="quiz-option" data-value="q1-b" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>直接打开 data/users/{user_id}/profile.json，把 level 改成 4</span>
+        </button>
+        <button class="quiz-option" data-value="q1-c" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>再练几次系统设计题，等系统自己更新</span>
+        </button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="quiz-question-block"
+         data-correct="q2-c"
+         data-explanation-right="答对了！系统通过多次评估发现：用户每次遇到对比类问题（如'A vs B 有什么区别'）都拿低分，times_seen 不断增加，系统由此推断这是一个结构性弱点，而不是偶然失误。"
+         data-explanation-wrong="不太对。系统不是靠猜，也不是靠用户自己报告。它靠的是真实数据——每次面试评估时，对比类问题用户都答得不好，系统记录下来，times_seen 越来越多，最终被归类为 gap。">
+      <h3 class="quiz-question">Q2：系统如何知道用户"对比类问题缺乏结构"？</h3>
+      <p class="quiz-hint">提示：weak_points 是怎么产生的？</p>
+      <div class="quiz-options">
+        <button class="quiz-option" data-value="q2-a" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>用户主动告诉系统的</span>
+        </button>
+        <button class="quiz-option" data-value="q2-b" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>AI 靠直觉猜出来的</span>
+        </button>
+        <button class="quiz-option" data-value="q2-c" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>每次评估时发现用户对比类问题得分低，times_seen 不断增加，系统自动识别为 gap</span>
+        </button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="quiz-question-block"
+         data-correct="q3-b"
+         data-explanation-right="完全正确！因为 weak_point 是系统'观察'出来的，不是系统'强制'记住的。你删掉了这条记录，系统下次评估时依然会看你的实际表现——如果答得还是不好，它会重新记录这条 weak_point，相当于'你又制造了它一次'。"
+         data-explanation-wrong="不太对。注意 system design 的 weak_point 不是被'写入'的，而是被'发现'的。你删掉记录，但你在面试中的实际表现没有变。下次评估时，系统发现你对比类问题还是答不好，会重新生成这条记录。文件删了，问题还在——因为问题在你身上，不在文件里。">
+      <h3 class="quiz-question">Q3：用户打开 profile.json，把"对比类问题缺乏结构"这条 weak_point 手动删掉了。系统下次训练会怎样？</h3>
+      <p class="quiz-hint">提示：系统是怎么知道你有这个 weak_point 的？删掉记录，问题本身消失了吗？</p>
+      <div class="quiz-options">
+        <button class="quiz-option" data-value="q3-a" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>系统完全忘记这件事，以后再也不会提</span>
+        </button>
+        <button class="quiz-option" data-value="q3-b" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>下次评估如果对比类问题答得还是不好，系统会重新记录这条 weak_point</span>
+        </button>
+        <button class="quiz-option" data-value="q3-c" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>系统会报错，因为 profile.json 格式被破坏了</span>
+        </button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <button class="quiz-check-btn" onclick="checkQuiz('quiz-module2')">提交答案</button>
+    <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module2')">重新测试</button>
+
+  </div>
+
+</div><!-- /screen-2-5 -->
+
+</section>
+<section class="module" id="module-3" lang="zh-CN">
+
+  <!-- ══════════════════════════════════════════════════════════
+       MODULE HEADER
+  ══════════════════════════════════════════════════════════ -->
+  <div class="module-header">
+    <div class="module-badge">模块 3</div>
+    <h2 class="module-title">SM-2 算法 — 面试复习调度</h2>
+    <p class="module-subtitle">1987年的记忆科学，如何算出"下次复习的最佳时机"</p>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       SCREEN 3-1 — HOOK
+       为什么你总在同一道题上跌倒
+  ══════════════════════════════════════════════════════════ -->
+  <div class="screen" id="m3-screen-1">
+    <h3 class="screen-title">
+      <span class="screen-num">3-1</span>
+      为什么你总在同一道题上跌倒？
+    </h3>
+
+    <p class="screen-lead">答对了一道题，下次还出吗？大多数系统随机抽，结果你总是忘的那题最久才来。</p>
+
+    <!-- 对比图：随机出题 vs SM-2 -->
+    <div class="comparison-grid animate-in">
+      <!-- 左边：随机出题 -->
+      <div class="comparison-card comparison-bad">
+        <div class="comparison-icon">🎲</div>
+        <h4>随机出题</h4>
+        <p class="comparison-desc">每隔固定时间随机抽题，不管你会不会。</p>
+        <div class="timeline-wrong">
+          <div class="tl-node">
+            <span class="tl-day">周一</span>
+            <span class="tl-label tl-forgot">忘了</span>
+          </div>
+          <div class="tl-gap">……</div>
+          <div class="tl-node">
+            <span class="tl-day">周四</span>
+            <span class="tl-label tl-wrong">又忘了！</span>
+          </div>
+          <div class="tl-gap">……</div>
+          <div class="tl-node">
+            <span class="tl-day">下周一</span>
+            <span class="tl-label tl-wrong">还是忘了……</span>
+          </div>
+        </div>
+        <div class="comparison-verdict">
+          <span class="verdict-icon">😫</span>
+          <p>每次都像重新学，永远在同一个坑里跌倒。</p>
+        </div>
+      </div>
+
+      <!-- 右边：SM-2 调度 -->
+      <div class="comparison-card comparison-good">
+        <div class="comparison-icon">🧠</div>
+        <h4>SM-2 调度</h4>
+        <p class="comparison-desc">对了拉长间隔，错了一天后重考——动态适应你的记忆。</p>
+        <div class="timeline-right">
+          <div class="tl-node">
+            <span class="tl-day">周一</span>
+            <span class="tl-label tl-pass">对了 ✓</span>
+          </div>
+          <div class="tl-arrow">→</div>
+          <div class="tl-node">
+            <span class="tl-day">周二</span>
+            <span class="tl-label tl-pass">对了 ✓</span>
+          </div>
+          <div class="tl-arrow">→</div>
+          <div class="tl-node">
+            <span class="tl-day">周五</span>
+            <span class="tl-label tl-pass">对了 ✓</span>
+          </div>
+          <div class="tl-arrow">→</div>
+          <div class="tl-node">
+            <span class="tl-day">再过14天</span>
+            <span class="tl-label tl-pass">巩固 ✓</span>
+          </div>
+        </div>
+        <div class="comparison-verdict">
+          <span class="verdict-icon">💪</span>
+          <p>在你快忘的时候出现，每次复习都恰到好处。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 核心 Hook Callout -->
+    <div class="callout callout-accent animate-in">
+      <div class="callout-icon">⚡</div>
+      <div class="callout-content">
+        <strong class="callout-title">SM-2 的核心逻辑</strong>
+        <p>答对了？→ 拉长间隔，给你时间巩固。<br>答错了？→ 重置回1天，明天就回来救你。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       SCREEN 3-2 — 两个核心数字
+  ══════════════════════════════════════════════════════════ -->
+  <div class="screen" id="m3-screen-2">
+    <h3 class="screen-title">
+      <span class="screen-num">3-2</span>
+      SM-2 的两个核心数字
+    </h3>
+
+    <p class="screen-lead">SM-2 算法只用两个数字，就能量化你的记忆状态。</p>
+
+    <div class="pattern-cards animate-in">
+      <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+        <div class="pattern-icon" style="background: var(--color-actor-1)">📅</div>
+        <h4 class="pattern-title">
+          <span class="term" data-definition="一个整数，表示下次复习应该安排在多少天之后。比如 interval_days = 3，意味着3天后再考你这道题。">interval_days</span>
+        </h4>
+        <p class="pattern-desc">间隔天数——"多久之后再考你一次"。从1天起步，每次答对就翻倍：1天 → 3天 → 7天 → 14天……</p>
+        <div class="card-formula">
+          <code>答对：间隔 = 上次间隔 × 难度系数</code>
+        </div>
+      </div>
+
+      <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+        <div class="pattern-icon" style="background: var(--color-actor-2)">⚙️</div>
+        <h4 class="pattern-title">
+          <span class="term" data-definition="一个浮点数，表示题目难度对你的影响程度。初始值2.5，最低1.3。越难或越容易答对的题目，这个系数会动态调整，决定间隔增长的速度。">ease_factor</span>
+        </h4>
+        <p class="pattern-desc">难度系数——"这道题到底有多难"。初始默认2.5，每次答题后根据表现微调，最低不低于1.3。</p>
+        <div class="card-formula">
+          <code>答难→高分 → 系数变大 → 间隔涨得更快</code>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout-info animate-in">
+      <div class="callout-icon">📊</div>
+      <div class="callout-content">
+        <strong class="callout-title">state 是什么？</strong>
+        <p><span class="term" data-definition="在编程中，state（状态）是一组描述'当前情况'的数据。这里的 state 包含 interval_days、ease_factor、repetitions 三个值，共同描述一道题在你记忆中的'当前状态'。">state</span> 就是这两个数字加上一个 repetitions（连续答对次数）的组合，每次答题后 SM-2 用这三个数算出下一轮复习时间。这组数据存在 <span class="term" data-definition="JSON 是一种轻量级的数据格式，像一张表格一样结构化地存放键值对——比如 {'interval_days': 3, 'ease_factor': 2.5}。">JSON</span> 里，叫 <span class="term" data-definition="间隔重复系统中存储每道题复习记录的数据结构，包含间隔天数、难度系数、重复次数等字段。">sr_state</span>。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       SCREEN 3-3 — Code ↔ English 翻译
+  ══════════════════════════════════════════════════════════ -->
+  <div class="screen" id="m3-screen-3">
+    <h3 class="screen-title">
+      <span class="screen-num">3-3</span>
+      逐行拆解：sm2_update 函数
+    </h3>
+
+    <p class="screen-lead">这是 TechSpar 后端的实际代码，逐行翻译成大白话。</p>
+
+    <div class="translation-block animate-in">
+      <div class="translation-code">
+        <span class="translation-label">CODE</span>
+        <pre><code><span class="code-line"><span class="code-keyword">def</span> <span class="code-function">sm2_update</span>(sr_state: dict, score_0_10: float) -> dict:</span>
+<span class="code-line">    quality = <span class="code-built_in">min</span>(<span class="code-number">5</span>, <span class="code-keyword">int</span>(score_0_10 / <span class="code-number">2</span>))</span>
+<span class="code-line">    <span class="code-comment"># 0-10分 → SM-2质量0-5</span></span>
+<span class="code-line">    ef = sr_state.<span class="code-keyword">get</span>(<span class="code-string">"ease_factor"</span>, <span class="code-number">2.5</span>)</span>
+<span class="code-line">    <span class="code-comment"># 难度系数，最小1.3</span></span>
+<span class="code-line">    reps = sr_state.<span class="code-keyword">get</span>(<span class="code-string">"repetitions"</span>, <span class="code-number">0</span>)</span>
+<span class="code-line"></span>
+<span class="code-line">    <span class="code-keyword">if</span> quality >= <span class="code-number">3</span>:  <span class="code-comment"># 通过</span></span>
+<span class="code-line">        <span class="code-keyword">if</span> reps == <span class="code-number">0</span>: interval = <span class="code-number">1</span></span>
+<span class="code-line">        <span class="code-keyword">elif</span> reps == <span class="code-number">1</span>: interval = <span class="code-number">3</span></span>
+<span class="code-line">        <span class="code-keyword">else</span>: interval = <span class="code-keyword">int</span>(sr_state.<span class="code-keyword">get</span>(<span class="code-string">"interval_days"</span>, <span class="code-number">1</span>) * ef)</span>
+<span class="code-highlight">        reps += <span class="code-number">1</span></span>
+<span class="code-line">    <span class="code-keyword">else</span>:  <span class="code-comment"># 失败，重置</span></span>
+<span class="code-line">        interval = <span class="code-number">1</span></span>
+<span class="code-line">        reps = <span class="code-number">0</span></span>
+<span class="code-line"></span>
+<span class="code-line">    ef = <span class="code-built_in">max</span>(<span class="code-number">1.3</span>, ef + (<span class="code-number">0.1</span> - (<span class="code-number">5</span> - quality) * (<span class="code-number">0.08</span> + (<span class="code-number">5</span> - quality) * <span class="code-number">0.02</span>)))</span>
+<span class="code-line">    <span class="code-keyword">return</span> {</span>
+<span class="code-highlight">        <span class="code-string">"interval_days"</span>: interval,</span>
+<span class="code-highlight">        <span class="code-string">"ease_factor"</span>: <span class="code-built_in">round</span>(ef, <span class="code-number">2</span>),</span>
+<span class="code-highlight">        <span class="code-string">"repetitions"</span>: reps,</span>
+<span class="code-highlight">        <span class="code-string">"next_review"</span>: (date.today() + <span class="code-built_in">timedelta</span>(days=interval)).<span class="code-string">isoformat</span>(),</span>
+<span class="code-line">        <span class="code-string">"last_score"</span>: score_0_10,</span>
+<span class="code-line">    }</span></code></pre>
+      </div>
+      <div class="translation-english">
+        <span class="translation-label">PLAIN ENGLISH</span>
+        <div class="translation-lines">
+          <p class="tl">Define a function that takes the current memory state of a question and a score (0-10), then returns the updated state for the next review session.</p>
+          <p class="tl">Convert the 0-10 score into SM-2's internal "quality" scale (0-5) by dividing by 2 and capping at 5. A 10/10 score becomes quality=5.</p>
+          <p class="tl">-</p>
+          <p class="tl">Look up the ease_factor from the current state. If there's no record yet, default to 2.5 — the standard starting difficulty for any new question.</p>
+          <p class="tl">-</p>
+          <p class="tl">Also look up how many times in a row this question has been answered correctly. Start at 0 if it's a fresh question.</p>
+          <p class="tl">-</p>
+          <p class="tl">If the quality is 3 or higher (answered correctly enough): figure out the next review interval.</p>
+          <p class="tl">First time correct → review again in 1 day.</p>
+          <p class="tl">Second time correct → now 3 days.</p>
+          <p class="tl">Third+ time → multiply the previous interval by the ease_factor. This is the compounding magic: each success stretches the interval further.</p>
+          <p class="tl">Increment the consecutive-correct counter by 1.</p>
+          <p class="tl">If the quality is below 3 (failed or shaky): reset the interval to 1 day and start the counter over from zero.</p>
+          <p class="tl">Interval goes back to 1 day.</p>
+          <p class="tl">Counter resets to 0.</p>
+          <p class="tl">-</p>
+          <p class="tl">After all this, update the ease_factor using a formula based on how well the question was answered. Never let it drop below 1.3.</p>
+          <p class="tl">-</p>
+          <p class="tl">Return all four updated values so the system knows when to bring this question back.</p>
+          <p class="tl"><strong>interval_days</strong> — how many days until the next review.</p>
+          <p class="tl"><strong>ease_factor</strong> — updated difficulty coefficient (rounded to 2 decimal places).</p>
+          <p class="tl"><strong>repetitions</strong> — how many times answered correctly in a row now.</p>
+          <p class="tl"><strong>next_review</strong> — the actual calendar date for the next review, calculated as today + interval_days.</p>
+          <p class="tl"><strong>last_score</strong> — the score you just gave, stored for the system's records.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       SCREEN 3-4 — 间隔时间轴
+  ══════════════════════════════════════════════════════════ -->
+  <div class="screen" id="m3-screen-4">
+    <h3 class="screen-title">
+      <span class="screen-num">3-4</span>
+      间隔时间轴：答对拉长，答错重置
+    </h3>
+
+    <p class="screen-lead">SM-2 的复习间隔随着你的表现动态变化。</p>
+
+    <!-- 答对路径 -->
+    <div class="timeline-section animate-in">
+      <h4 class="timeline-heading timeline-heading-good">✅ 连续答对路径</h4>
+      <p class="timeline-subheading">每答对一次，间隔乘以难度系数，越拉越长</p>
+      <div class="timeline-flow">
+        <div class="tf-node">
+          <div class="tf-circle tf-pass">1</div>
+          <div class="tf-label">第1次对了<br><span class="tf-meta">间隔 1 天</span></div>
+        </div>
+        <div class="tf-arrow">×2.5 →</div>
+        <div class="tf-node">
+          <div class="tf-circle tf-pass">2</div>
+          <div class="tf-label">第2次对了<br><span class="tf-meta">间隔 3 天</span></div>
+        </div>
+        <div class="tf-arrow">×2.5 →</div>
+        <div class="tf-node">
+          <div class="tf-circle tf-pass">3</div>
+          <div class="tf-label">第3次对了<br><span class="tf-meta">间隔 7 天</span></div>
+        </div>
+        <div class="tf-arrow">×2.5 →</div>
+        <div class="tf-node">
+          <div class="tf-circle tf-pass">4</div>
+          <div class="tf-label">第4次对了<br><span class="tf-meta">间隔 14 天</span></div>
+        </div>
+        <div class="tf-arrow">×2.5 →</div>
+        <div class="tf-node">
+          <div class="tf-circle tf-pass">5</div>
+          <div class="tf-label">第5次对了<br><span class="tf-meta">间隔 30 天</span></div>
+        </div>
+      </div>
+      <p class="timeline-insight">数学上：<code>间隔_n = 间隔_(n-1) × ease_factor</code>，复合增长。</p>
+    </div>
+
+    <!-- 答错路径 -->
+    <div class="timeline-section animate-in">
+      <h4 class="timeline-heading timeline-heading-bad">❌ 答错重置路径</h4>
+      <p class="timeline-subheading">任何一次失败，都回到1天重新爬坡</p>
+      <div class="timeline-flow">
+        <div class="tf-node">
+          <div class="tf-circle tf-pass">3</div>
+          <div class="tf-label">连续对了3次<br><span class="tf-meta">间隔 7 天</span></div>
+        </div>
+        <div class="tf-arrow tf-reset">✕ 答错</div>
+        <div class="tf-node">
+          <div class="tf-circle tf-fail">!</div>
+          <div class="tf-label">突然答错<br><span class="tf-meta">quality &lt; 3</span></div>
+        </div>
+        <div class="tf-arrow tf-reset">重置</div>
+        <div class="tf-node">
+          <div class="tf-circle tf-reset">↺</div>
+          <div class="tf-label">回到起点<br><span class="tf-meta">间隔 1 天，明天重来</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 两条路径对比 -->
+    <div class="callout callout-accent animate-in">
+      <div class="callout-icon">💡</div>
+      <div class="callout-content">
+        <strong class="callout-title">关键洞察</strong>
+        <p>SM-2 用两个简单的规则模拟了记忆的衰减规律：答对说明记忆还牢固，多给几天让它自然淡忘再回来考；答错说明记忆已经不牢，就不要硬拖时间，立刻回来救你。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       SCREEN 3-5 — Group Chat Animation
+  ══════════════════════════════════════════════════════════ -->
+  <div class="screen" id="m3-screen-5">
+    <h3 class="screen-title">
+      <span class="screen-num">3-5</span>
+      SM-2 和薄弱点心虚对话
+    </h3>
+
+    <p class="screen-lead">当你的薄弱点拿到一个"勉强通过"的评分时，SM-2 会怎么说？</p>
+
+    <div class="chat-window animate-in" id="chat-module3">
+      <div class="chat-messages">
+
+        <div class="chat-message" data-msg="0" data-sender="sm2" style="display:none">
+          <div class="chat-avatar" style="background: var(--color-actor-1)">S</div>
+          <div class="chat-bubble">
+            <span class="chat-sender" style="color: var(--color-actor-1)">SM-2 算法</span>
+            <p>你这题10分中拿了6分，对应 quality=3，刚好及格。</p>
+          </div>
+        </div>
+
+        <div class="chat-message" data-msg="1" data-sender="sm2" style="display:none">
+          <div class="chat-avatar" style="background: var(--color-actor-1)">S</div>
+          <div class="chat-bubble">
+            <span class="chat-sender" style="color: var(--color-actor-1)">SM-2 算法</span>
+            <p>根据你的 reps=2（连续对了2次），下次间隔拉长到 7 天。</p>
+          </div>
+        </div>
+
+        <div class="chat-message" data-msg="2" data-sender="weak" style="display:none">
+          <div class="chat-avatar" style="background: var(--color-actor-3)">W</div>
+          <div class="chat-bubble">
+            <span class="chat-sender" style="color: var(--color-actor-3)">薄弱点心虚</span>
+            <p>等等……我刚才是勉强6分飘过的，间隔拉长了我真的不会忘吗？</p>
+          </div>
+        </div>
+
+        <div class="chat-message" data-msg="3" data-sender="sm2" style="display:none">
+          <div class="chat-avatar" style="background: var(--color-actor-1)">S</div>
+          <div class="chat-bubble">
+            <span class="chat-sender" style="color: var(--color-actor-1)">SM-2 算法</span>
+            <p>这正是我的设计逻辑：你掌握了一些，但还不够牢。间隔拉长给你时间让记忆真正沉淀，同时又不会久到完全忘光。</p>
+          </div>
+        </div>
+
+        <div class="chat-message" data-msg="4" data-sender="sm2" style="display:none">
+          <div class="chat-avatar" style="background: var(--color-actor-1)">S</div>
+          <div class="chat-bubble">
+            <span class="chat-sender" style="color: var(--color-actor-1)">SM-2 算法</span>
+            <p>如果你下次回来答错了，我会立刻把间隔重置回1天。所以你的记忆永远不会真正丢失——我只是在"快要忘"和"来得及巩固"之间找最佳平衡点。</p>
+          </div>
+        </div>
+
+        <div class="chat-message" data-msg="5" data-sender="weak" style="display:none">
+          <div class="chat-avatar" style="background: var(--color-actor-3)">W</div>
+          <div class="chat-bubble">
+            <span class="chat-sender" style="color: var(--color-actor-3)">薄弱点心虚</span>
+            <p>原来如此……那 ease_factor 是什么，它怎么知道我掌握得怎么样？</p>
+          </div>
+        </div>
+
+        <div class="chat-message" data-msg="6" data-sender="sm2" style="display:none">
+          <div class="chat-avatar" style="background: var(--color-actor-1)">S</div>
+          <div class="chat-bubble">
+            <span class="chat-sender" style="color: var(--color-actor-1)">SM-2 算法</span>
+            <p>ease_factor 根据你的得分动态调整。分越低，系数越小，下次间隔增长得越慢——相当于说"这道题对你比较难，别急着拉长"。这就是为什么 ease_factor 永远不会低于 1.3。</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="chat-typing" id="chat-module3-typing-avatar" style="display:none">
+        <div class="chat-avatar">?</div>
+        <div class="chat-typing-dots">
+          <span class="typing-dot"></span>
+          <span class="typing-dot"></span>
+          <span class="typing-dot"></span>
+        </div>
+      </div>
+
+      <div class="chat-controls">
+        <button class="btn chat-next-btn">Next Message</button>
+        <button class="btn chat-all-btn">Play All</button>
+        <button class="btn chat-reset-btn">Replay</button>
+        <span class="chat-progress"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       SCREEN 3-6 — Quiz
+  ══════════════════════════════════════════════════════════ -->
+  <div class="screen" id="m3-screen-6">
+    <h3 class="screen-title">
+      <span class="screen-num">3-6</span>
+      小测验：SM-2 算术挑战
+    </h3>
+
+    <p class="screen-lead">用 SM-2 的逻辑，算出这几道场景题的结果。</p>
+
+    <div class="quiz-container" id="quiz-module3">
+
+      <!-- 题目 1 -->
+      <div class="quiz-question-block"
+           data-correct="q1-c"
+           data-explanation-right="正确！连续答对3次时，reps=2（第3次答对后），按照代码：interval = int(interval_days × ease_factor) = 3 × 2.5 = 7.5，取整为 7 天。"
+           data-explanation-wrong="不对哦。连续答对3次后，reps 变成2，代码走 else 分支：interval = int(上次间隔 × ease_factor) = 3 × 2.5 = 7.5，取整为 7 天。">
+        <h3 class="quiz-question">用户连续答对3次，目前 ease_factor=2.5，上次间隔是3天。下次复习该隔多少天？</h3>
+        <div class="quiz-options">
+          <button class="quiz-option" data-value="q1-a" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>1 天（重置回第一天）</span>
+          </button>
+          <button class="quiz-option" data-value="q1-b" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>3 天（保持不变）</span>
+          </button>
+          <button class="quiz-option" data-value="q1-c" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>7 天（3 × 2.5 = 7.5，取整）</span>
+          </button>
+          <button class="quiz-option" data-value="q1-d" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>14 天（翻倍）</span>
+          </button>
+        </div>
+        <div class="quiz-feedback"></div>
+      </div>
+
+      <!-- 题目 2 -->
+      <div class="quiz-question-block"
+           data-correct="q2-b"
+           data-explanation-right="正确！quality=2（&lt;3，不及格），直接触发 else 分支：interval 重置为 1 天，reps 重置为 0。不管之前连续对了多少次，一次失败全部归零。."
+           data-explanation-wrong="不对哦。quality=2 意味着答题质量低于3（不及格），SM-2 直接判定为失败，执行重置逻辑：interval=1天，repetitions=0。这就是 SM-2 的'一票重置'规则。">
+        <h3 class="quiz-question">用户某天突然在一道题上答错了（quality=2）。下次复习间隔是多少？</h3>
+        <div class="quiz-options">
+          <button class="quiz-option" data-value="q2-a" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>保持上次的间隔不变</span>
+          </button>
+          <button class="quiz-option" data-value="q2-b" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>1 天（重置）</span>
+          </button>
+          <button class="quiz-option" data-value="q2-c" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>缩短一半（比如从7天变成3.5天）</span>
+          </button>
+          <button class="quiz-option" data-value="q2-d" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>直接删除这道题，不再出现</span>
+          </button>
+        </div>
+        <div class="quiz-feedback"></div>
+      </div>
+
+      <!-- 题目 3 -->
+      <div class="quiz-question-block"
+           data-correct="q3-b"
+           data-explanation-right="正确！代码最后一行用 max(1.3, ...) 确保 ease_factor 永远不会低于 1.3。这是为了防止难度系数过低导致间隔几乎不增长，保证算法对极难的题目也有最基本的收敛性。."
+           data-explanation-wrong="不对哦。虽然 ease_factor 会动态调整，但代码用 max(1.3, ...) 设了下限，保证它永远不会低于 1.3。这是为了防止算法在极端情况下崩溃。">
+        <h3 class="quiz-question">如果用户长期答错题，ease_factor 会一直往下降吗？最低能到多少？</h3>
+        <div class="quiz-options">
+          <button class="quiz-option" data-value="q3-a" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>会无限下降，最低到 0</span>
+          </button>
+          <button class="quiz-option" data-value="q3-b" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>不会，最低保底 1.3</span>
+          </button>
+          <button class="quiz-option" data-value="q3-c" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>最低保底 1.0</span>
+          </button>
+          <button class="quiz-option" data-value="q3-d" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>不会下降，会一直维持在 2.5</span>
+          </button>
+        </div>
+        <div class="quiz-feedback"></div>
+      </div>
+
+      <div class="quiz-actions">
+        <button class="quiz-check-btn" onclick="checkQuiz('quiz-module3')">Check Answers</button>
+        <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module3')">Try Again</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       MODULE FOOTER NAV
+  ══════════════════════════════════════════════════════════ -->
+  <div class="module-footer-nav">
+    <a href="#module-2" class="footer-nav-link footer-nav-prev">
+      <span class="footer-nav-dir">← 上一模块</span>
+      <span class="footer-nav-title">长期记忆系统</span>
+    </a>
+    <a href="#module-4" class="footer-nav-link footer-nav-next">
+      <span class="footer-nav-dir">下一模块 →</span>
+      <span class="footer-nav-title">简历面试状态机</span>
+    </a>
+  </div>
+
+</section>
+
+<style>
+  /* ══════════════════════════════════════════════════════════
+     MODULE-3 ADDITIONAL STYLES
+     (beyond the global styles.css patterns)
+  ══════════════════════════════════════════════════════════ */
+
+  /* Comparison grid */
+  .comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-6);
+    margin: var(--space-8) 0;
+  }
+  @media (max-width: 640px) {
+    .comparison-grid { grid-template-columns: 1fr; }
+  }
+
+  .comparison-card {
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    box-shadow: var(--shadow-md);
+  }
+  .comparison-bad {
+    background: var(--color-surface);
+    border: 2px solid var(--color-border);
+  }
+  .comparison-good {
+    background: var(--color-surface);
+    border: 2px solid var(--color-accent);
+  }
+  .comparison-icon { font-size: 2rem; margin-bottom: var(--space-2); }
+  .comparison-card h4 {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    margin: 0 0 var(--space-2);
+  }
+  .comparison-desc {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    margin: 0 0 var(--space-5);
+  }
+  .comparison-verdict {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-border-light);
+  }
+  .verdict-icon { font-size: 1.25rem; flex-shrink: 0; }
+  .comparison-verdict p { margin: 0; font-size: var(--text-sm); color: var(--color-text-secondary); font-style: italic; }
+
+  /* Timeline wrong */
+  .timeline-wrong {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    align-items: flex-start;
+  }
+  .timeline-right {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+  }
+  .tl-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-1);
+  }
+  .tl-day {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    background: var(--color-bg-warm);
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-secondary);
+  }
+  .tl-label {
+    font-size: var(--text-xs);
+    font-weight: 600;
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-full);
+  }
+  .tl-forgot { background: #FDE8E8; color: #C93B3B; }
+  .tl-wrong { background: #FDE8E8; color: #C93B3B; }
+  .tl-pass { background: #E8F5EE; color: #2D8B55; }
+  .tl-gap { padding: var(--space-1) var(--space-2); font-size: var(--text-xs); color: var(--color-text-muted); }
+  .tl-arrow { font-size: var(--text-lg); color: var(--color-accent); font-weight: 700; padding: 0 var(--space-1); }
+
+  /* Card formula */
+  .card-formula {
+    margin-top: var(--space-4);
+    padding: var(--space-3);
+    background: var(--color-bg-code);
+    border-radius: var(--radius-sm);
+  }
+  .card-formula code {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: #CBA6F7;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  /* Timeline flow (Screen 3-4) */
+  .timeline-section {
+    margin-bottom: var(--space-10);
+  }
+  .timeline-heading {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    margin: 0 0 var(--space-2);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .timeline-heading-good { color: var(--color-success); }
+  .timeline-heading-bad { color: var(--color-error); }
+  .timeline-subheading {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    margin: 0 0 var(--space-5);
+  }
+  .timeline-flow {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-4);
+  }
+  .tf-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .tf-circle {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 700;
+    color: white;
+  }
+  .tf-pass { background: var(--color-success); }
+  .tf-fail { background: var(--color-error); }
+  .tf-reset { background: var(--color-actor-3); }
+  .tf-label {
+    text-align: center;
+    font-size: var(--text-xs);
+    color: var(--color-text-secondary);
+    line-height: 1.4;
+  }
+  .tf-label strong { color: var(--color-text); }
+  .tf-meta {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-accent);
+    margin-top: var(--space-1);
+  }
+  .tf-arrow {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+  }
+  .tf-arrow.tf-reset {
+    color: var(--color-error);
+    font-weight: 700;
+  }
+  .timeline-insight {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+  .timeline-insight code {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    background: var(--color-bg-code);
+    color: #CBA6F7;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  /* Quiz actions */
+  .quiz-actions {
+    display: flex;
+    gap: var(--space-3);
+    margin-top: var(--space-6);
+  }
+  .quiz-check-btn, .quiz-reset-btn {
+    padding: var(--space-3) var(--space-6);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all var(--duration-fast);
+  }
+  .quiz-check-btn {
+    background: var(--color-accent);
+    color: white;
+  }
+  .quiz-check-btn:hover { background: var(--color-accent-hover); }
+  .quiz-reset-btn {
+    background: var(--color-surface);
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-border);
+  }
+  .quiz-reset-btn:hover { border-color: var(--color-accent-muted); color: var(--color-text); }
+
+  /* Code highlight */
+  .code-highlight { background: rgba(217, 79, 48, 0.15); border-radius: 2px; }
+
+  /* Module footer nav */
+  .module-footer-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-top: var(--space-16);
+    padding-top: var(--space-8);
+    border-top: 1px solid var(--color-border);
+  }
+  .footer-nav-link {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    text-decoration: none;
+    padding: var(--space-4);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    transition: all var(--duration-fast);
+    flex: 1;
+    max-width: 280px;
+  }
+  .footer-nav-link:hover {
+    border-color: var(--color-accent);
+    box-shadow: var(--shadow-sm);
+  }
+  .footer-nav-next { text-align: right; margin-left: auto; }
+  .footer-nav-dir {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+  }
+  .footer-nav-title {
+    font-family: var(--font-display);
+    font-size: var(--text-base);
+    font-weight: 600;
+    color: var(--color-text);
+  }
+  @media (max-width: 640px) {
+    .module-footer-nav { flex-direction: column; }
+    .footer-nav-link { max-width: 100%; }
+    .footer-nav-next { text-align: left; margin-left: 0; }
+  }
+</style>
+<section class="module" id="module-4" lang="zh-CN">
+
+<!-- ═══════════════════════════════════════════════════════════════
+     MODULE 4 — 简历面试状态机
+     ═══════════════════════════════════════════════════════════════ -->
+
+<!-- ─── SCREEN 4-1 ─────────────────────────────────────────────
+     Hook + 流程图（5阶段导航）
+     ─────────────────────────────────────────────────────────── -->
+<div class="screen" id="m4-screen-1">
+
+  <div class="screen-label">模块 4 · 屏幕 1 / 5</div>
+
+  <!-- Hook -->
+  <div class="module-intro animate-in">
+    <div class="module-eyebrow">
+      <span class="module-tag">LangGraph 核心</span>
+    </div>
+    <h2 class="module-title">AI 面试官的大脑：<br>它怎么知道什么时候切换问题？</h2>
+    <p class="module-subtitle">
+      它不是"随机问"，而是按<span class="term" data-definition="状态机（State Machine）是一种计算模型，用「当前处于哪个状态」来决定「下一步该做什么」。就像红绿灯：绿灯时只能通行，红灯时必须停下，状态决定行为。">流程推进</span>——每个阶段有固定的名字和转换规则。相当于把面试流程写成了一个<b>可以自动运行的状态机</b>。
+    </p>
+  </div>
+
+  <!-- Flow diagram: 5 phases -->
+  <div class="flow-diagram animate-in">
+    <h3 class="flow-diagram-title">面试状态机的 5 个阶段</h3>
+    <p class="flow-diagram-hint">点击节点可查看该阶段说明 ↓</p>
+
+    <div class="phase-nodes">
+      <div class="phase-node active" data-phase="greeting" onclick="showPhaseCard(this)">
+        <div class="phase-node-icon">👋</div>
+        <div class="phase-node-label">GREETING</div>
+        <div class="phase-node-sub">开场寒暄</div>
+      </div>
+
+      <div class="phase-arrow">
+        <div class="phase-arrow-line"></div>
+        <div class="phase-arrow-head">→</div>
+      </div>
+
+      <div class="phase-node" data-phase="self-intro" onclick="showPhaseCard(this)">
+        <div class="phase-node-icon">🎤</div>
+        <div class="phase-node-label">SELF_INTRO</div>
+        <div class="phase-node-sub">自我介绍</div>
+      </div>
+
+      <div class="phase-arrow">
+        <div class="phase-arrow-line"></div>
+        <div class="phase-arrow-head">→</div>
+      </div>
+
+      <div class="phase-node" data-phase="technical" onclick="showPhaseCard(this)">
+        <div class="phase-node-icon">💻</div>
+        <div class="phase-node-label">TECHNICAL</div>
+        <div class="phase-node-sub">技术问题</div>
+      </div>
+
+      <div class="phase-arrow">
+        <div class="phase-arrow-line"></div>
+        <div class="phase-arrow-head">→</div>
+      </div>
+
+      <div class="phase-node" data-phase="project" onclick="showPhaseCard(this)">
+        <div class="phase-node-icon">🔍</div>
+        <div class="phase-node-label">PROJECT_DEEP_DIVE</div>
+        <div class="phase-node-sub">项目深挖</div>
+      </div>
+
+      <div class="phase-arrow">
+        <div class="phase-arrow-line"></div>
+        <div class="phase-arrow-head">→</div>
+      </div>
+
+      <div class="phase-node" data-phase="reverse-qa" onclick="showPhaseCard(this)">
+        <div class="phase-node-icon">❓</div>
+        <div class="phase-node-label">REVERSE_QA</div>
+        <div class="phase-node-sub">反问环节</div>
+      </div>
+    </div>
+
+    <!-- HARD_MAX fuse badge -->
+    <div class="fuse-badge">
+      <div class="fuse-icon">🔒</div>
+      <div class="fuse-text">
+        <strong>保险丝：</strong>每个阶段最多问 <code class="inline-code">HARD_MAX_PER_PHASE = 10</code> 题，
+        防止在某个阶段无限循环。达到上限后，<span class="term" data-definition="图（Graph）是 LangGraph 的核心概念：由「节点（Node）」和「边（Edge）」组成的有向图。节点=任务，边=转换规则。">图</span>强制切换到下一阶段。
+      </div>
+    </div>
+
+    <!-- Phase detail cards (hidden by default, shown on click) -->
+    <div class="phase-cards-grid" id="phase-cards-grid">
+      <div class="phase-detail-card" id="card-greeting" style="display:none">
+        <div class="phase-detail-header" style="border-left-color: var(--color-actor-1)">
+          <span class="phase-detail-icon">👋</span>
+          <h4>GREETING · 开场寒暄</h4>
+        </div>
+        <p>AI 与候选人打招呼，建立友好氛围。确认候选人状态，然后自然过渡到自我介绍。</p>
+      </div>
+      <div class="phase-detail-card" id="card-self-intro" style="display:none">
+        <div class="phase-detail-header" style="border-left-color: var(--color-actor-2)">
+          <span class="phase-detail-icon">🎤</span>
+          <h4>SELF_INTRO · 自我介绍</h4>
+        </div>
+        <p>让候选人自由介绍背景、工作经验、核心技能。AI 根据自我介绍决定后续技术问题的切入角度。</p>
+      </div>
+      <div class="phase-detail-card" id="card-technical" style="display:none">
+        <div class="phase-detail-header" style="border-left-color: var(--color-actor-3)">
+          <span class="phase-detail-icon">💻</span>
+          <h4>TECHNICAL · 技术问题</h4>
+        </div>
+        <p>系统性地考察算法、系统设计、编程语言等核心技术能力。题目从基础到深入。</p>
+      </div>
+      <div class="phase-detail-card" id="card-project" style="display:none">
+        <div class="phase-detail-header" style="border-left-color: var(--color-actor-4)">
+          <span class="phase-detail-icon">🔍</span>
+          <h4>PROJECT_DEEP_DIVE · 项目深挖</h4>
+        </div>
+        <p>基于候选人简历中的项目经历，深挖技术细节：架构决策、难点攻克、团队协作等。</p>
+      </div>
+      <div class="phase-detail-card" id="card-reverse-qa" style="display:none">
+        <div class="phase-detail-header" style="border-left-color: var(--color-actor-5)">
+          <span class="phase-detail-icon">❓</span>
+          <h4>REVERSE_QA · 反问环节</h4>
+        </div>
+        <p>候选人向 AI 提问，了解团队、技术栈、发展空间等。AI 负责如实回答。</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ─── SCREEN 4-2 ─────────────────────────────────────────────
+     5个阶段分别做什么（阶段卡片）
+     ─────────────────────────────────────────────────────────── -->
+<div class="screen" id="m4-screen-2">
+
+  <div class="screen-label">模块 4 · 屏幕 2 / 5</div>
+
+  <div class="section-intro animate-in">
+    <h2 class="section-title">每个阶段的具体任务</h2>
+    <p class="section-subtitle">
+      LangGraph 的状态机把面试拆成 5 个<span class="term" data-definition="节点（Node）是图中的一个工作单元。每个节点负责一个具体的任务，比如「问一个问题」或「评估回答」。">节点</span>，
+      每个节点只做一件事，然后通过<span class="term" data-definition="边（Edge）是节点之间的连接规则，决定了「当前节点完成后，下一步去哪里」。就像地图上的道路，规定从哪里可以到哪里。">边</span>决定下一步去哪。
+    </p>
+  </div>
+
+  <div class="phase-detail-cards stagger-children">
+
+    <div class="phase-full-card animate-in" style="--stagger-index:0">
+      <div class="phase-full-card-header">
+        <div class="phase-badge" style="background:var(--color-actor-1)">1</div>
+        <div>
+          <h3 class="phase-full-title">GREETING · 开场寒暄</h3>
+          <p class="phase-full-tagline">"你好，欢迎参加面试，今天准备得怎么样？"</p>
+        </div>
+      </div>
+      <div class="phase-full-body">
+        <div class="phase-full-icon">👋</div>
+        <p>AI 问候候选人，确认设备正常、候选人状态放松。目的是消除紧张感，建立自然的对话氛围。这个阶段通常只需要 1–2 条消息即进入下一阶段。</p>
+      </div>
+    </div>
+
+    <div class="phase-full-card animate-in" style="--stagger-index:1">
+      <div class="phase-full-card-header">
+        <div class="phase-badge" style="background:var(--color-actor-2)">2</div>
+        <div>
+          <h3 class="phase-full-title">SELF_INTRO · 自我介绍</h3>
+          <p class="phase-full-tagline">"请简单介绍一下你自己，以及你最近的项目经历。"</p>
+        </div>
+      </div>
+      <div class="phase-full-body">
+        <div class="phase-full-icon">🎤</div>
+        <p>候选人介绍自己的工作背景和技能方向。AI 从中提取关键词，用于后续技术问题的个性化调整。如果候选人回答太简短，AI 会追问一句补充说明。</p>
+      </div>
+    </div>
+
+    <div class="phase-full-card animate-in" style="--stagger-index:2">
+      <div class="phase-full-card-header">
+        <div class="phase-badge" style="background:var(--color-actor-3)">3</div>
+        <div>
+          <h3 class="phase-full-title">TECHNICAL · 技术问题</h3>
+          <p class="phase-full-tagline">"聊聊你对分布式系统的理解，以及你用过的相关技术。"</p>
+        </div>
+      </div>
+      <div class="phase-full-body">
+        <div class="phase-full-icon">💻</div>
+        <p>核心能力考察阶段。AI 从编程语言、算法、系统设计等角度出题，并根据回答深入追问。<strong>关键机制：</strong>每题回答后 AI 会评估回答质量，决定继续追问还是换话题。当该阶段问题数达到 <code class="inline-code">HARD_MAX_PER_PHASE = 10</code> 时，无论是否充分，都强制切换到下一阶段。</p>
+      </div>
+    </div>
+
+    <div class="phase-full-card animate-in" style="--stagger-index:3">
+      <div class="phase-full-card-header">
+        <div class="phase-badge" style="background:var(--color-actor-4)">4</div>
+        <div>
+          <h3 class="phase-full-title">PROJECT_DEEP_DIVE · 项目深挖</h3>
+          <p class="phase-full-tagline">"你简历里提到这个项目，请具体说说用了什么架构？"</p>
+        </div>
+      </div>
+      <div class="phase-full-body">
+        <div class="phase-full-icon">🔍</div>
+        <p>基于简历上下文，深挖项目细节：技术选型原因、最大的技术挑战、如何解决冲突、团队协作方式等。这个阶段会追问多轮，直到问题深度足够或达到 HARD_MAX。</p>
+      </div>
+    </div>
+
+    <div class="phase-full-card animate-in" style="--stagger-index:4">
+      <div class="phase-full-card-header">
+        <div class="phase-badge" style="background:var(--color-actor-5)">5</div>
+        <div>
+          <h3 class="phase-full-title">REVERSE_QA · 反问环节</h3>
+          <p class="phase-full-tagline">"你有什么问题想问我们吗？"</p>
+        </div>
+      </div>
+      <div class="phase-full-body">
+        <div class="phase-full-icon">❓</div>
+        <p>候选人向 AI 提问。AI 切换为"回答者"角色，诚实回复关于团队、技术栈、晋升通道等问题。候选人没有更多问题或达到 HARD_MAX 时，<code class="inline-code">is_finished = True</code>，状态机退出。</p>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ─── SCREEN 4-3 ─────────────────────────────────────────────
+     Code ↔ English — PHASE_ORDER + ResumeInterviewState
+     ─────────────────────────────────────────────────────────── -->
+<div class="screen" id="m4-screen-3">
+
+  <div class="screen-label">模块 4 · 屏幕 3 / 5</div>
+
+  <div class="section-intro animate-in">
+    <h2 class="section-title">代码直译：阶段顺序与状态定义</h2>
+    <p class="section-subtitle">
+      下面两段代码是 LangGraph 面试<span class="term" data-definition="图（Graph）是 LangGraph 的核心概念：由「节点（Node）」和「边（Edge）」组成的有向图。节点=任务，边=转换规则。">图</span>的骨架。
+      左侧是真实代码，右侧是逐行英文翻译。
+    </p>
+  </div>
+
+  <!-- Translation Block 1: PHASE_ORDER -->
+  <div class="translation-block animate-in">
+    <div class="translation-code">
+      <span class="translation-label">CODE</span>
+      <pre><code><span class="code-line"><span class="code-comment"># 阶段执行顺序 — 按这个列表一个接一个跑</span></span>
+<span class="code-line"><span class="code-keyword">PHASE_ORDER</span> = [</span>
+<span class="code-line">    <span class="code-property">InterviewPhase.GREETING</span>.<span class="code-function">value</span>,          <span class="code-comment"># 开场寒暄</span></span>
+<span class="code-line">    <span class="code-property">InterviewPhase.SELF_INTRO</span>.<span class="code-function">value</span>,       <span class="code-comment"># 自我介绍</span></span>
+<span class="code-line">    <span class="code-property">InterviewPhase.TECHNICAL</span>.<span class="code-function">value</span>,         <span class="code-comment"># 技术问题</span></span>
+<span class="code-line">    <span class="code-property">InterviewPhase.PROJECT_DEEP_DIVE</span>.<span class="code-function">value</span>, <span class="code-comment"># 项目深挖</span></span>
+<span class="code-line">    <span class="code-property">InterviewPhase.REVERSE_QA</span>.<span class="code-function">value</span>,        <span class="code-comment"># 反问环节</span></span>
+<span class="code-line">]</span>
+<span class="code-line"><span class="code-keyword">HARD_MAX_PER_PHASE</span> = <span class="code-number">10</span>  <span class="code-comment"># 每阶段最多10题，防止无限循环</span></span></code></pre>
+    </div>
+    <div class="translation-english">
+      <span class="translation-label">PLAIN ENGLISH</span>
+      <div class="translation-lines">
+        <p class="tl">A comment telling developers this list controls the execution order — one phase runs after another.</p>
+        <p class="tl">Define a constant named PHASE_ORDER and assign it a list of values.</p>
+        <p class="tl">Get the string value ("greeting") from the GREETING option in the InterviewPhase enum, and put it first in the list.</p>
+        <p class="tl">Get the string value ("self_intro") from the SELF_INTRO option and put it second.</p>
+        <p class="tl">Get the string value ("technical") and put it third.</p>
+        <p class="tl">Get the string value ("project_deep_dive") and put it fourth.</p>
+        <p class="tl">Get the string value ("reverse_qa") and put it last — the reverse-questioning phase.</p>
+        <p class="tl">End of the list.</p>
+        <p class="tl">Set HARD_MAX_PER_PHASE to 10 — a safety limit so the AI never asks more than 10 questions in any single phase. Prevents infinite loops.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Translation Block 2: ResumeInterviewState -->
+  <div class="translation-block animate-in">
+    <div class="translation-code">
+      <span class="translation-label">CODE</span>
+      <pre><code><span class="code-line"><span class="code-keyword">class</span> <span class="code-class">ResumeInterviewState</span>(<span class="code-class">TypedDict</span>):</span>
+<span class="code-line">    <span class="code-property">messages</span>: <span class="code-type">list[BaseMessage]</span>      <span class="code-comment"># 对话历史</span></span>
+<span class="code-line">    <span class="code-property">resume_context</span>: <span class="code-type">str</span>             <span class="code-comment"># 简历上下文</span></span>
+<span class="code-line">    <span class="code-property">phase</span>: <span class="code-type">str</span>                  <span class="code-comment"># 当前阶段</span></span>
+<span class="code-line">    <span class="code-property">questions_asked</span>: <span class="code-type">list[str]</span>   <span class="code-comment"># 已问问题</span></span>
+<span class="code-line">    <span class="code-property">phase_question_count</span>: <span class="code-type">int</span> <span class="code-comment"># 当前阶段已问题数</span></span>
+<span class="code-line">    <span class="code-property">is_finished</span>: <span class="code-type">bool</span>           <span class="code-comment"># 是否结束</span></span>
+<span class="code-line">    <span class="code-property">eval_history</span>: <span class="code-type">list[dict]</span>     <span class="code-comment"># 每题评估历史</span></span></code></pre>
+    </div>
+    <div class="translation-english">
+      <span class="translation-label">PLAIN ENGLISH</span>
+      <div class="translation-lines">
+        <p class="tl">Define a class named ResumeInterviewState that inherits from TypedDict — this is a typed dictionary where each field has a known type. Think of it as a structured form that the state machine fills in.</p>
+        <p class="tl">A field called "messages" holds a list of BaseMessage objects — every back-and-forth in the conversation gets recorded here so the AI remembers what was said.</p>
+        <p class="tl">A field called "resume_context" holds the candidate's resume as a plain text string — the AI reads this to know what projects and skills to ask about.</p>
+        <p class="tl">A field called "phase" holds a string like "greeting" or "technical" — this tells the state machine which phase we are currently in.</p>
+        <p class="tl">A field called "questions_asked" holds a list of strings — every question the AI has already asked, so it doesn't ask the exact same thing twice.</p>
+        <p class="tl">A field called "phase_question_count" holds an integer — counts how many questions have been asked in the current phase. Used to check if HARD_MAX has been reached.</p>
+        <p class="tl">A field called "is_finished" holds a True/False value — when this becomes True, the state machine knows to exit and end the interview.</p>
+        <p class="tl">A field called "eval_history" holds a list of dictionaries — after each question, the AI records its evaluation of the answer here, like a grading log.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Callout -->
+  <div class="callout callout-accent animate-in">
+    <div class="callout-icon">💡</div>
+    <div class="callout-content">
+      <strong class="callout-title">关键洞察</strong>
+      <p>所有 6 个字段加在一起，就是 LangGraph 的<span class="term" data-definition="状态（State）是整个系统在某个时刻的快照——所有变量的当前值。在面试场景中，State 包含当前处于哪个阶段、问了几个问题、对话历史等信息。">状态</span>。
+      每当 AI 问一个问题，状态就更新一次：<code class="inline-code">phase_question_count + 1</code>，
+      直到 <code class="inline-code">phase_question_count == HARD_MAX</code> 时，触发阶段切换。
+      这就是"状态机"的工作方式——<strong>状态驱动行为</strong>。</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ─── SCREEN 4-4 ─────────────────────────────────────────────
+     Group Chat Animation — 5阶段交接棒
+     ─────────────────────────────────────────────────────────── -->
+<div class="screen" id="m4-screen-4">
+
+  <div class="screen-label">模块 4 · 屏幕 4 / 5</div>
+
+  <div class="section-intro animate-in">
+    <h2 class="section-title">实战演示：5 阶段交接棒</h2>
+    <p class="section-subtitle">
+      点击<span style="color:var(--color-accent)">Next Message</span>，看 AI 面试官如何在 5 个阶段之间传递"交接棒"。
+      注意每次阶段切换时，<code class="inline-code">phase</code> 字段如何变化。
+    </p>
+  </div>
+
+  <div class="chat-window" id="chat-module4">
+
+    <div class="chat-messages">
+
+      <!-- Message 0: GREETING from AI -->
+      <div class="chat-message" data-msg="0" data-sender="ai" style="display:none">
+        <div class="chat-avatar" style="background: var(--color-actor-1)">🤖</div>
+        <div class="chat-bubble">
+          <span class="chat-sender" style="color: var(--color-actor-1)">AI 面试官</span>
+          <p>你好，欢迎参加技术面试！今天准备得怎么样？设备都正常吗？</p>
+          <div class="chat-meta">phase: <strong>"greeting"</strong> &rarr; 等待候选人回应</div>
+        </div>
+      </div>
+
+      <!-- Message 1: Candidate responds in GREETING -->
+      <div class="chat-message" data-msg="1" data-sender="candidate" style="display:none">
+        <div class="chat-avatar" style="background: var(--color-actor-5)">👤</div>
+        <div class="chat-bubble">
+          <span class="chat-sender" style="color: var(--color-actor-5)">候选人</span>
+          <p>你好！我准备好了，设备都没问题，请开始吧。</p>
+          <div class="chat-meta">状态更新: phase_question_count = 0 → AI 判定可以进入下一阶段</div>
+        </div>
+      </div>
+
+      <!-- Message 2: SELF_INTRO question -->
+      <div class="chat-message" data-msg="2" data-sender="ai" style="display:none">
+        <div class="chat-avatar" style="background: var(--color-actor-2)">🤖</div>
+        <div class="chat-bubble">
+          <span class="chat-sender" style="color: var(--color-actor-2)">AI 面试官</span>
+          <p>好的，请简单介绍一下你自己，以及你最近做的一个项目。</p>
+          <div class="chat-meta">phase: <strong>"greeting"</strong> → <strong>"self_intro"</strong> 🔄 交接棒！</div>
+        </div>
+      </div>
+
+      <!-- Message 3: Candidate self intro (short) -->
+      <div class="chat-message" data-msg="3" data-sender="candidate" style="display:none">
+        <div class="chat-avatar" style="background: var(--color-actor-5)">👤</div>
+        <div class="chat-bubble">
+          <span class="chat-sender" style="color: var(--color-actor-5)">候选人</span>
+          <p>我叫张三，做过后端开发，用过 Python 和 Go。</p>
+          <div class="chat-meta">phase_question_count = 1 | AI 判断：回答太简短，追问补充</div>
+        </div>
+      </div>
+
+      <!-- Message 4: AI asks follow-up in SELF_INTRO -->
+      <div class="chat-message" data-msg="4" data-sender="ai" style="display:none">
+        <div class="chat-avatar" style="background: var(--color-actor-2)">🤖</div>
+        <div class="chat-bubble">
+          <span class="chat-sender" style="color: var(--color-actor-2)">AI 面试官</span>
+          <p>了解，能具体说说用 Go 做过什么项目吗？遇到过什么技术挑战？</p>
+          <div class="chat-meta">phase_question_count = 2 → 充分了解，进入 TECHNICAL</div>
+        </div>
+      </div>
+
+      <!-- Message 5: Candidate talks about Go project -->
+      <div class="chat-message" data-msg="5" data-sender="candidate" style="display:none">
+        <div class="chat-avatar" style="background: var(--color-actor-5)">👤</div>
+        <div class="chat-bubble">
+          <span class="chat-sender" style="color: var(--color-actor-5)">候选人</span>
+          <p>做过一个微服务网关，用 Go 写的，主要处理鉴权和限流。</p>
+          <div class="chat-meta">phase: <strong>"self_intro"</strong> → <strong>"technical"</strong> 🔄 交接棒！</div>
+        </div>
+      </div>
+
+      <!-- Message 6: TECHNICAL question -->
+      <div class="chat-message" data-msg="6" data-sender="ai" style="display:none">
+        <div class="chat-avatar" style="background: var(--color-actor-3)">🤖</div>
+        <div class="chat-bubble">
+          <span class="chat-sender" style="color: var(--color-actor-3)">AI 面试官</span>
+          <p>好问题！聊聊你对分布式系统的理解，以及如何在 Go 中实现一个高效的限流器？</p>
+          <div class="chat-meta">phase: <strong>"technical"</strong> | 问题深入追问模式开启</div>
+        </div>
+      </div>
+
+      <!-- Message 7: Candidate answers -->
+      <div class="chat-message" data-msg="7" data-sender="candidate" style="display:none">
+        <div class="chat-avatar" style="background: var(--color-actor-5)">👤</div>
+        <div class="chat-bubble">
+          <span class="chat-sender" style="color: var(--color-actor-5)">候选人</span>
+          <p>我用过令牌桶算法，Go 里可以用 channel 实现……（继续深入回答）</p>
+          <div class="chat-meta">phase_question_count 持续增加中……</div>
+        </div>
+      </div>
+
+      <!-- Message 8: HARD_MAX triggered -->
+      <div class="chat-message" data-msg="8" data-sender="ai" style="display:none">
+        <div class="chat-avatar" style="background: var(--color-actor-3)">🤖</div>
+        <div class="chat-bubble">
+          <span class="chat-sender" style="color: var(--color-actor-3)">AI 面试官</span>
+          <p>你的思路很清晰，问得很好。我们换个方向——你的简历里提到做过微服务网关，请具体说说用的什么架构？</p>
+          <div class="chat-meta">⚠️ phase_question_count = 10 → HARD_MAX 触发！强制切到 PROJECT_DEEP_DIVE</div>
+        </div>
+      </div>
+
+      <!-- Message 9: PROJECT_DEEP_DIVE -->
+      <div class="chat-message" data-msg="9" data-sender="ai" style="display:none">
+        <div class="chat-avatar" style="background: var(--color-actor-4)">🤖</div>
+        <div class="chat-bubble">
+          <span class="chat-sender" style="color: var(--color-actor-4)">AI 面试官</span>
+          <p>你简历里提到这个微服务网关，请具体说说当时用的什么架构？团队有多少人？</p>
+          <div class="chat-meta">phase: <strong>"technical"</strong> → <strong>"project_deep_dive"</strong> 🔄 交接棒！</div>
+        </div>
+      </div>
+
+      <!-- Message 10: Candidate talks about project -->
+      <div class="chat-message" data-msg="10" data-sender="candidate" style="display:none">
+        <div class="chat-avatar" style="background: var(--color-actor-5)">👤</div>
+        <div class="chat-bubble">
+          <span class="chat-sender" style="color: var(--color-actor-5)">候选人</span>
+          <p>用的是 Go + gRPC，服务发现用 Consul，团队 5 个人……</p>
+          <div class="chat-meta">AI 继续追问技术细节中</div>
+        </div>
+      </div>
+
+      <!-- Message 11: REVERSE_QA -->
+      <div class="chat-message" data-msg="11" data-sender="ai" style="display:none">
+        <div class="chat-avatar" style="background: var(--color-actor-5)">🤖</div>
+        <div class="chat-bubble">
+          <span class="chat-sender" style="color: var(--color-actor-5)">AI 面试官</span>
+          <p>好的，非常感谢你的回答！最后，你有什么问题想问我们吗？</p>
+          <div class="chat-meta">phase: <strong>"project_deep_dive"</strong> → <strong>"reverse_qa"</strong> 🔄 交接棒！</div>
+        </div>
+      </div>
+
+      <!-- Message 12: Interview ends -->
+      <div class="chat-message" data-msg="12" data-sender="ai" style="display:none">
+        <div class="chat-avatar" style="background: var(--color-actor-5)">🤖</div>
+        <div class="chat-bubble">
+          <span class="chat-sender" style="color: var(--color-actor-5)">AI 面试官</span>
+          <p>好的，感谢你的提问！面试到此结束，<strong>is_finished = True</strong>，状态机退出 🎉</p>
+          <div class="chat-meta">✅ is_finished = True → 状态机结束面试，输出评估报告</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Typing indicator -->
+    <div class="chat-typing" id="chat-module4-typing" style="display:none">
+      <div class="chat-avatar" id="chat-module4-typing-avatar">?</div>
+      <div class="chat-typing-dots">
+        <span class="typing-dot"></span>
+        <span class="typing-dot"></span>
+        <span class="typing-dot"></span>
+      </div>
+    </div>
+
+    <div class="chat-controls">
+      <button class="btn chat-next-btn">Next Message</button>
+      <button class="btn chat-all-btn">Play All</button>
+      <button class="btn chat-reset-btn">Replay</button>
+      <span class="chat-progress"></span>
+    </div>
+  </div>
+
+  <!-- State snapshot after animation -->
+  <div class="state-snapshot animate-in" id="state-snapshot">
+    <h4 class="state-snapshot-title">面试结束时的完整状态快照</h4>
+    <div class="state-snapshot-grid">
+      <div class="state-item">
+        <span class="state-key">phase</span>
+        <span class="state-value" style="color: var(--color-actor-5)">"reverse_qa"</span>
+      </div>
+      <div class="state-item">
+        <span class="state-key">is_finished</span>
+        <span class="state-value" style="color: var(--color-success)">True ✅</span>
+      </div>
+      <div class="state-item">
+        <span class="state-key">questions_asked</span>
+        <span class="state-value">13 条问题记录</span>
+      </div>
+      <div class="state-item">
+        <span class="state-key">eval_history</span>
+        <span class="state-value">13 条评估记录</span>
+      </div>
+    </div>
+    <p class="state-snapshot-note">这个快照会被传递给下一个<span class="term" data-definition="节点（Node）是图中的一个工作单元，负责执行具体任务。在面试图里，每个阶段有一个专门的节点负责产生问题。">节点</span>或用于生成最终评估报告。</p>
+  </div>
+
+</div>
+
+<!-- ─── SCREEN 4-5 ─────────────────────────────────────────────
+     Quiz（3题）
+     ─────────────────────────────────────────────────────────── -->
+<div class="screen" id="m4-screen-5">
+
+  <div class="screen-label">模块 4 · 屏幕 5 / 5</div>
+
+  <div class="section-intro animate-in">
+    <h2 class="section-title">小测验</h2>
+    <p class="section-subtitle">用今天学到的知识，分析这几个场景。</p>
+  </div>
+
+  <div class="quiz-container" id="quiz-module4">
+
+    <!-- Question 1 -->
+    <div class="quiz-question-block"
+         data-correct="option-b"
+         data-explanation-right="完全正确！HARD_MAX_PER_PHASE = 10 是一个安全阀。如果 AI 在 TECHNICAL 阶段一直问项目问题，说明系统可能在项目深挖阶段就已经达到了 HARD_MAX 上限，触发了强制切换，但 TECHNICAL 阶段本身的问题还没问完，导致跨越了阶段边界。"
+         data-explanation-wrong="不完全对。HARD_MAX_PER_PHASE = 10 是每阶段的问题上限，用来防止无限循环。如果 AI 在 TECHNICAL 阶段问的是项目问题，可能是因为项目阶段的问题已经用完了 HARD_MAX 配额，强制切换到了 TECHNICAL，但候选人的项目经历还没充分展现，所以继续追问。">
+      <h3 class="quiz-question">题目 1：如果 AI 在 TECHNICAL 阶段一直问项目问题，可能是什么原因？</h3>
+      <div class="quiz-options">
+        <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>AI 自己判断需要深挖项目，所以一直在问</span>
+        </button>
+        <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>HARD_MAX 触发导致上一阶段（项目深挖）被跳过，直接在 TECHNICAL 里补问</span>
+        </button>
+        <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>候选人回答太短，AI 无法识别当前阶段</span>
+        </button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <!-- Question 2 -->
+    <div class="quiz-question-block"
+         data-correct="option-a"
+         data-explanation-right="对！当 phase_question_count 还很少时，AI 会认为信息不足，自然地追问一句补充说明。SELF_INTRO 阶段的问题数较少（通常 2–3 题），AI 会主动引导候选人展开。短的回复不直接触发阶段切换，而是触发同阶段的追问。"
+         data-explanation-wrong="不完全准确。阶段切换不是由回答长度直接触发的，而是由 AI 对信息的评估结果决定的。回答太简短会让 AI 在同阶段追加追问（phase_question_count 继续增加），而不是立即跳到下一阶段。">
+      <h3 class="quiz-question">题目 2：用户在 SELF_INTRO 阶段回答得太简短，系统会怎么做？</h3>
+      <div class="quiz-options">
+        <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>AI 在同一阶段（SELF_INTRO）追加追问，而不是直接切换阶段</span>
+        </button>
+        <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>立即切换到 TECHNICAL 阶段，加快面试节奏</span>
+        </button>
+        <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>标记 is_finished = True，结束面试</span>
+        </button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <!-- Question 3 -->
+    <div class="quiz-question-block"
+         data-correct="option-c"
+         data-explanation-right="正是！当 is_finished = True 时，状态机的「退出路径」被激活。LangGraph 会停止调度新的节点执行，转而输出最终的评估报告——汇总所有 eval_history，给出录用建议。"
+         data-explanation-wrong="不太对。is_finished = True 不是简单地"打印结果"，而是激活状态机的退出逻辑。系统会汇总整个 eval_history，生成最终评估报告，决定是否推荐录用。这是 LangGraph checkpoint 保存最终状态后的正常退出行为。">
+      <h3 class="quiz-question">题目 3：面试结束后 is_finished = True 时，系统会做什么？</h3>
+      <div class="quiz-options">
+        <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>开始新一轮面试，重新从 GREETING 开始</span>
+        </button>
+        <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>给候选人发送面试结果邮件</span>
+        </button>
+        <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>触发状态机退出路径，汇总 eval_history 生成最终评估报告</span>
+        </button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <div class="quiz-actions">
+      <button class="quiz-check-btn" onclick="checkQuiz('quiz-module4')">提交答案</button>
+      <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module4')">重新作答</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     JAVASCRIPT — Phase node interaction only (chat/quiz handled by main.js)
+     ═══════════════════════════════════════════════════════════════ -->
+<script>
+  function showPhaseCard(node) {
+    // Remove active from all nodes
+    document.querySelectorAll('.phase-node').forEach(function(n) {
+      n.classList.remove('active');
+    });
+    // Activate clicked node
+    node.classList.add('active');
+
+    // Show corresponding detail card
+    var phase = node.dataset.phase;
+    document.querySelectorAll('.phase-detail-card').forEach(function(card) {
+      card.style.display = 'none';
+    });
+    var targetCard = document.getElementById('card-' + phase);
+    if (targetCard) {
+      targetCard.style.display = 'block';
+    }
+  }
+</script>
+
+</section>
+<section class="module" id="module-5" lang="zh-CN">
+
+<!-- ============================================================
+     SCREEN 5-1 — Hook + 三列实时交互图（Hero Visual）
+     ============================================================ -->
+<div class="screen" id="m5-screen1">
+
+  <!-- Hook Banner -->
+  <div class="hook-banner">
+    <div class="hook-badge">模块 5</div>
+    <h1 class="hook-title">实时 Copilot — 面试现场的 AI 副驾驶</h1>
+    <p class="hook-subtitle">你正在真实面试，HR 抛出一个问题——Copilot 同时在转写、预测追问方向、给你回答建议。<br>这些工作同时发生，你感觉不到延迟。</p>
+  </div>
+
+  <!-- Hero Visual: 三列实时交互图 -->
+  <div class="hero-copilot-flow">
+
+    <!-- 列1：HR 说话 -->
+    <div class="flow-col flow-col-hr" id="flow-col-hr">
+      <div class="flow-col-header">
+        <span class="flow-col-icon">🎙️</span>
+        <span class="flow-col-title">HR 说话</span>
+        <span class="flow-col-tag">实时输入</span>
+      </div>
+      <div class="flow-col-body">
+        <div class="hr-input-card" id="hr-input-card">
+          <div class="hr-input-avatar">👤</div>
+          <div class="hr-input-text">
+            <div class="hr-name">HR 提问</div>
+            <div class="hr-text-line" id="hr-text-line">"你们系统怎么保证高可用？"</div>
+          </div>
+        </div>
+        <!-- 输入光标动画 -->
+        <div class="typing-cursor" id="typing-cursor">|</div>
+      </div>
+    </div>
+
+    <!-- 箭头连接 -->
+    <div class="flow-arrow-col" aria-hidden="true">
+      <div class="flow-arrow-line"></div>
+      <div class="flow-arrow-head">▶</div>
+    </div>
+
+    <!-- 列2：Copilot 实时分析 -->
+    <div class="flow-col flow-col-copilot" id="flow-col-copilot">
+      <div class="flow-col-header">
+        <span class="flow-col-icon">🤖</span>
+        <span class="flow-col-title">Copilot 分析</span>
+        <span class="flow-col-tag flow-col-tag-ai">流式输出</span>
+      </div>
+      <div class="flow-col-body">
+        <!-- 转写模块 -->
+        <div class="copilot-module" id="copilot-transcribe">
+          <div class="copilot-module-label">📝 转写</div>
+          <div class="copilot-module-output" id="transcribe-output">"你们系统怎么保证高可用？"</div>
+        </div>
+        <!-- 方向预测模块 -->
+        <div class="copilot-module" id="copilot-predict">
+          <div class="copilot-module-label">🔮 方向预测</div>
+          <div class="copilot-module-output" id="predict-output">高可用 → CAP定理 → 具体方案...</div>
+        </div>
+        <!-- 建议模块 -->
+        <div class="copilot-module copilot-module-advice" id="copilot-advice">
+          <div class="copilot-module-label">💡 回答建议</div>
+          <div class="copilot-module-output" id="advice-output">请先定义高可用的具体指标，如 99.99%</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 箭头连接 -->
+    <div class="flow-arrow-col" aria-hidden="true">
+      <div class="flow-arrow-line"></div>
+      <div class="flow-arrow-head">▶</div>
+    </div>
+
+    <!-- 列3：用户看到建议 -->
+    <div class="flow-col flow-col-user" id="flow-col-user">
+      <div class="flow-col-header">
+        <span class="flow-col-icon">👤</span>
+        <span class="flow-col-title">你看到</span>
+        <span class="flow-col-tag flow-col-tag-user">卡片浮现</span>
+      </div>
+      <div class="flow-col-body">
+        <div class="user-advice-card" id="user-advice-card">
+          <div class="user-advice-label">Copilot 建议</div>
+          <div class="user-advice-text">请先定义高可用的具体指标，如 99.99%</div>
+          <div class="user-advice-hint">参考这个思路组织回答 ✓</div>
+        </div>
+        <!-- 第二条建议（HR 追问后浮现） -->
+        <div class="user-advice-card user-advice-card-2" id="user-advice-card-2" style="display:none">
+          <div class="user-advice-label">新建议</div>
+          <div class="user-advice-text">请从业务场景出发，比如订单系统优先选 CP...</div>
+          <div class="user-advice-hint">追问来了，快速调整思路 ✓</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /.hero-copilot-flow -->
+
+  <!-- 核心信息 Callout -->
+  <div class="callout callout-accent">
+    <div class="callout-icon">⚡</div>
+    <div class="callout-content">
+      <strong class="callout-title">核心原理</strong>
+      <p>Copilot 不是等 HR 说完再处理，而是<span class="term" data-definition="实时流式处理：数据在产生的同时就被处理，不需要等待完整输入。就像直播字幕，说话的同时字幕就出现，而不是说完再打出来。">实时流式</span>处理——每句话都在被分析，每个回答建议都在更新。</p>
+    </div>
+  </div>
+
+  <!-- 启动动画按钮 -->
+  <div class="hero-demo-controls">
+    <button class="btn btn-primary" id="demo-play-btn" onclick="playHeroDemo()">▶ 播放演示</button>
+    <button class="btn" onclick="resetHeroDemo()">↺ 重置</button>
+  </div>
+
+</div><!-- /#m5-screen1 -->
+
+<!-- ============================================================
+     SCREEN 5-2 — 面试前预处理流程
+     ============================================================ -->
+<div class="screen" id="m5-screen2">
+
+  <div class="screen-header">
+    <div class="screen-badge">Screen 5-2</div>
+    <h2 class="screen-title">面试前预处理：Copilot 比你更早开始工作</h2>
+    <p class="screen-desc">在你走进面试间之前，Copilot 已经完成了大量准备工作。这些工作在面试前完成，才能保证面试中的实时响应。</p>
+  </div>
+
+  <!-- 预处理流程图 -->
+  <div class="preprocess-flow">
+
+    <!-- 输入节点 -->
+    <div class="preprocess-node preprocess-node-input">
+      <div class="preprocess-node-icon">📄</div>
+      <div class="preprocess-node-label">JD<br><small>（职位描述）</small></div>
+    </div>
+
+    <div class="preprocess-node preprocess-node-input">
+      <div class="preprocess-node-icon">📝</div>
+      <div class="preprocess-node-label">简历</div>
+    </div>
+
+    <div class="preprocess-node preprocess-node-input">
+      <div class="preprocess-node-icon">📊</div>
+      <div class="preprocess-node-label">历史画像<br><small>（面试记录）</small></div>
+    </div>
+
+    <!-- 箭头 -->
+    <div class="preprocess-arrow">→</div>
+    <div class="preprocess-arrow">→</div>
+
+    <!-- Copilot 处理器 -->
+    <div class="preprocess-node preprocess-node-ai">
+      <div class="preprocess-node-icon preprocess-node-icon-ai">🤖</div>
+      <div class="preprocess-node-label">Copilot<br><small>预处理引擎</small></div>
+    </div>
+
+    <!-- 箭头 -->
+    <div class="preprocess-arrow preprocess-arrow-wide">→</div>
+
+    <!-- 输出节点 -->
+    <div class="preprocess-output-group">
+      <div class="preprocess-output-card">
+        <div class="preprocess-output-icon">🌳</div>
+        <div class="preprocess-output-label">
+          <strong>提问策略树</strong>
+          <p>每类问题的标准提问路径</p>
+        </div>
+      </div>
+      <div class="preprocess-output-card">
+        <div class="preprocess-output-icon">⚠️</div>
+        <div class="preprocess-output-label">
+          <strong>高危路径</strong>
+          <p>你最可能答不好的问题区域</p>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /.preprocess-flow -->
+
+  <!-- 解释文字 -->
+  <div class="preprocess-explain">
+    <div class="icon-row">
+      <div class="icon-circle" style="background: var(--color-actor-1)">📄</div>
+      <div>
+        <strong>JD 分析</strong>
+        <p>理解岗位需要什么技能，提前准备相关概念的解释方式</p>
+      </div>
+    </div>
+    <div class="icon-row">
+      <div class="icon-circle" style="background: var(--color-actor-2)">📝</div>
+      <div>
+        <strong>简历预处理</strong>
+        <p>扫描简历中的亮点和弱点，准备可能被追问的方向</p>
+      </div>
+    </div>
+    <div class="icon-row">
+      <div class="icon-circle" style="background: var(--color-actor-3)">📊</div>
+      <div>
+        <strong>历史画像</strong>
+        <p>基于过去的面试记录，建立对候选人背景的理解</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 技术词汇 tooltip 说明 -->
+  <div class="tech-term-note">
+    <span class="term" data-definition="预处理（Preprocessing）：在实际使用之前提前完成数据整理和准备。就像考试前老师帮你划好重点，而不是考试时现找。">预处理</span>让 Copilot 能够在面试中实时响应，因为准备工作已经做完了。
+  </div>
+
+</div><!-- /#m5-screen2 -->
+
+<!-- ============================================================
+     SCREEN 5-3 — Copilot 三大能力卡片
+     ============================================================ -->
+<div class="screen" id="m5-screen3">
+
+  <div class="screen-header">
+    <div class="screen-badge">Screen 5-3</div>
+    <h2 class="screen-title">Copilot 的三大能力</h2>
+    <p class="screen-desc">面试现场，Copilot 同时运行三套并行任务，每套都在实时工作。</p>
+  </div>
+
+  <div class="pattern-cards">
+    <!-- 能力1：实时转写 -->
+    <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+      <div class="pattern-icon" style="background: var(--color-actor-1)">📝</div>
+      <h4 class="pattern-title">实时转写</h4>
+      <p class="pattern-desc">把 HR 的语音实时转成文字，同时保留每一个细节。不用等 HR 说完，你已经看到了完整的问题。</p>
+      <div class="pattern-detail">
+        <span class="term" data-definition="Transcribe（转写）：把语音或音频转换成文字。就像会议记录员，一边听一边打字。">transcribe</span> 技术驱动，支持<span class="term" data-definition="Real-time（实时）：数据和处理几乎同时发生，延迟在毫秒级。">real-time</span> 输出。
+      </div>
+    </div>
+
+    <!-- 能力2：方向预测 -->
+    <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+      <div class="pattern-icon" style="background: var(--color-actor-2)">🔮</div>
+      <h4 class="pattern-title">方向预测</h4>
+      <p class="pattern-desc">基于 JD、简历和历史画像，预测 HR 的下一个追问方向。你永远比别人快一步。</p>
+      <div class="pattern-detail">
+        基于<span class="term" data-definition="Strategy Tree（策略树）：把可能的问题路径组织成树状结构，每条分支是一个可能的追问方向。">strategy tree</span> 实时更新预测。
+      </div>
+    </div>
+
+    <!-- 能力3：回答建议 -->
+    <div class="pattern-card" style="border-top: 3px solid var(--color-actor-3)">
+      <div class="pattern-icon" style="background: var(--color-actor-3)">💡</div>
+      <h4 class="pattern-title">回答建议</h4>
+      <p class="pattern-desc">根据问题、方向预测和你的简历，实时生成回答建议。帮助你在压力下保持表达清晰。</p>
+      <div class="pattern-detail">
+        建议来自<span class="term" data-definition="Preprocessing（预处理）：提前分析 JD、简历和历史数据，建立个性化建议模型。">preprocessing</span> + 实时分析的双重驱动。
+      </div>
+    </div>
+  </div>
+
+  <!-- 并行运行示意 -->
+  <div class="parallel-run">
+    <h3 class="parallel-run-title">三者同时运行</h3>
+    <div class="parallel-tracks">
+      <div class="parallel-track">
+        <div class="parallel-bar" style="background: var(--color-actor-1)"></div>
+        <span>转写</span>
+      </div>
+      <div class="parallel-track">
+        <div class="parallel-bar" style="background: var(--color-actor-2)"></div>
+        <span>预测</span>
+      </div>
+      <div class="parallel-track">
+        <div class="parallel-bar" style="background: var(--color-actor-3)"></div>
+        <span>建议</span>
+      </div>
+    </div>
+    <p class="parallel-note">三条轨道同时跑，你感觉到的延迟几乎为零。</p>
+  </div>
+
+</div><!-- /#m5-screen3 -->
+
+<!-- ============================================================
+     SCREEN 5-4 — Group Chat Animation（三方对话）
+     ============================================================ -->
+<div class="screen" id="m5-screen4">
+
+  <div class="screen-header">
+    <div class="screen-badge">Screen 5-4</div>
+    <h2 class="screen-title">面试现场：三方同时在线</h2>
+    <p class="screen-desc">HR、Copilot 和你，三方实时互动。Copilot 在你看不到的地方高速运转。</p>
+  </div>
+
+  <!-- Group Chat 容器 -->
+  <div class="chat-window" id="chat-m5">
+
+    <div class="chat-messages">
+
+      <!-- Message 0: HR 提问 -->
+      <div class="chat-message" data-msg="0" data-sender="hr" style="display:none">
+        <div class="chat-avatar" style="background: var(--color-actor-1)">👤</div>
+        <div class="chat-bubble">
+          <span class="chat-sender" style="color: var(--color-actor-1)">HR</span>
+          <p>你们系统怎么保证高可用？</p>
+        </div>
+      </div>
+
+      <!-- Message 1: Copilot 转写 + 预测 + 建议 -->
+      <div class="chat-message chat-message-copilot" data-msg="1" data-sender="copilot" style="display:none">
+        <div class="chat-avatar" style="background: var(--color-actor-2)">🤖</div>
+        <div class="chat-bubble chat-bubble-copilot">
+          <span class="chat-sender" style="color: var(--color-actor-2)">Copilot 实时分析</span>
+          <div class="copilot-analysis-block">
+            <div class="copilot-tag copilot-tag-transcribe">📝 转写</div>
+            <div class="copilot-tag copilot-tag-predict">🔮 预测追问方向</div>
+            <div class="copilot-tag copilot-tag-advice">💡 回答建议</div>
+            <div class="copilot-analysis-content">
+              <p class="copilot-line"><strong>转写：</strong>"你们系统怎么保证高可用？"</p>
+              <p class="copilot-line"><strong>预测方向：</strong>高可用 → CAP定理 → 具体方案（负载均衡、容错）</p>
+              <p class="copilot-line copilot-line-advice"><strong>建议：</strong>请先定义高可用的具体指标，如 99.99%（四个九）</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Message 2: 用户（参考建议组织回答） -->
+      <div class="chat-message" data-msg="2" data-sender="user" style="display:none">
+        <div class="chat-avatar chat-avatar-user" style="background: var(--color-actor-3)">👤</div>
+        <div class="chat-bubble chat-bubble-user">
+          <span class="chat-sender" style="color: var(--color-actor-3)">你（参考建议回答）</span>
+          <p>高可用我们内部定义是 99.99% 的可用性，核心手段包括...（参考 Copilot 建议组织表达）</p>
+        </div>
+      </div>
+
+      <!-- Message 3: HR 追问 -->
+      <div class="chat-message" data-msg="3" data-sender="hr" style="display:none">
+        <div class="chat-avatar" style="background: var(--color-actor-1)">👤</div>
+        <div class="chat-bubble">
+          <span class="chat-sender" style="color: var(--color-actor-1)">HR 追问</span>
+          <p>那 CAP 三个你只能保两个，你选哪两个？</p>
+        </div>
+      </div>
+
+      <!-- Message 4: Copilot 新建议 -->
+      <div class="chat-message chat-message-copilot" data-msg="4" data-sender="copilot" style="display:none">
+        <div class="chat-avatar" style="background: var(--color-actor-2)">🤖</div>
+        <div class="chat-bubble chat-bubble-copilot">
+          <span class="chat-sender" style="color: var(--color-actor-2)">Copilot 新建议</span>
+          <div class="copilot-analysis-block">
+            <div class="copilot-tag copilot-tag-advice">💡 更新建议</div>
+            <div class="copilot-analysis-content">
+              <p class="copilot-line copilot-line-advice">请从业务场景出发，比如订单系统优先选 CP（一致性+分区容错），保证每笔支付不掉单。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Message 5: 用户追问回答 -->
+      <div class="chat-message" data-msg="5" data-sender="user" style="display:none">
+        <div class="chat-avatar chat-avatar-user" style="background: var(--color-actor-3)">👤</div>
+        <div class="chat-bubble chat-bubble-user">
+          <span class="chat-sender" style="color: var(--color-actor-3)">你（追问回答）</span>
+          <p>我们订单系统选 CP，保证强一致性，因为支付场景不能容忍数据不一致...</p>
+        </div>
+      </div>
+
+    </div><!-- /.chat-messages -->
+
+    <div class="chat-typing" id="chat-m5-typing" style="display:none">
+      <div class="chat-avatar" id="chat-m5-typing-avatar" style="background: var(--color-actor-2)">🤖</div>
+      <div class="chat-typing-dots">
+        <span class="typing-dot"></span>
+        <span class="typing-dot"></span>
+        <span class="typing-dot"></span>
+      </div>
+    </div>
+
+    <div class="chat-controls">
+      <button class="btn chat-next-btn">下一条</button>
+      <button class="btn chat-all-btn">自动播放</button>
+      <button class="btn chat-reset-btn">重播</button>
+      <span class="chat-progress"></span>
+    </div>
+
+  </div><!-- /#chat-m5 -->
+
+  <!-- 图例说明 -->
+  <div class="chat-legend">
+    <div class="legend-item">
+      <div class="legend-dot" style="background: var(--color-actor-1)"></div>
+      <span>HR — 提问者</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background: var(--color-actor-2)"></div>
+      <span>Copilot — AI 副驾驶（不直接影响对话显示，但实时辅助你）</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background: var(--color-actor-3)"></div>
+      <span>你 — 面试者（参考 Copilot 建议组织回答）</span>
+    </div>
+  </div>
+
+</div><!-- /#m5-screen4 -->
+
+<!-- ============================================================
+     SCREEN 5-5 — Quiz（3题）
+     ============================================================ -->
+<div class="screen" id="m5-screen5">
+
+  <div class="screen-header">
+    <div class="screen-badge">Screen 5-5</div>
+    <h2 class="screen-title">小测：你能正确使用 Copilot 吗？</h2>
+    <p class="screen-desc">三道情境题，考察你对 Copilot 工作原理的理解。</p>
+  </div>
+
+  <div class="quiz-container" id="quiz-m5">
+
+    <!-- Q1 -->
+    <div class="quiz-question-block"
+         data-correct="option-b"
+         data-explanation-right="正确！Copilot 的「澄清性问题」类建议是为了消除问题歧义，确保你在正确理解问题后再作答。这是高质量辅助的标志。"
+         data-explanation-wrong="不完全对。这类建议属于「澄清性问题」——帮助你先弄清楚问题的具体含义，再组织回答。选 B 看看详细解释。">
+      <h3 class="quiz-question">Q1：面试中，Copilot 给出建议「请先定义高可用的具体指标」，这是什么类型的建议？</h3>
+      <div class="quiz-options">
+        <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>A. 直接给出答案，让你照着念</span>
+        </button>
+        <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>B. 澄清性问题——帮你先明确问题的具体含义</span>
+        </button>
+        <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>C. 预测追问方向——为下一个问题做准备</span>
+        </button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="quiz-question-block"
+         data-correct="option-c"
+         data-explanation-right="正确！方向预测依赖 JD、简历和历史画像三份数据的综合分析——这就是预处理的价值所在。"
+         data-explanation-wrong="不完全对。方向预测不是凭空生成的，而是基于 JD（岗位需求）、简历（你的背景）和历史画像（过去的面试记录）三份数据综合分析得出的。选 C 看看详细解释。">
+      <h3 class="quiz-question">Q2：Copilot 的「方向预测」功能是基于什么生成的？</h3>
+      <div class="quiz-options">
+        <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>A. HR 当场说的内容</span>
+        </button>
+        <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>B. HR 问完之后 Copilot 临时推理</span>
+        </button>
+        <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>C. JD + 简历 + 历史画像的预处理分析</span>
+        </button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="quiz-question-block"
+         data-correct="option-b"
+         data-explanation-right="正确！Copilot 的实时能力依赖多个外部服务（语音识别、实时流、建议生成），任何一个环节出问题都会导致卡顿。这是分布式系统的典型特征。"
+         data-explanation-wrong="不完全对。Copilot 突然没响应通常不是你的问题，而是外部依赖服务（语音识别服务 / 实时流服务 / 建议生成服务）出现了延迟或中断。选 B 看看详细解释。">
+      <h3 class="quiz-question">Q3：Copilot 突然没响应了，可能哪里出了问题？</h3>
+      <div class="quiz-options">
+        <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>A. Copilot 计算量太大，你的设备性能不足</span>
+        </button>
+        <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>B. Copilot 依赖的外部服务（语音识别 / 流服务 / AI 模型）出现了延迟或中断</span>
+        </button>
+        <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>C. 你没有提前上传简历，Copilot 拒绝工作</span>
+        </button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <div class="quiz-btn-row">
+      <button class="btn btn-primary quiz-check-btn" onclick="checkQuiz('quiz-m5')">提交答案</button>
+      <button class="btn quiz-reset-btn" onclick="resetQuiz('quiz-m5')">重新作答</button>
+    </div>
+
+  </div><!-- /#quiz-m5 -->
+
+</div><!-- /#m5-screen5 -->
+
+<!-- ============================================================
+     页面初始化脚本（内联，仅驱动本模块动画）
+     ============================================================ -->
+<script>
+/* ============================================
+   Hero Demo — 三列实时交互动画
+   ============================================ */
+function playHeroDemo() {
+  var hrLine = document.getElementById('hr-text-line');
+  var cursor = document.getElementById('typing-cursor');
+  var transcribe = document.getElementById('transcribe-output');
+  var predict = document.getElementById('predict-output');
+  var advice = document.getElementById('advice-output');
+  var userCard = document.getElementById('user-advice-card');
+  var userCard2 = document.getElementById('user-advice-card-2');
+  var copilotTrans = document.getElementById('copilot-transcribe');
+  var copilotPred = document.getElementById('copilot-predict');
+  var copilotAdv = document.getElementById('copilot-advice');
+
+  // Reset
+  hrLine.textContent = '"你们系统怎么保证高可用？"';
+  transcribe.textContent = '—';
+  predict.textContent = '—';
+  advice.textContent = '—';
+  userCard.style.display = 'none';
+  userCard2.style.display = 'none';
+  copilotTrans.style.opacity = '0.4';
+  copilotPred.style.opacity = '0.4';
+  copilotAdv.style.opacity = '0.4';
+
+  // Animation sequence
+  var delay = 0;
+  function step(fn, ms) { delay += ms; setTimeout(fn, delay); }
+
+  step(function() {
+    // Show cursor
+    cursor.style.display = 'block';
+    copilotTrans.style.opacity = '1';
+    transcribe.textContent = '"你们系统怎么保证高可用？"';
+  }, 300);
+
+  step(function() {
+    copilotPred.style.opacity = '1';
+    predict.textContent = '高可用 → CAP定理 → 具体方案...';
+  }, 900);
+
+  step(function() {
+    copilotAdv.style.opacity = '1';
+    advice.textContent = '请先定义高可用的具体指标，如 99.99%';
+    userCard.style.display = 'block';
+  }, 1500);
+
+  step(function() {
+    cursor.style.display = 'none';
+    // HR 追问触发的第二条建议
+    hrLine.textContent = '"那 CAP 三个你只能保两个，你选哪两个？"';
+    predict.textContent = 'CAP → 一致性 vs 可用性 → 业务场景选择';
+    advice.textContent = '请从业务场景出发，如订单系统优先选 CP...';
+    userCard2.style.display = 'block';
+  }, 2400);
+}
+
+function resetHeroDemo() {
+  document.getElementById('hr-text-line').textContent = '"你们系统怎么保证高可用？"';
+  document.getElementById('transcribe-output').textContent = '—';
+  document.getElementById('predict-output').textContent = '—';
+  document.getElementById('advice-output').textContent = '—';
+  document.getElementById('user-advice-card').style.display = 'none';
+  document.getElementById('user-advice-card-2').style.display = 'none';
+  document.getElementById('typing-cursor').style.display = 'none';
+  document.getElementById('copilot-transcribe').style.opacity = '0.4';
+  document.getElementById('copilot-predict').style.opacity = '0.4';
+  document.getElementById('copilot-advice').style.opacity = '0.4';
+}
+
+/* ============================================
+   Quiz — Multiple Choice
+   (window.selectOption, checkQuiz, resetQuiz
+    are provided by references/main.js)
+   ============================================ */
+
+/* ============================================
+   Group Chat — Auto-init
+   (window.chatInit provided by references/main.js)
+   ============================================ */
+if (typeof chatInit === 'function') {
+  chatInit('chat-m5');
+}
+</script>
+
+</section>
+<section class="module" id="module-6" data-module="6">
+
+  <!-- ═══════════════════════════════════════════════════
+       SCREEN 6-1 — HOOK + 三层架构总图
+  ═══════════════════════════════════════════════════ -->
+  <div class="screen" id="m6-screen1">
+
+    <div class="screen-header">
+      <span class="screen-tag">模块 6</span>
+      <h2 class="screen-title">架构全景 — 所有组件如何协同</h2>
+    </div>
+
+    <!-- Hook -->
+    <div class="hook-block animate-in">
+      <div class="hook-icon">🎯</div>
+      <div class="hook-text">
+        <strong>让我们把 TechSpar 拆开看：</strong>从你点「开始训练」到收到「薄弱点分析报告」，这中间经过了哪些组件？每个组件各负责什么？
+      </div>
+    </div>
+
+    <!-- 三层架构 Hero Visual -->
+    <div class="arch-hero animate-in">
+      <h3 class="arch-hero-title">TechSpar 的三层架构</h3>
+      <p class="arch-hero-subtitle">前端轻、后端重 — 每层各司其职，层层协作</p>
+
+      <div class="arch-layers">
+
+        <!-- 第一层：前端交互层 -->
+        <div class="arch-layer arch-layer-front">
+          <div class="arch-layer-badge">第一层</div>
+          <div class="arch-layer-label">前端交互层</div>
+          <div class="arch-layer-components">
+            <div class="arch-comp" onclick="showArchDescM6(this)" data-desc="React 19 是负责用户界面的前端框架。用户看到的按钮、表单、对话气泡，全部由 React 组件拼装而成。就像餐厅的服务员——接收顾客的指令，把厨房的菜品端上桌。" data-name="React 19">
+              <div class="arch-comp-icon">⚛️</div>
+              <span>React 19</span>
+              <div class="arch-comp-role">用户界面</div>
+            </div>
+            <div class="arch-comp" onclick="showArchDescM6(this)" data-desc="Vite 是构建工具，让 React 代码快速运行；Tailwind CSS 是样式框架，负责让界面看起来美观。就像服务员的制服和托盘。" data-name="Vite + Tailwind">
+              <div class="arch-comp-icon">🎨</div>
+              <span>Vite + Tailwind</span>
+              <div class="arch-comp-role">构建与样式</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 层间连接线（带数据流向标注） -->
+        <div class="arch-connector">
+          <div class="arch-connector-line"></div>
+          <div class="arch-connector-label">
+            <span class="arch-arrow">↓</span>
+            <span class="arch-flow-label">HTTP 请求 / JSON 响应</span>
+            <span class="arch-arrow">↓</span>
+          </div>
+        </div>
+
+        <!-- 第二层：后端大脑层 -->
+        <div class="arch-layer arch-layer-back">
+          <div class="arch-layer-badge">第二层</div>
+          <div class="arch-layer-label">后端大脑层</div>
+          <div class="arch-layer-components">
+            <div class="arch-comp" onclick="showArchDescM6(this)" data-desc="FastAPI 是 Python 网络框架，负责接收前端请求、调用其他组件、返回结果。就像乐团的指挥——自己不演奏，但协调所有人。" data-name="FastAPI">
+              <div class="arch-comp-icon">⚡</div>
+              <span>FastAPI</span>
+              <div class="arch-comp-role">协调器</div>
+            </div>
+            <div class="arch-comp" onclick="showArchDescM6(this)" data-desc="LangGraph 是流程编排引擎，让 AI 对话按「状态机」的方式运转——每个状态决定下一步走哪条分支。就像乐谱，规定谁来独奏、何时合奏。" data-name="LangGraph">
+              <div class="arch-comp-icon">🧠</div>
+              <span>LangGraph</span>
+              <div class="arch-comp-role">流程引擎</div>
+            </div>
+            <div class="arch-comp" onclick="showArchDescM6(this)" data-desc="LLM（大语言模型）是 TechSpar 的「大脑」——所有面试问题生成、反馈生成、薄弱点分析都靠它。就像主厨，真正做菜的人。" data-name="LLM">
+              <div class="arch-comp-icon">🤖</div>
+              <span>LLM</span>
+              <div class="arch-comp-role">AI 大脑</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 层间连接线 -->
+        <div class="arch-connector">
+          <div class="arch-connector-line"></div>
+          <div class="arch-connector-label">
+            <span class="arch-arrow">↓</span>
+            <span class="arch-flow-label">读取 / 写入</span>
+            <span class="arch-arrow">↓</span>
+          </div>
+        </div>
+
+        <!-- 第三层：数据持久层 -->
+        <div class="arch-layer arch-layer-data">
+          <div class="arch-layer-badge">第三层</div>
+          <div class="arch-layer-label">数据持久层</div>
+          <div class="arch-layer-components">
+            <div class="arch-comp" onclick="showArchDescM6(this)" data-desc="Profile.json 是用户画像文件，记录用户的薄弱点、历史表现、SM-2 参数。就像健身教练的学员档案，每次训练前都要翻一翻。" data-name="Profile.json">
+              <div class="arch-comp-icon">📋</div>
+              <span>Profile.json</span>
+              <div class="arch-comp-role">用户画像</div>
+            </div>
+            <div class="arch-comp" onclick="showArchDescM6(this)" data-desc="SQLite 是轻量级本地数据库，存储所有结构化数据：题目、用户答案、评估记录。就像图书馆的书架，把每本书都整齐归档。" data-name="SQLite">
+              <div class="arch-comp-icon">🗄️</div>
+              <span>SQLite</span>
+              <div class="arch-comp-role">本地数据库</div>
+            </div>
+            <div class="arch-comp" onclick="showArchDescM6(this)" data-desc="JWT 是身份认证令牌，确保只有合法用户能访问自己的数据。就像健身房的手环，刷一下才能进门。" data-name="JWT">
+              <div class="arch-comp-icon">🔑</div>
+              <span>JWT</span>
+              <div class="arch-comp-role">身份认证</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 组件描述浮层 -->
+      <div class="arch-desc-panel" id="arch-desc-m6">
+        <span class="arch-desc-name" id="arch-desc-name-m6">点击任意组件</span>
+        <p class="arch-desc-text" id="arch-desc-text-m6">点击上方任意组件，查看它负责什么。</p>
+      </div>
+
+    </div><!-- /.arch-hero -->
+
+    <p class="screen-caption animate-in">
+      整个系统就像一支管弦乐团：<span class="term" data-definition="管弦乐团中负责协调所有演奏者的人，不演奏具体乐器，但决定何时让谁演奏。">指挥</span>（FastAPI）读取「乐谱」（LangGraph），每个乐器（各组件）按谱子各司其职。
+    </p>
+
+  </div><!-- /#m6-screen1 -->
+
+  <!-- ═══════════════════════════════════════════════════
+       SCREEN 6-2 — 组件总动员 Group Chat
+  ═══════════════════════════════════════════════════ -->
+  <div class="screen" id="m6-screen2">
+
+    <div class="screen-header">
+      <span class="screen-tag">模块 6</span>
+      <h2 class="screen-title">组件总动员 — 5 个角色自我陈述</h2>
+    </div>
+
+    <p class="screen-intro animate-in">每个组件都有自己的「岗位职责」。让我们听听它们各自怎么说：</p>
+
+    <div class="chat-window" id="chat-m6-components">
+
+      <div class="chat-messages" id="chat-m6-messages">
+
+        <div class="chat-message" data-msg="0" data-sender="react" style="display:none">
+          <div class="chat-avatar" style="background: var(--color-actor-1)">⚛️</div>
+          <div class="chat-bubble">
+            <span class="chat-sender" style="color: var(--color-actor-1)">React（前端）</span>
+            <p>大家好！我是用户看到的那一层——界面。我用 React 19 搭建，用 Vite 跑起来。用户点的每一个按钮、看到的每一条 AI 回复，都是我负责渲染的。</p>
+          </div>
+        </div>
+
+        <div class="chat-message" data-msg="1" data-sender="fastapi" style="display:none">
+          <div class="chat-avatar" style="background: var(--color-actor-2)">⚡</div>
+          <div class="chat-bubble">
+            <span class="chat-sender" style="color: var(--color-actor-2)">FastAPI（后端）</span>
+            <p>我是中枢神经——FastAPI！用户发请求，先到我这儿。我负责：接收请求 → 调用 LangGraph → 把 AI 回复流式推回给 React。我是指挥，不亲自「演奏」（不生成答案），但协调所有人。</p>
+          </div>
+        </div>
+
+        <div class="chat-message" data-msg="2" data-sender="langgraph" style="display:none">
+          <div class="chat-avatar" style="background: var(--color-actor-3)">🧠</div>
+          <div class="chat-bubble">
+            <span class="chat-sender" style="color: var(--color-actor-3)">LangGraph（流程引擎）</span>
+            <p>我是流程编排引擎！面试不是一段直线——有时候要追问，有时候要给提示，有时候要切换到薄弱点强化模式。我用「状态机」把这些分支管理得井井有条。每个状态转换都是我来驱动的。</p>
+          </div>
+        </div>
+
+        <div class="chat-message" data-msg="3" data-sender="profile" style="display:none">
+          <div class="chat-avatar" style="background: var(--color-actor-4)">📋</div>
+          <div class="chat-bubble">
+            <span class="chat-sender" style="color: var(--color-actor-4)">Profile.json（记忆）</span>
+            <p>我负责记住一切！用户的薄弱点、SM-2 参数、上次面试答得最差的题目……FastAPI 开始处理请求前，会先来我这查档案；结束后，会把新的评估结果写回给我。没有我，每次训练都是新人。</p>
+          </div>
+        </div>
+
+        <div class="chat-message" data-msg="4" data-sender="sm2" style="display:none">
+          <div class="chat-avatar" style="background: var(--color-actor-5)">📅</div>
+          <div class="chat-bubble">
+            <span class="chat-sender" style="color: var(--color-actor-5)">SM-2（复习调度器）</span>
+            <p>我是「遗忘规律」的执行者！根据间隔重复算法，我会计算出用户下次应该在什么时候复习哪道题。用户可能在 3 天后来，也可能 10 天后——我不会让他们在已经掌握的题目上浪费时间。</p>
+          </div>
+        </div>
+
+      </div><!-- /.chat-messages -->
+
+      <div class="chat-typing" id="chat-m6-typing" style="display:none">
+        <div class="chat-avatar" id="chat-m6-typing-avatar">?</div>
+        <div class="chat-typing-dots">
+          <span class="typing-dot"></span>
+          <span class="typing-dot"></span>
+          <span class="typing-dot"></span>
+        </div>
+      </div>
+
+      <div class="chat-controls">
+        <button class="btn chat-next-btn">下一条</button>
+        <button class="btn chat-all-btn">全部播放</button>
+        <button class="btn chat-reset-btn">重播</button>
+        <span class="chat-progress"></span>
+      </div>
+
+    </div><!-- /.chat-window -->
+
+    <div class="callout callout-accent animate-in" style="margin-top: var(--space-8)">
+      <div class="callout-icon">💡</div>
+      <div class="callout-content">
+        <strong class="callout-title">关键理解</strong>
+        <p>这五个组件互相配合，任何一个出问题都会影响整体体验。定位问题的第一步，就是判断「这是哪一层的问题」。</p>
+      </div>
+    </div>
+
+  </div><!-- /#m6-screen2 -->
+
+  <!-- ═══════════════════════════════════════════════════
+       SCREEN 6-3 — 端到端 Data Flow
+  ═══════════════════════════════════════════════════ -->
+  <div class="screen" id="m6-screen3">
+
+    <div class="screen-header">
+      <span class="screen-tag">模块 6</span>
+      <h2 class="screen-title">端到端数据流 — 从点击到报告</h2>
+    </div>
+
+    <p class="screen-intro animate-in">
+      用户点击「简历面试」后，数据在组件之间经历了一次完整旅行。跟随下面的步骤，看清全程：
+    </p>
+
+    <div class="flow-animation" id="flow-m6-e2e"
+         data-steps='[
+           {"highlight":"flow-actor-1","label":"用户点击「简历面试」按钮"},
+           {"highlight":"flow-actor-2","label":"React 发送 POST 请求到 FastAPI","packet":true,"from":"actor-1","to":"actor-2"},
+           {"highlight":"flow-actor-3","label":"FastAPI 读取 Profile.json（用户画像）","packet":true,"from":"actor-2","to":"actor-3"},
+           {"highlight":"flow-actor-3","label":"FastAPI 查询历史面试记录（SQLite）","packet":true,"from":"actor-2","to":"actor-3"},
+           {"highlight":"flow-actor-4","label":"FastAPI 启动 LangGraph 状态机","packet":true,"from":"actor-2","to":"actor-4"},
+           {"highlight":"flow-actor-4","label":"LangGraph 调用 LLM，生成面试问题","packet":true,"from":"actor-4","to":"actor-5"},
+           {"highlight":"flow-actor-5","label":"LLM 流式返回回答（streaming）","packet":true,"from":"actor-5","to":"actor-4"},
+           {"highlight":"flow-actor-2","label":"FastAPI 将 AI 回复流式推送回 React","packet":true,"from":"actor-2","to":"actor-1"},
+           {"highlight":"flow-actor-3","label":"面试结束：更新 Profile.json（薄弱点）","packet":true,"from":"actor-2","to":"actor-3"},
+           {"highlight":"flow-actor-4","label":"SM-2 调度下次复习时间","packet":true,"from":"actor-4","to":"actor-3"},
+           {"highlight":"flow-actor-1","label":"用户收到薄弱点分析报告 🎉"}
+         ]'>
+
+      <div class="flow-actors">
+        <div class="flow-actor" id="flow-actor-1">
+          <div class="flow-actor-icon">👤</div>
+          <span>用户</span>
+        </div>
+        <div class="flow-actor" id="flow-actor-2">
+          <div class="flow-actor-icon">⚡</div>
+          <span>FastAPI</span>
+        </div>
+        <div class="flow-actor" id="flow-actor-3">
+          <div class="flow-actor-icon">📋</div>
+          <span>Profile + SQLite</span>
+        </div>
+        <div class="flow-actor" id="flow-actor-4">
+          <div class="flow-actor-icon">🧠</div>
+          <span>LangGraph</span>
+        </div>
+        <div class="flow-actor" id="flow-actor-5">
+          <div class="flow-actor-icon">🤖</div>
+          <span>LLM</span>
+        </div>
+      </div>
+
+      <div class="flow-packet" id="flow-m6-e2e-packet"></div>
+
+      <div class="flow-step-label" id="flow-m6-e2e-label">点击「下一步」开始</div>
+
+      <div class="flow-controls">
+        <button class="btn flow-next-btn">下一步</button>
+        <button class="btn flow-reset-btn">重新开始</button>
+        <span class="flow-progress"></span>
+      </div>
+    </div><!-- /.flow-animation -->
+
+    <div class="step-cards animate-in" style="margin-top: var(--space-8)">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <strong>用户点击「简历面试」</strong>
+          <p>React 组件捕获点击事件，构造 HTTP POST 请求，发送到 FastAPI 后端</p>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <strong>FastAPI 读取用户档案</strong>
+          <p>从 Profile.json 查用户画像，从 SQLite 查历史面试记录，了解用户薄弱点在哪里</p>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <strong>LangGraph 状态机启动</strong>
+          <p>根据当前状态（简历面试）决定走哪条流程：生成问题 → 评估回答 → 决定下一步</p>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <strong>LLM 流式生成回复</strong>
+          <p>大语言模型逐字生成面试问题和反馈，通过 <span class="term" data-definition="一种技术，让 AI 的回答一个字一个字地出现，而不是等全部生成完再一起显示——就像打字机效果。">streaming</span> 实时推送回前端</p>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <strong>画像更新 + SM-2 调度</strong>
+          <p>面试结束后，新的薄弱点写回 Profile.json；SM-2 算法计算下次复习时间</p>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /#m6-screen3 -->
+
+  <!-- ═══════════════════════════════════════════════════
+       SCREEN 6-4 — Code ↔ English: docker-compose.yml
+  ═══════════════════════════════════════════════════ -->
+  <div class="screen" id="m6-screen4">
+
+    <div class="screen-header">
+      <span class="screen-tag">模块 6</span>
+      <h2 class="screen-title">从代码看懂架构 — docker-compose.yml</h2>
+    </div>
+
+    <p class="screen-intro animate-in">
+      这个配置文件用一行话解释就是：「有哪些服务，各自运行在哪个端口，如何通信」。
+    </p>
+
+    <div class="translation-block animate-in">
+      <div class="translation-code">
+        <span class="translation-label">CODE</span>
+        <pre><code><span class="code-comment"># docker-compose.yml — TechSpar 服务架构</span>
+<span class="code-property">Frontend</span>:
+  image: react19+vite+tailwind
+  ports: <span class="code-string">":5173"</span>
+  <span class="code-comment"># 用户看到的所有界面</span>
+
+<span class="code-property">Backend</span>:
+  image: fastapi+langchain+langgraph
+  ports: <span class="code-string">":8000"</span>
+  <span class="code-comment"># 所有业务逻辑</span>
+
+<span class="code-property">SQLite</span>:
+  image: local-persist
+  <span class="code-comment"># 本地持久化存储</span>
+
+<span class="code-property">JWT</span>:
+  auth: enabled
+  <span class="code-comment"># 身份认证</span>
+
+<span class="code-property">LLM</span>:
+  api: openai-compatible
+  <span class="code-comment"># 可接入任意大语言模型</span></code></pre>
+      </div>
+      <div class="translation-english">
+        <span class="translation-label">PLAIN ENGLISH</span>
+        <div class="translation-lines">
+          <p class="tl">这是整个 TechSpar 的服务清单配置文件——它告诉 Docker（容器平台）应该启动哪些服务。</p>
+          <p class="tl">Frontend（前端）用 React 19 + Vite + Tailwind CSS 构建，运行在电脑的 5173 端口。用户打开浏览器访问的就是这个。</p>
+          <p class="tl">Backend（后端）用 FastAPI + LangChain + LangGraph 构建，运行在 8000 端口。它接收前端的请求，调用 AI，处理数据。</p>
+          <p class="tl">SQLite 是一个轻量级本地数据库，所有结构化数据（用户答案、历史记录）都存在这里。</p>
+          <p class="tl">JWT 是身份认证机制——确保每个请求都来自合法登录用户，防止陌生人访问他人数据。</p>
+          <p class="tl">LLM（Large Language Model）是对接大语言模型的接口——只要是兼容 OpenAI 格式的 API 都能接入，比如 GPT-4、Claude、本地模型都可以。</p>
+        </div>
+      </div>
+    </div><!-- /.translation-block -->
+
+  </div><!-- /#m6-screen4 -->
+
+  <!-- ═══════════════════════════════════════════════════
+       SCREEN 6-5 — TechSpar vs 传统面试工具对比表
+  ═══════════════════════════════════════════════════ -->
+  <div class="screen" id="m6-screen5">
+
+    <div class="screen-header">
+      <span class="screen-tag">模块 6</span>
+      <h2 class="screen-title">TechSpar vs 传统面试工具</h2>
+    </div>
+
+    <p class="screen-intro animate-in">
+      同样的「面试训练」，为什么 TechSpar 能做到传统工具做不到的事？关键在于架构差异。
+    </p>
+
+    <div class="comparison-table animate-in">
+      <div class="comparison-row comparison-header">
+        <div class="comparison-cell comparison-dim">对比维度</div>
+        <div class="comparison-cell">传统面试工具</div>
+        <div class="comparison-cell comparison-highlight">TechSpar</div>
+      </div>
+      <div class="comparison-row">
+        <div class="comparison-cell comparison-dim">
+          <span class="term" data-definition="系统记住用户之前说过什么、做过什么的能力。就像老朋友记得你的名字和喜好，不需要每次都重新自我介绍。">记忆</span>
+        </div>
+        <div class="comparison-cell comparison-no">
+          <div class="comparison-icon">✗</div>
+          无 — 每次训练都是新人
+        </div>
+        <div class="comparison-cell comparison-yes comparison-highlight-cell">
+          <div class="comparison-icon">✓</div>
+          Profile.json — 记住所有历史
+        </div>
+      </div>
+      <div class="comparison-row">
+        <div class="comparison-cell comparison-dim">复习调度</div>
+        <div class="comparison-cell comparison-no">
+          <div class="comparison-icon">✗</div>
+          无 — 随机出题
+        </div>
+        <div class="comparison-cell comparison-yes comparison-highlight-cell">
+          <div class="comparison-icon">✓</div>
+          SM-2 — 科学间隔重复
+        </div>
+      </div>
+      <div class="comparison-row">
+        <div class="comparison-cell comparison-dim">
+          <span class="term" data-definition="一种编程模式，把业务流程画成一张图，图中每个节点是一个状态，节点之间连线是状态转换。就像流程图，但代码可以按图执行。">流程编排</span>
+        </div>
+        <div class="comparison-cell comparison-no">
+          <div class="comparison-icon">✗</div>
+          随机 — 题目之间无逻辑关联
+        </div>
+        <div class="comparison-cell comparison-yes comparison-highlight-cell">
+          <div class="comparison-icon">✓</div>
+          LangGraph 状态机 — 智能分支
+        </div>
+      </div>
+      <div class="comparison-row">
+        <div class="comparison-cell comparison-dim">反馈质量</div>
+        <div class="comparison-cell comparison-no">
+          <div class="comparison-icon">✗</div>
+          一次性 — 无画像更新
+        </div>
+        <div class="comparison-cell comparison-yes comparison-highlight-cell">
+          <div class="comparison-icon">✓</div>
+          画像更新 — 每次比上次更准
+        </div>
+      </div>
+      <div class="comparison-row">
+        <div class="comparison-cell comparison-dim">组件协作</div>
+        <div class="comparison-cell comparison-no">
+          <div class="comparison-icon">✗</div>
+          单体 — 一个模块包办所有
+        </div>
+        <div class="comparison-cell comparison-yes comparison-highlight-cell">
+          <div class="comparison-icon">✓</div>
+          三层分离 — 各司其职，可独立优化
+        </div>
+      </div>
+    </div><!-- /.comparison-table -->
+
+    <div class="callout callout-info animate-in" style="margin-top: var(--space-8)">
+      <div class="callout-icon">ℹ️</div>
+      <div class="callout-content">
+        <strong class="callout-title">为什么分离很重要</strong>
+        <p>三层架构的每个组件都可以独立升级或替换——比如把 LLM 从 GPT-4 换成 Claude，不需要动前端和数据库。这就是「解耦」的价值。</p>
+      </div>
+    </div>
+
+  </div><!-- /#m6-screen5 -->
+
+  <!-- ═══════════════════════════════════════════════════
+       SCREEN 6-6 — 架构设计思维
+  ═══════════════════════════════════════════════════ -->
+  <div class="screen" id="m6-screen6">
+
+    <div class="screen-header">
+      <span class="screen-tag">模块 6</span>
+      <h2 class="screen-title">为什么这样分层？</h2>
+    </div>
+
+    <p class="screen-intro animate-in">
+      架构不是随意划分的，每一层都有它存在的理由。
+    </p>
+
+    <div class="pattern-cards animate-in">
+      <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+        <div class="pattern-icon" style="background: var(--color-actor-1)">⚛️</div>
+        <h4 class="pattern-title">前端为什么「轻」？</h4>
+        <p class="pattern-desc">界面需要快速响应、流畅体验，但不需要复杂的 AI 运算。把界面和智能分开，前端只负责「好看和交互」，AI 推理交给后端。</p>
+      </div>
+      <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+        <div class="pattern-icon" style="background: var(--color-actor-2)">⚡</div>
+        <h4 class="pattern-title">后端为什么「重」？</h4>
+        <p class="pattern-desc">所有 AI 逻辑、数据处理、认证都在后端。集中在一处的好处是：安全（AI key 不泄露）、可控（可以在服务器上优化性能）。</p>
+      </div>
+      <div class="pattern-card" style="border-top: 3px solid var(--color-actor-3)">
+        <div class="pattern-icon" style="background: var(--color-actor-3)">🧠</div>
+        <h4 class="pattern-title">LangGraph 的价值</h4>
+        <p class="pattern-desc">不用 LangGraph 也可以写 AI 应用，但会陷入「一堆 if-else」的混乱。状态机让流程可视化、可调试、可扩展——加新功能只需要加节点和边。</p>
+      </div>
+      <div class="pattern-card" style="border-top: 3px solid var(--color-actor-4)">
+        <div class="pattern-icon" style="background: var(--color-actor-4)">📋</div>
+        <h4 class="pattern-title">为什么是 JSON 文件？</h4>
+        <p class="pattern-desc">对于用户量不大的个人工具来说，JSON 文件够用且简单。随时可以迁移到数据库，但一开始不需要承担数据库的运维成本。</p>
+      </div>
+    </div>
+
+    <div class="callout callout-accent animate-in" style="margin-top: var(--space-8)">
+      <div class="callout-icon">💡</div>
+      <div class="callout-content">
+        <strong class="callout-title">架构思维</strong>
+        <p>判断「这个功能应该加在哪层」，是架构思维的核心。记住一个原则：<strong>交互逻辑 → 前端；业务逻辑 + AI → 后端；持久数据 → 数据库</strong>。遇到新需求，先问「这主要是改用户看到的东西，还是改数据处理的逻辑？」</p>
+      </div>
+    </div>
+
+  </div><!-- /#m6-screen6 -->
+
+  <!-- ═══════════════════════════════════════════════════
+       SCREEN 6-7 — Quiz
+  ═══════════════════════════════════════════════════ -->
+  <div class="screen" id="m6-screen7">
+
+    <div class="screen-header">
+      <span class="screen-tag">模块 6</span>
+      <h2 class="screen-title">课后测验 — 综合应用</h2>
+    </div>
+
+    <div class="quiz-container" id="quiz-m6-architecture">
+
+      <!-- 题目 1 -->
+      <div class="quiz-question-block"
+           data-correct="q1-b"
+           data-explanation-right="正确！发送邮件是后端任务——它需要在你离线时也能运行（用户关掉浏览器也要发），且需要访问用户数据，这都属于后端的职责范围。前端只负责用户当前看到的界面。"
+           data-explanation-wrong="不完全对。前端负责界面显示，不适合处理「离线也要运行」的任务——用户关掉浏览器邮件就停了。应该放在后端。">
+        <h3 class="quiz-question">题目 1：你想在面试结束后给用户发一封总结邮件，需要修改哪一层？</h3>
+        <div class="quiz-options">
+          <button class="quiz-option" data-value="q1-a" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>前端（React）</span>
+          </button>
+          <button class="quiz-option" data-value="q1-b" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>后端（FastAPI）</span>
+          </button>
+          <button class="quiz-option" data-value="q1-c" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>数据层（Profile.json）</span>
+          </button>
+        </div>
+        <div class="quiz-feedback"></div>
+      </div>
+
+      <!-- 题目 2 -->
+      <div class="quiz-question-block"
+           data-correct="q2-c"
+           data-explanation-right="正确！LLM 是生成答案的「大脑」——如果它的建议质量下降（比如回答不相关、逻辑混乱），直接原因是 AI 模型本身的问题或 Prompt 配置不对。FastAPI 只是路由，Profile.json 只是数据，二者都不会影响回答的内容质量。"
+           data-explanation-wrong="不对。FastAPI 和 Profile.json 只负责传递数据和调用 LLM，它们不会影响回答内容的质量。如果内容质量下降，问题一定出在 LLM 端——可能是模型本身、Prompt 设置或 API 参数的问题。">
+        <h3 class="quiz-question">题目 2：用户报告 Copilot 的回答建议质量下降，应该检查哪个组件？</h3>
+        <div class="quiz-options">
+          <button class="quiz-option" data-value="q2-a" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>FastAPI（后端路由）</span>
+          </button>
+          <button class="quiz-option" data-value="q2-b" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>Profile.json（用户数据）</span>
+          </button>
+          <button class="quiz-option" data-value="q2-c" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>LLM（AI 大脑）</span>
+          </button>
+        </div>
+        <div class="quiz-feedback"></div>
+      </div>
+
+      <!-- 题目 3 -->
+      <div class="quiz-question-block"
+           data-correct="q3-b"
+           data-explanation-right="正确！在 LangGraph 中加一个「HR 反问」节点，然后用条件边连接到现有节点。你不需要改前端，也不需要加数据库——只要在流程图里加一个状态和转换规则就可以了。这就是状态机架构的好处：加功能 = 加节点 + 加边。"
+           data-explanation-wrong="不需要！添加新功能（比如 HR 反问）不需要改前端（用户界面不变）和数据层（数据结构不变）。在 LangGraph 的流程图里加一个状态节点就行了——流程编排引擎的好处就是扩展灵活，不需要动其他层。">
+        <h3 class="quiz-question">题目 3：如果你要加一个「模拟 HR 反问环节」的新功能，你会怎么做？</h3>
+        <div class="quiz-options">
+          <button class="quiz-option" data-value="q3-a" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>修改 React 前端，新增一个页面</span>
+          </button>
+          <button class="quiz-option" data-value="q3-b" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>在 LangGraph 里加一个新状态节点</span>
+          </button>
+          <button class="quiz-option" data-value="q3-c" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>修改 Profile.json，新增字段</span>
+          </button>
+        </div>
+        <div class="quiz-feedback"></div>
+      </div>
+
+      <button class="quiz-check-btn" onclick="checkQuiz('quiz-m6-architecture')">检查答案</button>
+      <button class="quiz-reset-btn" onclick="resetQuiz('quiz-m6-architecture')">重新测验</button>
+    </div><!-- /.quiz-container -->
+
+    <!-- 课程总结 -->
+    <div class="module-summary animate-in" style="margin-top: var(--space-12)">
+      <div class="summary-header">
+        <div class="summary-icon">🏆</div>
+        <div>
+          <h3 class="summary-title">模块 6 完成</h3>
+          <p class="summary-subtitle">架构全景 — 所有组件如何协同</p>
+        </div>
+      </div>
+      <div class="summary-points">
+        <div class="summary-point">
+          <span class="summary-check">✓</span>
+          <span>TechSpar 采用「前端轻、后端重」三层架构</span>
+        </div>
+        <div class="summary-point">
+          <span class="summary-check">✓</span>
+          <span>五大组件各司其职：React / FastAPI / LangGraph / Profile.json / SM-2</span>
+        </div>
+        <div class="summary-point">
+          <span class="summary-check">✓</span>
+          <span>从点击到报告的完整数据流路径</span>
+        </div>
+        <div class="summary-point">
+          <span class="summary-check">✓</span>
+          <span>判断「功能加在哪层」的思考框架</span>
+        </div>
+      </div>
+      <p class="summary-next">
+        恭喜完成 TechSpar 全部模块！你现在已经理解了这款应用的核心设计逻辑。
+      </p>
+    </div>
+
+  </div><!-- /#m6-screen7 -->
+
+</section>
+
+<script>
+  /* Architecture diagram click handler for Module 6 */
+  function showArchDescM6(el) {
+    var name = el.dataset.name || '';
+    var desc = el.dataset.desc || '';
+    document.getElementById('arch-desc-name-m6').textContent = name;
+    document.getElementById('arch-desc-text-m6').textContent = desc;
+
+    /* Highlight active component */
+    document.querySelectorAll('#m6-screen1 .arch-comp').forEach(function(c) {
+      c.classList.remove('arch-comp-active');
+    });
+    el.classList.add('arch-comp-active');
+  }
+</script>
+  </main>
+
+</body>
+</html>

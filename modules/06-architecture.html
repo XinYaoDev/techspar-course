@@ -1,0 +1,645 @@
+<section class="module" id="module-6" data-module="6">
+
+  <!-- ═══════════════════════════════════════════════════
+       SCREEN 6-1 — HOOK + 三层架构总图
+  ═══════════════════════════════════════════════════ -->
+  <div class="screen" id="m6-screen1">
+
+    <div class="screen-header">
+      <span class="screen-tag">模块 6</span>
+      <h2 class="screen-title">架构全景 — 所有组件如何协同</h2>
+    </div>
+
+    <!-- Hook -->
+    <div class="hook-block animate-in">
+      <div class="hook-icon">🎯</div>
+      <div class="hook-text">
+        <strong>让我们把 TechSpar 拆开看：</strong>从你点「开始训练」到收到「薄弱点分析报告」，这中间经过了哪些组件？每个组件各负责什么？
+      </div>
+    </div>
+
+    <!-- 三层架构 Hero Visual -->
+    <div class="arch-hero animate-in">
+      <h3 class="arch-hero-title">TechSpar 的三层架构</h3>
+      <p class="arch-hero-subtitle">前端轻、后端重 — 每层各司其职，层层协作</p>
+
+      <div class="arch-layers">
+
+        <!-- 第一层：前端交互层 -->
+        <div class="arch-layer arch-layer-front">
+          <div class="arch-layer-badge">第一层</div>
+          <div class="arch-layer-label">前端交互层</div>
+          <div class="arch-layer-components">
+            <div class="arch-comp" onclick="showArchDescM6(this)" data-desc="React 19 是负责用户界面的前端框架。用户看到的按钮、表单、对话气泡，全部由 React 组件拼装而成。就像餐厅的服务员——接收顾客的指令，把厨房的菜品端上桌。" data-name="React 19">
+              <div class="arch-comp-icon">⚛️</div>
+              <span>React 19</span>
+              <div class="arch-comp-role">用户界面</div>
+            </div>
+            <div class="arch-comp" onclick="showArchDescM6(this)" data-desc="Vite 是构建工具，让 React 代码快速运行；Tailwind CSS 是样式框架，负责让界面看起来美观。就像服务员的制服和托盘。" data-name="Vite + Tailwind">
+              <div class="arch-comp-icon">🎨</div>
+              <span>Vite + Tailwind</span>
+              <div class="arch-comp-role">构建与样式</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 层间连接线（带数据流向标注） -->
+        <div class="arch-connector">
+          <div class="arch-connector-line"></div>
+          <div class="arch-connector-label">
+            <span class="arch-arrow">↓</span>
+            <span class="arch-flow-label">HTTP 请求 / JSON 响应</span>
+            <span class="arch-arrow">↓</span>
+          </div>
+        </div>
+
+        <!-- 第二层：后端大脑层 -->
+        <div class="arch-layer arch-layer-back">
+          <div class="arch-layer-badge">第二层</div>
+          <div class="arch-layer-label">后端大脑层</div>
+          <div class="arch-layer-components">
+            <div class="arch-comp" onclick="showArchDescM6(this)" data-desc="FastAPI 是 Python 网络框架，负责接收前端请求、调用其他组件、返回结果。就像乐团的指挥——自己不演奏，但协调所有人。" data-name="FastAPI">
+              <div class="arch-comp-icon">⚡</div>
+              <span>FastAPI</span>
+              <div class="arch-comp-role">协调器</div>
+            </div>
+            <div class="arch-comp" onclick="showArchDescM6(this)" data-desc="LangGraph 是流程编排引擎，让 AI 对话按「状态机」的方式运转——每个状态决定下一步走哪条分支。就像乐谱，规定谁来独奏、何时合奏。" data-name="LangGraph">
+              <div class="arch-comp-icon">🧠</div>
+              <span>LangGraph</span>
+              <div class="arch-comp-role">流程引擎</div>
+            </div>
+            <div class="arch-comp" onclick="showArchDescM6(this)" data-desc="LLM（大语言模型）是 TechSpar 的「大脑」——所有面试问题生成、反馈生成、薄弱点分析都靠它。就像主厨，真正做菜的人。" data-name="LLM">
+              <div class="arch-comp-icon">🤖</div>
+              <span>LLM</span>
+              <div class="arch-comp-role">AI 大脑</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 层间连接线 -->
+        <div class="arch-connector">
+          <div class="arch-connector-line"></div>
+          <div class="arch-connector-label">
+            <span class="arch-arrow">↓</span>
+            <span class="arch-flow-label">读取 / 写入</span>
+            <span class="arch-arrow">↓</span>
+          </div>
+        </div>
+
+        <!-- 第三层：数据持久层 -->
+        <div class="arch-layer arch-layer-data">
+          <div class="arch-layer-badge">第三层</div>
+          <div class="arch-layer-label">数据持久层</div>
+          <div class="arch-layer-components">
+            <div class="arch-comp" onclick="showArchDescM6(this)" data-desc="Profile.json 是用户画像文件，记录用户的薄弱点、历史表现、SM-2 参数。就像健身教练的学员档案，每次训练前都要翻一翻。" data-name="Profile.json">
+              <div class="arch-comp-icon">📋</div>
+              <span>Profile.json</span>
+              <div class="arch-comp-role">用户画像</div>
+            </div>
+            <div class="arch-comp" onclick="showArchDescM6(this)" data-desc="SQLite 是轻量级本地数据库，存储所有结构化数据：题目、用户答案、评估记录。就像图书馆的书架，把每本书都整齐归档。" data-name="SQLite">
+              <div class="arch-comp-icon">🗄️</div>
+              <span>SQLite</span>
+              <div class="arch-comp-role">本地数据库</div>
+            </div>
+            <div class="arch-comp" onclick="showArchDescM6(this)" data-desc="JWT 是身份认证令牌，确保只有合法用户能访问自己的数据。就像健身房的手环，刷一下才能进门。" data-name="JWT">
+              <div class="arch-comp-icon">🔑</div>
+              <span>JWT</span>
+              <div class="arch-comp-role">身份认证</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 组件描述浮层 -->
+      <div class="arch-desc-panel" id="arch-desc-m6">
+        <span class="arch-desc-name" id="arch-desc-name-m6">点击任意组件</span>
+        <p class="arch-desc-text" id="arch-desc-text-m6">点击上方任意组件，查看它负责什么。</p>
+      </div>
+
+    </div><!-- /.arch-hero -->
+
+    <p class="screen-caption animate-in">
+      整个系统就像一支管弦乐团：<span class="term" data-definition="管弦乐团中负责协调所有演奏者的人，不演奏具体乐器，但决定何时让谁演奏。">指挥</span>（FastAPI）读取「乐谱」（LangGraph），每个乐器（各组件）按谱子各司其职。
+    </p>
+
+  </div><!-- /#m6-screen1 -->
+
+  <!-- ═══════════════════════════════════════════════════
+       SCREEN 6-2 — 组件总动员 Group Chat
+  ═══════════════════════════════════════════════════ -->
+  <div class="screen" id="m6-screen2">
+
+    <div class="screen-header">
+      <span class="screen-tag">模块 6</span>
+      <h2 class="screen-title">组件总动员 — 5 个角色自我陈述</h2>
+    </div>
+
+    <p class="screen-intro animate-in">每个组件都有自己的「岗位职责」。让我们听听它们各自怎么说：</p>
+
+    <div class="chat-window" id="chat-m6-components">
+
+      <div class="chat-messages" id="chat-m6-messages">
+
+        <div class="chat-message" data-msg="0" data-sender="react" style="display:none">
+          <div class="chat-avatar" style="background: var(--color-actor-1)">⚛️</div>
+          <div class="chat-bubble">
+            <span class="chat-sender" style="color: var(--color-actor-1)">React（前端）</span>
+            <p>大家好！我是用户看到的那一层——界面。我用 React 19 搭建，用 Vite 跑起来。用户点的每一个按钮、看到的每一条 AI 回复，都是我负责渲染的。</p>
+          </div>
+        </div>
+
+        <div class="chat-message" data-msg="1" data-sender="fastapi" style="display:none">
+          <div class="chat-avatar" style="background: var(--color-actor-2)">⚡</div>
+          <div class="chat-bubble">
+            <span class="chat-sender" style="color: var(--color-actor-2)">FastAPI（后端）</span>
+            <p>我是中枢神经——FastAPI！用户发请求，先到我这儿。我负责：接收请求 → 调用 LangGraph → 把 AI 回复流式推回给 React。我是指挥，不亲自「演奏」（不生成答案），但协调所有人。</p>
+          </div>
+        </div>
+
+        <div class="chat-message" data-msg="2" data-sender="langgraph" style="display:none">
+          <div class="chat-avatar" style="background: var(--color-actor-3)">🧠</div>
+          <div class="chat-bubble">
+            <span class="chat-sender" style="color: var(--color-actor-3)">LangGraph（流程引擎）</span>
+            <p>我是流程编排引擎！面试不是一段直线——有时候要追问，有时候要给提示，有时候要切换到薄弱点强化模式。我用「状态机」把这些分支管理得井井有条。每个状态转换都是我来驱动的。</p>
+          </div>
+        </div>
+
+        <div class="chat-message" data-msg="3" data-sender="profile" style="display:none">
+          <div class="chat-avatar" style="background: var(--color-actor-4)">📋</div>
+          <div class="chat-bubble">
+            <span class="chat-sender" style="color: var(--color-actor-4)">Profile.json（记忆）</span>
+            <p>我负责记住一切！用户的薄弱点、SM-2 参数、上次面试答得最差的题目……FastAPI 开始处理请求前，会先来我这查档案；结束后，会把新的评估结果写回给我。没有我，每次训练都是新人。</p>
+          </div>
+        </div>
+
+        <div class="chat-message" data-msg="4" data-sender="sm2" style="display:none">
+          <div class="chat-avatar" style="background: var(--color-actor-5)">📅</div>
+          <div class="chat-bubble">
+            <span class="chat-sender" style="color: var(--color-actor-5)">SM-2（复习调度器）</span>
+            <p>我是「遗忘规律」的执行者！根据间隔重复算法，我会计算出用户下次应该在什么时候复习哪道题。用户可能在 3 天后来，也可能 10 天后——我不会让他们在已经掌握的题目上浪费时间。</p>
+          </div>
+        </div>
+
+      </div><!-- /.chat-messages -->
+
+      <div class="chat-typing" id="chat-m6-typing" style="display:none">
+        <div class="chat-avatar" id="chat-m6-typing-avatar">?</div>
+        <div class="chat-typing-dots">
+          <span class="typing-dot"></span>
+          <span class="typing-dot"></span>
+          <span class="typing-dot"></span>
+        </div>
+      </div>
+
+      <div class="chat-controls">
+        <button class="btn chat-next-btn">下一条</button>
+        <button class="btn chat-all-btn">全部播放</button>
+        <button class="btn chat-reset-btn">重播</button>
+        <span class="chat-progress"></span>
+      </div>
+
+    </div><!-- /.chat-window -->
+
+    <div class="callout callout-accent animate-in" style="margin-top: var(--space-8)">
+      <div class="callout-icon">💡</div>
+      <div class="callout-content">
+        <strong class="callout-title">关键理解</strong>
+        <p>这五个组件互相配合，任何一个出问题都会影响整体体验。定位问题的第一步，就是判断「这是哪一层的问题」。</p>
+      </div>
+    </div>
+
+  </div><!-- /#m6-screen2 -->
+
+  <!-- ═══════════════════════════════════════════════════
+       SCREEN 6-3 — 端到端 Data Flow
+  ═══════════════════════════════════════════════════ -->
+  <div class="screen" id="m6-screen3">
+
+    <div class="screen-header">
+      <span class="screen-tag">模块 6</span>
+      <h2 class="screen-title">端到端数据流 — 从点击到报告</h2>
+    </div>
+
+    <p class="screen-intro animate-in">
+      用户点击「简历面试」后，数据在组件之间经历了一次完整旅行。跟随下面的步骤，看清全程：
+    </p>
+
+    <div class="flow-animation" id="flow-m6-e2e"
+         data-steps='[
+           {"highlight":"flow-actor-1","label":"用户点击「简历面试」按钮"},
+           {"highlight":"flow-actor-2","label":"React 发送 POST 请求到 FastAPI","packet":true,"from":"actor-1","to":"actor-2"},
+           {"highlight":"flow-actor-3","label":"FastAPI 读取 Profile.json（用户画像）","packet":true,"from":"actor-2","to":"actor-3"},
+           {"highlight":"flow-actor-3","label":"FastAPI 查询历史面试记录（SQLite）","packet":true,"from":"actor-2","to":"actor-3"},
+           {"highlight":"flow-actor-4","label":"FastAPI 启动 LangGraph 状态机","packet":true,"from":"actor-2","to":"actor-4"},
+           {"highlight":"flow-actor-4","label":"LangGraph 调用 LLM，生成面试问题","packet":true,"from":"actor-4","to":"actor-5"},
+           {"highlight":"flow-actor-5","label":"LLM 流式返回回答（streaming）","packet":true,"from":"actor-5","to":"actor-4"},
+           {"highlight":"flow-actor-2","label":"FastAPI 将 AI 回复流式推送回 React","packet":true,"from":"actor-2","to":"actor-1"},
+           {"highlight":"flow-actor-3","label":"面试结束：更新 Profile.json（薄弱点）","packet":true,"from":"actor-2","to":"actor-3"},
+           {"highlight":"flow-actor-4","label":"SM-2 调度下次复习时间","packet":true,"from":"actor-4","to":"actor-3"},
+           {"highlight":"flow-actor-1","label":"用户收到薄弱点分析报告 🎉"}
+         ]'>
+
+      <div class="flow-actors">
+        <div class="flow-actor" id="flow-actor-1">
+          <div class="flow-actor-icon">👤</div>
+          <span>用户</span>
+        </div>
+        <div class="flow-actor" id="flow-actor-2">
+          <div class="flow-actor-icon">⚡</div>
+          <span>FastAPI</span>
+        </div>
+        <div class="flow-actor" id="flow-actor-3">
+          <div class="flow-actor-icon">📋</div>
+          <span>Profile + SQLite</span>
+        </div>
+        <div class="flow-actor" id="flow-actor-4">
+          <div class="flow-actor-icon">🧠</div>
+          <span>LangGraph</span>
+        </div>
+        <div class="flow-actor" id="flow-actor-5">
+          <div class="flow-actor-icon">🤖</div>
+          <span>LLM</span>
+        </div>
+      </div>
+
+      <div class="flow-packet" id="flow-m6-e2e-packet"></div>
+
+      <div class="flow-step-label" id="flow-m6-e2e-label">点击「下一步」开始</div>
+
+      <div class="flow-controls">
+        <button class="btn flow-next-btn">下一步</button>
+        <button class="btn flow-reset-btn">重新开始</button>
+        <span class="flow-progress"></span>
+      </div>
+    </div><!-- /.flow-animation -->
+
+    <div class="step-cards animate-in" style="margin-top: var(--space-8)">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <strong>用户点击「简历面试」</strong>
+          <p>React 组件捕获点击事件，构造 HTTP POST 请求，发送到 FastAPI 后端</p>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <strong>FastAPI 读取用户档案</strong>
+          <p>从 Profile.json 查用户画像，从 SQLite 查历史面试记录，了解用户薄弱点在哪里</p>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <strong>LangGraph 状态机启动</strong>
+          <p>根据当前状态（简历面试）决定走哪条流程：生成问题 → 评估回答 → 决定下一步</p>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <strong>LLM 流式生成回复</strong>
+          <p>大语言模型逐字生成面试问题和反馈，通过 <span class="term" data-definition="一种技术，让 AI 的回答一个字一个字地出现，而不是等全部生成完再一起显示——就像打字机效果。">streaming</span> 实时推送回前端</p>
+        </div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <strong>画像更新 + SM-2 调度</strong>
+          <p>面试结束后，新的薄弱点写回 Profile.json；SM-2 算法计算下次复习时间</p>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /#m6-screen3 -->
+
+  <!-- ═══════════════════════════════════════════════════
+       SCREEN 6-4 — Code ↔ English: docker-compose.yml
+  ═══════════════════════════════════════════════════ -->
+  <div class="screen" id="m6-screen4">
+
+    <div class="screen-header">
+      <span class="screen-tag">模块 6</span>
+      <h2 class="screen-title">从代码看懂架构 — docker-compose.yml</h2>
+    </div>
+
+    <p class="screen-intro animate-in">
+      这个配置文件用一行话解释就是：「有哪些服务，各自运行在哪个端口，如何通信」。
+    </p>
+
+    <div class="translation-block animate-in">
+      <div class="translation-code">
+        <span class="translation-label">CODE</span>
+        <pre><code><span class="code-comment"># docker-compose.yml — TechSpar 服务架构</span>
+<span class="code-property">Frontend</span>:
+  image: react19+vite+tailwind
+  ports: <span class="code-string">":5173"</span>
+  <span class="code-comment"># 用户看到的所有界面</span>
+
+<span class="code-property">Backend</span>:
+  image: fastapi+langchain+langgraph
+  ports: <span class="code-string">":8000"</span>
+  <span class="code-comment"># 所有业务逻辑</span>
+
+<span class="code-property">SQLite</span>:
+  image: local-persist
+  <span class="code-comment"># 本地持久化存储</span>
+
+<span class="code-property">JWT</span>:
+  auth: enabled
+  <span class="code-comment"># 身份认证</span>
+
+<span class="code-property">LLM</span>:
+  api: openai-compatible
+  <span class="code-comment"># 可接入任意大语言模型</span></code></pre>
+      </div>
+      <div class="translation-english">
+        <span class="translation-label">PLAIN ENGLISH</span>
+        <div class="translation-lines">
+          <p class="tl">这是整个 TechSpar 的服务清单配置文件——它告诉 Docker（容器平台）应该启动哪些服务。</p>
+          <p class="tl">Frontend（前端）用 React 19 + Vite + Tailwind CSS 构建，运行在电脑的 5173 端口。用户打开浏览器访问的就是这个。</p>
+          <p class="tl">Backend（后端）用 FastAPI + LangChain + LangGraph 构建，运行在 8000 端口。它接收前端的请求，调用 AI，处理数据。</p>
+          <p class="tl">SQLite 是一个轻量级本地数据库，所有结构化数据（用户答案、历史记录）都存在这里。</p>
+          <p class="tl">JWT 是身份认证机制——确保每个请求都来自合法登录用户，防止陌生人访问他人数据。</p>
+          <p class="tl">LLM（Large Language Model）是对接大语言模型的接口——只要是兼容 OpenAI 格式的 API 都能接入，比如 GPT-4、Claude、本地模型都可以。</p>
+        </div>
+      </div>
+    </div><!-- /.translation-block -->
+
+  </div><!-- /#m6-screen4 -->
+
+  <!-- ═══════════════════════════════════════════════════
+       SCREEN 6-5 — TechSpar vs 传统面试工具对比表
+  ═══════════════════════════════════════════════════ -->
+  <div class="screen" id="m6-screen5">
+
+    <div class="screen-header">
+      <span class="screen-tag">模块 6</span>
+      <h2 class="screen-title">TechSpar vs 传统面试工具</h2>
+    </div>
+
+    <p class="screen-intro animate-in">
+      同样的「面试训练」，为什么 TechSpar 能做到传统工具做不到的事？关键在于架构差异。
+    </p>
+
+    <div class="comparison-table animate-in">
+      <div class="comparison-row comparison-header">
+        <div class="comparison-cell comparison-dim">对比维度</div>
+        <div class="comparison-cell">传统面试工具</div>
+        <div class="comparison-cell comparison-highlight">TechSpar</div>
+      </div>
+      <div class="comparison-row">
+        <div class="comparison-cell comparison-dim">
+          <span class="term" data-definition="系统记住用户之前说过什么、做过什么的能力。就像老朋友记得你的名字和喜好，不需要每次都重新自我介绍。">记忆</span>
+        </div>
+        <div class="comparison-cell comparison-no">
+          <div class="comparison-icon">✗</div>
+          无 — 每次训练都是新人
+        </div>
+        <div class="comparison-cell comparison-yes comparison-highlight-cell">
+          <div class="comparison-icon">✓</div>
+          Profile.json — 记住所有历史
+        </div>
+      </div>
+      <div class="comparison-row">
+        <div class="comparison-cell comparison-dim">复习调度</div>
+        <div class="comparison-cell comparison-no">
+          <div class="comparison-icon">✗</div>
+          无 — 随机出题
+        </div>
+        <div class="comparison-cell comparison-yes comparison-highlight-cell">
+          <div class="comparison-icon">✓</div>
+          SM-2 — 科学间隔重复
+        </div>
+      </div>
+      <div class="comparison-row">
+        <div class="comparison-cell comparison-dim">
+          <span class="term" data-definition="一种编程模式，把业务流程画成一张图，图中每个节点是一个状态，节点之间连线是状态转换。就像流程图，但代码可以按图执行。">流程编排</span>
+        </div>
+        <div class="comparison-cell comparison-no">
+          <div class="comparison-icon">✗</div>
+          随机 — 题目之间无逻辑关联
+        </div>
+        <div class="comparison-cell comparison-yes comparison-highlight-cell">
+          <div class="comparison-icon">✓</div>
+          LangGraph 状态机 — 智能分支
+        </div>
+      </div>
+      <div class="comparison-row">
+        <div class="comparison-cell comparison-dim">反馈质量</div>
+        <div class="comparison-cell comparison-no">
+          <div class="comparison-icon">✗</div>
+          一次性 — 无画像更新
+        </div>
+        <div class="comparison-cell comparison-yes comparison-highlight-cell">
+          <div class="comparison-icon">✓</div>
+          画像更新 — 每次比上次更准
+        </div>
+      </div>
+      <div class="comparison-row">
+        <div class="comparison-cell comparison-dim">组件协作</div>
+        <div class="comparison-cell comparison-no">
+          <div class="comparison-icon">✗</div>
+          单体 — 一个模块包办所有
+        </div>
+        <div class="comparison-cell comparison-yes comparison-highlight-cell">
+          <div class="comparison-icon">✓</div>
+          三层分离 — 各司其职，可独立优化
+        </div>
+      </div>
+    </div><!-- /.comparison-table -->
+
+    <div class="callout callout-info animate-in" style="margin-top: var(--space-8)">
+      <div class="callout-icon">ℹ️</div>
+      <div class="callout-content">
+        <strong class="callout-title">为什么分离很重要</strong>
+        <p>三层架构的每个组件都可以独立升级或替换——比如把 LLM 从 GPT-4 换成 Claude，不需要动前端和数据库。这就是「解耦」的价值。</p>
+      </div>
+    </div>
+
+  </div><!-- /#m6-screen5 -->
+
+  <!-- ═══════════════════════════════════════════════════
+       SCREEN 6-6 — 架构设计思维
+  ═══════════════════════════════════════════════════ -->
+  <div class="screen" id="m6-screen6">
+
+    <div class="screen-header">
+      <span class="screen-tag">模块 6</span>
+      <h2 class="screen-title">为什么这样分层？</h2>
+    </div>
+
+    <p class="screen-intro animate-in">
+      架构不是随意划分的，每一层都有它存在的理由。
+    </p>
+
+    <div class="pattern-cards animate-in">
+      <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+        <div class="pattern-icon" style="background: var(--color-actor-1)">⚛️</div>
+        <h4 class="pattern-title">前端为什么「轻」？</h4>
+        <p class="pattern-desc">界面需要快速响应、流畅体验，但不需要复杂的 AI 运算。把界面和智能分开，前端只负责「好看和交互」，AI 推理交给后端。</p>
+      </div>
+      <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+        <div class="pattern-icon" style="background: var(--color-actor-2)">⚡</div>
+        <h4 class="pattern-title">后端为什么「重」？</h4>
+        <p class="pattern-desc">所有 AI 逻辑、数据处理、认证都在后端。集中在一处的好处是：安全（AI key 不泄露）、可控（可以在服务器上优化性能）。</p>
+      </div>
+      <div class="pattern-card" style="border-top: 3px solid var(--color-actor-3)">
+        <div class="pattern-icon" style="background: var(--color-actor-3)">🧠</div>
+        <h4 class="pattern-title">LangGraph 的价值</h4>
+        <p class="pattern-desc">不用 LangGraph 也可以写 AI 应用，但会陷入「一堆 if-else」的混乱。状态机让流程可视化、可调试、可扩展——加新功能只需要加节点和边。</p>
+      </div>
+      <div class="pattern-card" style="border-top: 3px solid var(--color-actor-4)">
+        <div class="pattern-icon" style="background: var(--color-actor-4)">📋</div>
+        <h4 class="pattern-title">为什么是 JSON 文件？</h4>
+        <p class="pattern-desc">对于用户量不大的个人工具来说，JSON 文件够用且简单。随时可以迁移到数据库，但一开始不需要承担数据库的运维成本。</p>
+      </div>
+    </div>
+
+    <div class="callout callout-accent animate-in" style="margin-top: var(--space-8)">
+      <div class="callout-icon">💡</div>
+      <div class="callout-content">
+        <strong class="callout-title">架构思维</strong>
+        <p>判断「这个功能应该加在哪层」，是架构思维的核心。记住一个原则：<strong>交互逻辑 → 前端；业务逻辑 + AI → 后端；持久数据 → 数据库</strong>。遇到新需求，先问「这主要是改用户看到的东西，还是改数据处理的逻辑？」</p>
+      </div>
+    </div>
+
+  </div><!-- /#m6-screen6 -->
+
+  <!-- ═══════════════════════════════════════════════════
+       SCREEN 6-7 — Quiz
+  ═══════════════════════════════════════════════════ -->
+  <div class="screen" id="m6-screen7">
+
+    <div class="screen-header">
+      <span class="screen-tag">模块 6</span>
+      <h2 class="screen-title">课后测验 — 综合应用</h2>
+    </div>
+
+    <div class="quiz-container" id="quiz-m6-architecture">
+
+      <!-- 题目 1 -->
+      <div class="quiz-question-block"
+           data-correct="q1-b"
+           data-explanation-right="正确！发送邮件是后端任务——它需要在你离线时也能运行（用户关掉浏览器也要发），且需要访问用户数据，这都属于后端的职责范围。前端只负责用户当前看到的界面。"
+           data-explanation-wrong="不完全对。前端负责界面显示，不适合处理「离线也要运行」的任务——用户关掉浏览器邮件就停了。应该放在后端。">
+        <h3 class="quiz-question">题目 1：你想在面试结束后给用户发一封总结邮件，需要修改哪一层？</h3>
+        <div class="quiz-options">
+          <button class="quiz-option" data-value="q1-a" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>前端（React）</span>
+          </button>
+          <button class="quiz-option" data-value="q1-b" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>后端（FastAPI）</span>
+          </button>
+          <button class="quiz-option" data-value="q1-c" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>数据层（Profile.json）</span>
+          </button>
+        </div>
+        <div class="quiz-feedback"></div>
+      </div>
+
+      <!-- 题目 2 -->
+      <div class="quiz-question-block"
+           data-correct="q2-c"
+           data-explanation-right="正确！LLM 是生成答案的「大脑」——如果它的建议质量下降（比如回答不相关、逻辑混乱），直接原因是 AI 模型本身的问题或 Prompt 配置不对。FastAPI 只是路由，Profile.json 只是数据，二者都不会影响回答的内容质量。"
+           data-explanation-wrong="不对。FastAPI 和 Profile.json 只负责传递数据和调用 LLM，它们不会影响回答内容的质量。如果内容质量下降，问题一定出在 LLM 端——可能是模型本身、Prompt 设置或 API 参数的问题。">
+        <h3 class="quiz-question">题目 2：用户报告 Copilot 的回答建议质量下降，应该检查哪个组件？</h3>
+        <div class="quiz-options">
+          <button class="quiz-option" data-value="q2-a" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>FastAPI（后端路由）</span>
+          </button>
+          <button class="quiz-option" data-value="q2-b" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>Profile.json（用户数据）</span>
+          </button>
+          <button class="quiz-option" data-value="q2-c" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>LLM（AI 大脑）</span>
+          </button>
+        </div>
+        <div class="quiz-feedback"></div>
+      </div>
+
+      <!-- 题目 3 -->
+      <div class="quiz-question-block"
+           data-correct="q3-b"
+           data-explanation-right="正确！在 LangGraph 中加一个「HR 反问」节点，然后用条件边连接到现有节点。你不需要改前端，也不需要加数据库——只要在流程图里加一个状态和转换规则就可以了。这就是状态机架构的好处：加功能 = 加节点 + 加边。"
+           data-explanation-wrong="不需要！添加新功能（比如 HR 反问）不需要改前端（用户界面不变）和数据层（数据结构不变）。在 LangGraph 的流程图里加一个状态节点就行了——流程编排引擎的好处就是扩展灵活，不需要动其他层。">
+        <h3 class="quiz-question">题目 3：如果你要加一个「模拟 HR 反问环节」的新功能，你会怎么做？</h3>
+        <div class="quiz-options">
+          <button class="quiz-option" data-value="q3-a" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>修改 React 前端，新增一个页面</span>
+          </button>
+          <button class="quiz-option" data-value="q3-b" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>在 LangGraph 里加一个新状态节点</span>
+          </button>
+          <button class="quiz-option" data-value="q3-c" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>修改 Profile.json，新增字段</span>
+          </button>
+        </div>
+        <div class="quiz-feedback"></div>
+      </div>
+
+      <button class="quiz-check-btn" onclick="checkQuiz('quiz-m6-architecture')">检查答案</button>
+      <button class="quiz-reset-btn" onclick="resetQuiz('quiz-m6-architecture')">重新测验</button>
+    </div><!-- /.quiz-container -->
+
+    <!-- 课程总结 -->
+    <div class="module-summary animate-in" style="margin-top: var(--space-12)">
+      <div class="summary-header">
+        <div class="summary-icon">🏆</div>
+        <div>
+          <h3 class="summary-title">模块 6 完成</h3>
+          <p class="summary-subtitle">架构全景 — 所有组件如何协同</p>
+        </div>
+      </div>
+      <div class="summary-points">
+        <div class="summary-point">
+          <span class="summary-check">✓</span>
+          <span>TechSpar 采用「前端轻、后端重」三层架构</span>
+        </div>
+        <div class="summary-point">
+          <span class="summary-check">✓</span>
+          <span>五大组件各司其职：React / FastAPI / LangGraph / Profile.json / SM-2</span>
+        </div>
+        <div class="summary-point">
+          <span class="summary-check">✓</span>
+          <span>从点击到报告的完整数据流路径</span>
+        </div>
+        <div class="summary-point">
+          <span class="summary-check">✓</span>
+          <span>判断「功能加在哪层」的思考框架</span>
+        </div>
+      </div>
+      <p class="summary-next">
+        恭喜完成 TechSpar 全部模块！你现在已经理解了这款应用的核心设计逻辑。
+      </p>
+    </div>
+
+  </div><!-- /#m6-screen7 -->
+
+</section>
+
+<script>
+  /* Architecture diagram click handler for Module 6 */
+  function showArchDescM6(el) {
+    var name = el.dataset.name || '';
+    var desc = el.dataset.desc || '';
+    document.getElementById('arch-desc-name-m6').textContent = name;
+    document.getElementById('arch-desc-text-m6').textContent = desc;
+
+    /* Highlight active component */
+    document.querySelectorAll('#m6-screen1 .arch-comp').forEach(function(c) {
+      c.classList.remove('arch-comp-active');
+    });
+    el.classList.add('arch-comp-active');
+  }
+</script>

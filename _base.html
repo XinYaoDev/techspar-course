@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TechSpar 交互式课程 — 学会 AI 面试训练闭环的底层逻辑</title>
+
+  <!-- Google Fonts: Bricolage Grotesque · DM Sans · JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400;1,9..40,500&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+
+  <!--
+    CUSTOMIZE PER COURSE
+    Vermillion palette (default)
+  -->
+  <style>
+    :root {
+      --color-accent:       #D94F30;
+      --color-accent-hover: #C4432A;
+      --color-accent-light: #FDEEE9;
+      --color-accent-muted: #E8836C;
+    }
+  </style>
+
+  <script src="main.js" defer></script>
+</head>
+<body>
+
+  <nav class="nav" id="nav">
+    <div class="progress-bar" id="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+    <div class="nav-inner">
+      <span class="nav-title">TechSpar 交互式课程</span>
+      <div class="nav-dots" id="nav-dots" role="tablist">
+        <button class="nav-dot" data-target="module-1" data-tooltip="TechSpar 是什么" role="tab" aria-label="Module 1: TechSpar 是什么"></button>
+        <button class="nav-dot" data-target="module-2" data-tooltip="长期记忆系统" role="tab" aria-label="Module 2: 长期记忆系统"></button>
+        <button class="nav-dot" data-target="module-3" data-tooltip="SM-2 算法" role="tab" aria-label="Module 3: SM-2 算法"></button>
+        <button class="nav-dot" data-target="module-4" data-tooltip="简历面试状态机" role="tab" aria-label="Module 4: 简历面试状态机"></button>
+        <button class="nav-dot" data-target="module-5" data-tooltip="实时 Copilot" role="tab" aria-label="Module 5: 实时 Copilot"></button>
+        <button class="nav-dot" data-target="module-6" data-tooltip="架构全景" role="tab" aria-label="Module 6: 架构全景"></button>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main">
+    <!-- modules/*.html content is assembled here by build.sh -->

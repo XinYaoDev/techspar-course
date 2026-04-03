@@ -1,0 +1,580 @@
+<section class="module" id="module-5" lang="zh-CN">
+
+<!-- ============================================================
+     SCREEN 5-1 — Hook + 三列实时交互图（Hero Visual）
+     ============================================================ -->
+<div class="screen" id="m5-screen1">
+
+  <!-- Hook Banner -->
+  <div class="hook-banner">
+    <div class="hook-badge">模块 5</div>
+    <h1 class="hook-title">实时 Copilot — 面试现场的 AI 副驾驶</h1>
+    <p class="hook-subtitle">你正在真实面试，HR 抛出一个问题——Copilot 同时在转写、预测追问方向、给你回答建议。<br>这些工作同时发生，你感觉不到延迟。</p>
+  </div>
+
+  <!-- Hero Visual: 三列实时交互图 -->
+  <div class="hero-copilot-flow">
+
+    <!-- 列1：HR 说话 -->
+    <div class="flow-col flow-col-hr" id="flow-col-hr">
+      <div class="flow-col-header">
+        <span class="flow-col-icon">🎙️</span>
+        <span class="flow-col-title">HR 说话</span>
+        <span class="flow-col-tag">实时输入</span>
+      </div>
+      <div class="flow-col-body">
+        <div class="hr-input-card" id="hr-input-card">
+          <div class="hr-input-avatar">👤</div>
+          <div class="hr-input-text">
+            <div class="hr-name">HR 提问</div>
+            <div class="hr-text-line" id="hr-text-line">"你们系统怎么保证高可用？"</div>
+          </div>
+        </div>
+        <!-- 输入光标动画 -->
+        <div class="typing-cursor" id="typing-cursor">|</div>
+      </div>
+    </div>
+
+    <!-- 箭头连接 -->
+    <div class="flow-arrow-col" aria-hidden="true">
+      <div class="flow-arrow-line"></div>
+      <div class="flow-arrow-head">▶</div>
+    </div>
+
+    <!-- 列2：Copilot 实时分析 -->
+    <div class="flow-col flow-col-copilot" id="flow-col-copilot">
+      <div class="flow-col-header">
+        <span class="flow-col-icon">🤖</span>
+        <span class="flow-col-title">Copilot 分析</span>
+        <span class="flow-col-tag flow-col-tag-ai">流式输出</span>
+      </div>
+      <div class="flow-col-body">
+        <!-- 转写模块 -->
+        <div class="copilot-module" id="copilot-transcribe">
+          <div class="copilot-module-label">📝 转写</div>
+          <div class="copilot-module-output" id="transcribe-output">"你们系统怎么保证高可用？"</div>
+        </div>
+        <!-- 方向预测模块 -->
+        <div class="copilot-module" id="copilot-predict">
+          <div class="copilot-module-label">🔮 方向预测</div>
+          <div class="copilot-module-output" id="predict-output">高可用 → CAP定理 → 具体方案...</div>
+        </div>
+        <!-- 建议模块 -->
+        <div class="copilot-module copilot-module-advice" id="copilot-advice">
+          <div class="copilot-module-label">💡 回答建议</div>
+          <div class="copilot-module-output" id="advice-output">请先定义高可用的具体指标，如 99.99%</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 箭头连接 -->
+    <div class="flow-arrow-col" aria-hidden="true">
+      <div class="flow-arrow-line"></div>
+      <div class="flow-arrow-head">▶</div>
+    </div>
+
+    <!-- 列3：用户看到建议 -->
+    <div class="flow-col flow-col-user" id="flow-col-user">
+      <div class="flow-col-header">
+        <span class="flow-col-icon">👤</span>
+        <span class="flow-col-title">你看到</span>
+        <span class="flow-col-tag flow-col-tag-user">卡片浮现</span>
+      </div>
+      <div class="flow-col-body">
+        <div class="user-advice-card" id="user-advice-card">
+          <div class="user-advice-label">Copilot 建议</div>
+          <div class="user-advice-text">请先定义高可用的具体指标，如 99.99%</div>
+          <div class="user-advice-hint">参考这个思路组织回答 ✓</div>
+        </div>
+        <!-- 第二条建议（HR 追问后浮现） -->
+        <div class="user-advice-card user-advice-card-2" id="user-advice-card-2" style="display:none">
+          <div class="user-advice-label">新建议</div>
+          <div class="user-advice-text">请从业务场景出发，比如订单系统优先选 CP...</div>
+          <div class="user-advice-hint">追问来了，快速调整思路 ✓</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /.hero-copilot-flow -->
+
+  <!-- 核心信息 Callout -->
+  <div class="callout callout-accent">
+    <div class="callout-icon">⚡</div>
+    <div class="callout-content">
+      <strong class="callout-title">核心原理</strong>
+      <p>Copilot 不是等 HR 说完再处理，而是<span class="term" data-definition="实时流式处理：数据在产生的同时就被处理，不需要等待完整输入。就像直播字幕，说话的同时字幕就出现，而不是说完再打出来。">实时流式</span>处理——每句话都在被分析，每个回答建议都在更新。</p>
+    </div>
+  </div>
+
+  <!-- 启动动画按钮 -->
+  <div class="hero-demo-controls">
+    <button class="btn btn-primary" id="demo-play-btn" onclick="playHeroDemo()">▶ 播放演示</button>
+    <button class="btn" onclick="resetHeroDemo()">↺ 重置</button>
+  </div>
+
+</div><!-- /#m5-screen1 -->
+
+<!-- ============================================================
+     SCREEN 5-2 — 面试前预处理流程
+     ============================================================ -->
+<div class="screen" id="m5-screen2">
+
+  <div class="screen-header">
+    <div class="screen-badge">Screen 5-2</div>
+    <h2 class="screen-title">面试前预处理：Copilot 比你更早开始工作</h2>
+    <p class="screen-desc">在你走进面试间之前，Copilot 已经完成了大量准备工作。这些工作在面试前完成，才能保证面试中的实时响应。</p>
+  </div>
+
+  <!-- 预处理流程图 -->
+  <div class="preprocess-flow">
+
+    <!-- 输入节点 -->
+    <div class="preprocess-node preprocess-node-input">
+      <div class="preprocess-node-icon">📄</div>
+      <div class="preprocess-node-label">JD<br><small>（职位描述）</small></div>
+    </div>
+
+    <div class="preprocess-node preprocess-node-input">
+      <div class="preprocess-node-icon">📝</div>
+      <div class="preprocess-node-label">简历</div>
+    </div>
+
+    <div class="preprocess-node preprocess-node-input">
+      <div class="preprocess-node-icon">📊</div>
+      <div class="preprocess-node-label">历史画像<br><small>（面试记录）</small></div>
+    </div>
+
+    <!-- 箭头 -->
+    <div class="preprocess-arrow">→</div>
+    <div class="preprocess-arrow">→</div>
+
+    <!-- Copilot 处理器 -->
+    <div class="preprocess-node preprocess-node-ai">
+      <div class="preprocess-node-icon preprocess-node-icon-ai">🤖</div>
+      <div class="preprocess-node-label">Copilot<br><small>预处理引擎</small></div>
+    </div>
+
+    <!-- 箭头 -->
+    <div class="preprocess-arrow preprocess-arrow-wide">→</div>
+
+    <!-- 输出节点 -->
+    <div class="preprocess-output-group">
+      <div class="preprocess-output-card">
+        <div class="preprocess-output-icon">🌳</div>
+        <div class="preprocess-output-label">
+          <strong>提问策略树</strong>
+          <p>每类问题的标准提问路径</p>
+        </div>
+      </div>
+      <div class="preprocess-output-card">
+        <div class="preprocess-output-icon">⚠️</div>
+        <div class="preprocess-output-label">
+          <strong>高危路径</strong>
+          <p>你最可能答不好的问题区域</p>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /.preprocess-flow -->
+
+  <!-- 解释文字 -->
+  <div class="preprocess-explain">
+    <div class="icon-row">
+      <div class="icon-circle" style="background: var(--color-actor-1)">📄</div>
+      <div>
+        <strong>JD 分析</strong>
+        <p>理解岗位需要什么技能，提前准备相关概念的解释方式</p>
+      </div>
+    </div>
+    <div class="icon-row">
+      <div class="icon-circle" style="background: var(--color-actor-2)">📝</div>
+      <div>
+        <strong>简历预处理</strong>
+        <p>扫描简历中的亮点和弱点，准备可能被追问的方向</p>
+      </div>
+    </div>
+    <div class="icon-row">
+      <div class="icon-circle" style="background: var(--color-actor-3)">📊</div>
+      <div>
+        <strong>历史画像</strong>
+        <p>基于过去的面试记录，建立对候选人背景的理解</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 技术词汇 tooltip 说明 -->
+  <div class="tech-term-note">
+    <span class="term" data-definition="预处理（Preprocessing）：在实际使用之前提前完成数据整理和准备。就像考试前老师帮你划好重点，而不是考试时现找。">预处理</span>让 Copilot 能够在面试中实时响应，因为准备工作已经做完了。
+  </div>
+
+</div><!-- /#m5-screen2 -->
+
+<!-- ============================================================
+     SCREEN 5-3 — Copilot 三大能力卡片
+     ============================================================ -->
+<div class="screen" id="m5-screen3">
+
+  <div class="screen-header">
+    <div class="screen-badge">Screen 5-3</div>
+    <h2 class="screen-title">Copilot 的三大能力</h2>
+    <p class="screen-desc">面试现场，Copilot 同时运行三套并行任务，每套都在实时工作。</p>
+  </div>
+
+  <div class="pattern-cards">
+    <!-- 能力1：实时转写 -->
+    <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+      <div class="pattern-icon" style="background: var(--color-actor-1)">📝</div>
+      <h4 class="pattern-title">实时转写</h4>
+      <p class="pattern-desc">把 HR 的语音实时转成文字，同时保留每一个细节。不用等 HR 说完，你已经看到了完整的问题。</p>
+      <div class="pattern-detail">
+        <span class="term" data-definition="Transcribe（转写）：把语音或音频转换成文字。就像会议记录员，一边听一边打字。">transcribe</span> 技术驱动，支持<span class="term" data-definition="Real-time（实时）：数据和处理几乎同时发生，延迟在毫秒级。">real-time</span> 输出。
+      </div>
+    </div>
+
+    <!-- 能力2：方向预测 -->
+    <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+      <div class="pattern-icon" style="background: var(--color-actor-2)">🔮</div>
+      <h4 class="pattern-title">方向预测</h4>
+      <p class="pattern-desc">基于 JD、简历和历史画像，预测 HR 的下一个追问方向。你永远比别人快一步。</p>
+      <div class="pattern-detail">
+        基于<span class="term" data-definition="Strategy Tree（策略树）：把可能的问题路径组织成树状结构，每条分支是一个可能的追问方向。">strategy tree</span> 实时更新预测。
+      </div>
+    </div>
+
+    <!-- 能力3：回答建议 -->
+    <div class="pattern-card" style="border-top: 3px solid var(--color-actor-3)">
+      <div class="pattern-icon" style="background: var(--color-actor-3)">💡</div>
+      <h4 class="pattern-title">回答建议</h4>
+      <p class="pattern-desc">根据问题、方向预测和你的简历，实时生成回答建议。帮助你在压力下保持表达清晰。</p>
+      <div class="pattern-detail">
+        建议来自<span class="term" data-definition="Preprocessing（预处理）：提前分析 JD、简历和历史数据，建立个性化建议模型。">preprocessing</span> + 实时分析的双重驱动。
+      </div>
+    </div>
+  </div>
+
+  <!-- 并行运行示意 -->
+  <div class="parallel-run">
+    <h3 class="parallel-run-title">三者同时运行</h3>
+    <div class="parallel-tracks">
+      <div class="parallel-track">
+        <div class="parallel-bar" style="background: var(--color-actor-1)"></div>
+        <span>转写</span>
+      </div>
+      <div class="parallel-track">
+        <div class="parallel-bar" style="background: var(--color-actor-2)"></div>
+        <span>预测</span>
+      </div>
+      <div class="parallel-track">
+        <div class="parallel-bar" style="background: var(--color-actor-3)"></div>
+        <span>建议</span>
+      </div>
+    </div>
+    <p class="parallel-note">三条轨道同时跑，你感觉到的延迟几乎为零。</p>
+  </div>
+
+</div><!-- /#m5-screen3 -->
+
+<!-- ============================================================
+     SCREEN 5-4 — Group Chat Animation（三方对话）
+     ============================================================ -->
+<div class="screen" id="m5-screen4">
+
+  <div class="screen-header">
+    <div class="screen-badge">Screen 5-4</div>
+    <h2 class="screen-title">面试现场：三方同时在线</h2>
+    <p class="screen-desc">HR、Copilot 和你，三方实时互动。Copilot 在你看不到的地方高速运转。</p>
+  </div>
+
+  <!-- Group Chat 容器 -->
+  <div class="chat-window" id="chat-m5">
+
+    <div class="chat-messages">
+
+      <!-- Message 0: HR 提问 -->
+      <div class="chat-message" data-msg="0" data-sender="hr" style="display:none">
+        <div class="chat-avatar" style="background: var(--color-actor-1)">👤</div>
+        <div class="chat-bubble">
+          <span class="chat-sender" style="color: var(--color-actor-1)">HR</span>
+          <p>你们系统怎么保证高可用？</p>
+        </div>
+      </div>
+
+      <!-- Message 1: Copilot 转写 + 预测 + 建议 -->
+      <div class="chat-message chat-message-copilot" data-msg="1" data-sender="copilot" style="display:none">
+        <div class="chat-avatar" style="background: var(--color-actor-2)">🤖</div>
+        <div class="chat-bubble chat-bubble-copilot">
+          <span class="chat-sender" style="color: var(--color-actor-2)">Copilot 实时分析</span>
+          <div class="copilot-analysis-block">
+            <div class="copilot-tag copilot-tag-transcribe">📝 转写</div>
+            <div class="copilot-tag copilot-tag-predict">🔮 预测追问方向</div>
+            <div class="copilot-tag copilot-tag-advice">💡 回答建议</div>
+            <div class="copilot-analysis-content">
+              <p class="copilot-line"><strong>转写：</strong>"你们系统怎么保证高可用？"</p>
+              <p class="copilot-line"><strong>预测方向：</strong>高可用 → CAP定理 → 具体方案（负载均衡、容错）</p>
+              <p class="copilot-line copilot-line-advice"><strong>建议：</strong>请先定义高可用的具体指标，如 99.99%（四个九）</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Message 2: 用户（参考建议组织回答） -->
+      <div class="chat-message" data-msg="2" data-sender="user" style="display:none">
+        <div class="chat-avatar chat-avatar-user" style="background: var(--color-actor-3)">👤</div>
+        <div class="chat-bubble chat-bubble-user">
+          <span class="chat-sender" style="color: var(--color-actor-3)">你（参考建议回答）</span>
+          <p>高可用我们内部定义是 99.99% 的可用性，核心手段包括...（参考 Copilot 建议组织表达）</p>
+        </div>
+      </div>
+
+      <!-- Message 3: HR 追问 -->
+      <div class="chat-message" data-msg="3" data-sender="hr" style="display:none">
+        <div class="chat-avatar" style="background: var(--color-actor-1)">👤</div>
+        <div class="chat-bubble">
+          <span class="chat-sender" style="color: var(--color-actor-1)">HR 追问</span>
+          <p>那 CAP 三个你只能保两个，你选哪两个？</p>
+        </div>
+      </div>
+
+      <!-- Message 4: Copilot 新建议 -->
+      <div class="chat-message chat-message-copilot" data-msg="4" data-sender="copilot" style="display:none">
+        <div class="chat-avatar" style="background: var(--color-actor-2)">🤖</div>
+        <div class="chat-bubble chat-bubble-copilot">
+          <span class="chat-sender" style="color: var(--color-actor-2)">Copilot 新建议</span>
+          <div class="copilot-analysis-block">
+            <div class="copilot-tag copilot-tag-advice">💡 更新建议</div>
+            <div class="copilot-analysis-content">
+              <p class="copilot-line copilot-line-advice">请从业务场景出发，比如订单系统优先选 CP（一致性+分区容错），保证每笔支付不掉单。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Message 5: 用户追问回答 -->
+      <div class="chat-message" data-msg="5" data-sender="user" style="display:none">
+        <div class="chat-avatar chat-avatar-user" style="background: var(--color-actor-3)">👤</div>
+        <div class="chat-bubble chat-bubble-user">
+          <span class="chat-sender" style="color: var(--color-actor-3)">你（追问回答）</span>
+          <p>我们订单系统选 CP，保证强一致性，因为支付场景不能容忍数据不一致...</p>
+        </div>
+      </div>
+
+    </div><!-- /.chat-messages -->
+
+    <div class="chat-typing" id="chat-m5-typing" style="display:none">
+      <div class="chat-avatar" id="chat-m5-typing-avatar" style="background: var(--color-actor-2)">🤖</div>
+      <div class="chat-typing-dots">
+        <span class="typing-dot"></span>
+        <span class="typing-dot"></span>
+        <span class="typing-dot"></span>
+      </div>
+    </div>
+
+    <div class="chat-controls">
+      <button class="btn chat-next-btn">下一条</button>
+      <button class="btn chat-all-btn">自动播放</button>
+      <button class="btn chat-reset-btn">重播</button>
+      <span class="chat-progress"></span>
+    </div>
+
+  </div><!-- /#chat-m5 -->
+
+  <!-- 图例说明 -->
+  <div class="chat-legend">
+    <div class="legend-item">
+      <div class="legend-dot" style="background: var(--color-actor-1)"></div>
+      <span>HR — 提问者</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background: var(--color-actor-2)"></div>
+      <span>Copilot — AI 副驾驶（不直接影响对话显示，但实时辅助你）</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background: var(--color-actor-3)"></div>
+      <span>你 — 面试者（参考 Copilot 建议组织回答）</span>
+    </div>
+  </div>
+
+</div><!-- /#m5-screen4 -->
+
+<!-- ============================================================
+     SCREEN 5-5 — Quiz（3题）
+     ============================================================ -->
+<div class="screen" id="m5-screen5">
+
+  <div class="screen-header">
+    <div class="screen-badge">Screen 5-5</div>
+    <h2 class="screen-title">小测：你能正确使用 Copilot 吗？</h2>
+    <p class="screen-desc">三道情境题，考察你对 Copilot 工作原理的理解。</p>
+  </div>
+
+  <div class="quiz-container" id="quiz-m5">
+
+    <!-- Q1 -->
+    <div class="quiz-question-block"
+         data-correct="option-b"
+         data-explanation-right="正确！Copilot 的「澄清性问题」类建议是为了消除问题歧义，确保你在正确理解问题后再作答。这是高质量辅助的标志。"
+         data-explanation-wrong="不完全对。这类建议属于「澄清性问题」——帮助你先弄清楚问题的具体含义，再组织回答。选 B 看看详细解释。">
+      <h3 class="quiz-question">Q1：面试中，Copilot 给出建议「请先定义高可用的具体指标」，这是什么类型的建议？</h3>
+      <div class="quiz-options">
+        <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>A. 直接给出答案，让你照着念</span>
+        </button>
+        <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>B. 澄清性问题——帮你先明确问题的具体含义</span>
+        </button>
+        <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>C. 预测追问方向——为下一个问题做准备</span>
+        </button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="quiz-question-block"
+         data-correct="option-c"
+         data-explanation-right="正确！方向预测依赖 JD、简历和历史画像三份数据的综合分析——这就是预处理的价值所在。"
+         data-explanation-wrong="不完全对。方向预测不是凭空生成的，而是基于 JD（岗位需求）、简历（你的背景）和历史画像（过去的面试记录）三份数据综合分析得出的。选 C 看看详细解释。">
+      <h3 class="quiz-question">Q2：Copilot 的「方向预测」功能是基于什么生成的？</h3>
+      <div class="quiz-options">
+        <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>A. HR 当场说的内容</span>
+        </button>
+        <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>B. HR 问完之后 Copilot 临时推理</span>
+        </button>
+        <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>C. JD + 简历 + 历史画像的预处理分析</span>
+        </button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="quiz-question-block"
+         data-correct="option-b"
+         data-explanation-right="正确！Copilot 的实时能力依赖多个外部服务（语音识别、实时流、建议生成），任何一个环节出问题都会导致卡顿。这是分布式系统的典型特征。"
+         data-explanation-wrong="不完全对。Copilot 突然没响应通常不是你的问题，而是外部依赖服务（语音识别服务 / 实时流服务 / 建议生成服务）出现了延迟或中断。选 B 看看详细解释。">
+      <h3 class="quiz-question">Q3：Copilot 突然没响应了，可能哪里出了问题？</h3>
+      <div class="quiz-options">
+        <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>A. Copilot 计算量太大，你的设备性能不足</span>
+        </button>
+        <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>B. Copilot 依赖的外部服务（语音识别 / 流服务 / AI 模型）出现了延迟或中断</span>
+        </button>
+        <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>C. 你没有提前上传简历，Copilot 拒绝工作</span>
+        </button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <div class="quiz-btn-row">
+      <button class="btn btn-primary quiz-check-btn" onclick="checkQuiz('quiz-m5')">提交答案</button>
+      <button class="btn quiz-reset-btn" onclick="resetQuiz('quiz-m5')">重新作答</button>
+    </div>
+
+  </div><!-- /#quiz-m5 -->
+
+</div><!-- /#m5-screen5 -->
+
+<!-- ============================================================
+     页面初始化脚本（内联，仅驱动本模块动画）
+     ============================================================ -->
+<script>
+/* ============================================
+   Hero Demo — 三列实时交互动画
+   ============================================ */
+function playHeroDemo() {
+  var hrLine = document.getElementById('hr-text-line');
+  var cursor = document.getElementById('typing-cursor');
+  var transcribe = document.getElementById('transcribe-output');
+  var predict = document.getElementById('predict-output');
+  var advice = document.getElementById('advice-output');
+  var userCard = document.getElementById('user-advice-card');
+  var userCard2 = document.getElementById('user-advice-card-2');
+  var copilotTrans = document.getElementById('copilot-transcribe');
+  var copilotPred = document.getElementById('copilot-predict');
+  var copilotAdv = document.getElementById('copilot-advice');
+
+  // Reset
+  hrLine.textContent = '"你们系统怎么保证高可用？"';
+  transcribe.textContent = '—';
+  predict.textContent = '—';
+  advice.textContent = '—';
+  userCard.style.display = 'none';
+  userCard2.style.display = 'none';
+  copilotTrans.style.opacity = '0.4';
+  copilotPred.style.opacity = '0.4';
+  copilotAdv.style.opacity = '0.4';
+
+  // Animation sequence
+  var delay = 0;
+  function step(fn, ms) { delay += ms; setTimeout(fn, delay); }
+
+  step(function() {
+    // Show cursor
+    cursor.style.display = 'block';
+    copilotTrans.style.opacity = '1';
+    transcribe.textContent = '"你们系统怎么保证高可用？"';
+  }, 300);
+
+  step(function() {
+    copilotPred.style.opacity = '1';
+    predict.textContent = '高可用 → CAP定理 → 具体方案...';
+  }, 900);
+
+  step(function() {
+    copilotAdv.style.opacity = '1';
+    advice.textContent = '请先定义高可用的具体指标，如 99.99%';
+    userCard.style.display = 'block';
+  }, 1500);
+
+  step(function() {
+    cursor.style.display = 'none';
+    // HR 追问触发的第二条建议
+    hrLine.textContent = '"那 CAP 三个你只能保两个，你选哪两个？"';
+    predict.textContent = 'CAP → 一致性 vs 可用性 → 业务场景选择';
+    advice.textContent = '请从业务场景出发，如订单系统优先选 CP...';
+    userCard2.style.display = 'block';
+  }, 2400);
+}
+
+function resetHeroDemo() {
+  document.getElementById('hr-text-line').textContent = '"你们系统怎么保证高可用？"';
+  document.getElementById('transcribe-output').textContent = '—';
+  document.getElementById('predict-output').textContent = '—';
+  document.getElementById('advice-output').textContent = '—';
+  document.getElementById('user-advice-card').style.display = 'none';
+  document.getElementById('user-advice-card-2').style.display = 'none';
+  document.getElementById('typing-cursor').style.display = 'none';
+  document.getElementById('copilot-transcribe').style.opacity = '0.4';
+  document.getElementById('copilot-predict').style.opacity = '0.4';
+  document.getElementById('copilot-advice').style.opacity = '0.4';
+}
+
+/* ============================================
+   Quiz — Multiple Choice
+   (window.selectOption, checkQuiz, resetQuiz
+    are provided by references/main.js)
+   ============================================ */
+
+/* ============================================
+   Group Chat — Auto-init
+   (window.chatInit provided by references/main.js)
+   ============================================ */
+if (typeof chatInit === 'function') {
+  chatInit('chat-m5');
+}
+</script>
+
+</section>

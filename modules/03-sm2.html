@@ -1,0 +1,759 @@
+<section class="module" id="module-3" lang="zh-CN">
+
+  <!-- ══════════════════════════════════════════════════════════
+       MODULE HEADER
+  ══════════════════════════════════════════════════════════ -->
+  <div class="module-header">
+    <div class="module-badge">模块 3</div>
+    <h2 class="module-title">SM-2 算法 — 面试复习调度</h2>
+    <p class="module-subtitle">1987年的记忆科学，如何算出"下次复习的最佳时机"</p>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       SCREEN 3-1 — HOOK
+       为什么你总在同一道题上跌倒
+  ══════════════════════════════════════════════════════════ -->
+  <div class="screen" id="m3-screen-1">
+    <h3 class="screen-title">
+      <span class="screen-num">3-1</span>
+      为什么你总在同一道题上跌倒？
+    </h3>
+
+    <p class="screen-lead">答对了一道题，下次还出吗？大多数系统随机抽，结果你总是忘的那题最久才来。</p>
+
+    <!-- 对比图：随机出题 vs SM-2 -->
+    <div class="comparison-grid animate-in">
+      <!-- 左边：随机出题 -->
+      <div class="comparison-card comparison-bad">
+        <div class="comparison-icon">🎲</div>
+        <h4>随机出题</h4>
+        <p class="comparison-desc">每隔固定时间随机抽题，不管你会不会。</p>
+        <div class="timeline-wrong">
+          <div class="tl-node">
+            <span class="tl-day">周一</span>
+            <span class="tl-label tl-forgot">忘了</span>
+          </div>
+          <div class="tl-gap">……</div>
+          <div class="tl-node">
+            <span class="tl-day">周四</span>
+            <span class="tl-label tl-wrong">又忘了！</span>
+          </div>
+          <div class="tl-gap">……</div>
+          <div class="tl-node">
+            <span class="tl-day">下周一</span>
+            <span class="tl-label tl-wrong">还是忘了……</span>
+          </div>
+        </div>
+        <div class="comparison-verdict">
+          <span class="verdict-icon">😫</span>
+          <p>每次都像重新学，永远在同一个坑里跌倒。</p>
+        </div>
+      </div>
+
+      <!-- 右边：SM-2 调度 -->
+      <div class="comparison-card comparison-good">
+        <div class="comparison-icon">🧠</div>
+        <h4>SM-2 调度</h4>
+        <p class="comparison-desc">对了拉长间隔，错了一天后重考——动态适应你的记忆。</p>
+        <div class="timeline-right">
+          <div class="tl-node">
+            <span class="tl-day">周一</span>
+            <span class="tl-label tl-pass">对了 ✓</span>
+          </div>
+          <div class="tl-arrow">→</div>
+          <div class="tl-node">
+            <span class="tl-day">周二</span>
+            <span class="tl-label tl-pass">对了 ✓</span>
+          </div>
+          <div class="tl-arrow">→</div>
+          <div class="tl-node">
+            <span class="tl-day">周五</span>
+            <span class="tl-label tl-pass">对了 ✓</span>
+          </div>
+          <div class="tl-arrow">→</div>
+          <div class="tl-node">
+            <span class="tl-day">再过14天</span>
+            <span class="tl-label tl-pass">巩固 ✓</span>
+          </div>
+        </div>
+        <div class="comparison-verdict">
+          <span class="verdict-icon">💪</span>
+          <p>在你快忘的时候出现，每次复习都恰到好处。</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 核心 Hook Callout -->
+    <div class="callout callout-accent animate-in">
+      <div class="callout-icon">⚡</div>
+      <div class="callout-content">
+        <strong class="callout-title">SM-2 的核心逻辑</strong>
+        <p>答对了？→ 拉长间隔，给你时间巩固。<br>答错了？→ 重置回1天，明天就回来救你。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       SCREEN 3-2 — 两个核心数字
+  ══════════════════════════════════════════════════════════ -->
+  <div class="screen" id="m3-screen-2">
+    <h3 class="screen-title">
+      <span class="screen-num">3-2</span>
+      SM-2 的两个核心数字
+    </h3>
+
+    <p class="screen-lead">SM-2 算法只用两个数字，就能量化你的记忆状态。</p>
+
+    <div class="pattern-cards animate-in">
+      <div class="pattern-card" style="border-top: 3px solid var(--color-actor-1)">
+        <div class="pattern-icon" style="background: var(--color-actor-1)">📅</div>
+        <h4 class="pattern-title">
+          <span class="term" data-definition="一个整数，表示下次复习应该安排在多少天之后。比如 interval_days = 3，意味着3天后再考你这道题。">interval_days</span>
+        </h4>
+        <p class="pattern-desc">间隔天数——"多久之后再考你一次"。从1天起步，每次答对就翻倍：1天 → 3天 → 7天 → 14天……</p>
+        <div class="card-formula">
+          <code>答对：间隔 = 上次间隔 × 难度系数</code>
+        </div>
+      </div>
+
+      <div class="pattern-card" style="border-top: 3px solid var(--color-actor-2)">
+        <div class="pattern-icon" style="background: var(--color-actor-2)">⚙️</div>
+        <h4 class="pattern-title">
+          <span class="term" data-definition="一个浮点数，表示题目难度对你的影响程度。初始值2.5，最低1.3。越难或越容易答对的题目，这个系数会动态调整，决定间隔增长的速度。">ease_factor</span>
+        </h4>
+        <p class="pattern-desc">难度系数——"这道题到底有多难"。初始默认2.5，每次答题后根据表现微调，最低不低于1.3。</p>
+        <div class="card-formula">
+          <code>答难→高分 → 系数变大 → 间隔涨得更快</code>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout-info animate-in">
+      <div class="callout-icon">📊</div>
+      <div class="callout-content">
+        <strong class="callout-title">state 是什么？</strong>
+        <p><span class="term" data-definition="在编程中，state（状态）是一组描述'当前情况'的数据。这里的 state 包含 interval_days、ease_factor、repetitions 三个值，共同描述一道题在你记忆中的'当前状态'。">state</span> 就是这两个数字加上一个 repetitions（连续答对次数）的组合，每次答题后 SM-2 用这三个数算出下一轮复习时间。这组数据存在 <span class="term" data-definition="JSON 是一种轻量级的数据格式，像一张表格一样结构化地存放键值对——比如 {'interval_days': 3, 'ease_factor': 2.5}。">JSON</span> 里，叫 <span class="term" data-definition="间隔重复系统中存储每道题复习记录的数据结构，包含间隔天数、难度系数、重复次数等字段。">sr_state</span>。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       SCREEN 3-3 — Code ↔ English 翻译
+  ══════════════════════════════════════════════════════════ -->
+  <div class="screen" id="m3-screen-3">
+    <h3 class="screen-title">
+      <span class="screen-num">3-3</span>
+      逐行拆解：sm2_update 函数
+    </h3>
+
+    <p class="screen-lead">这是 TechSpar 后端的实际代码，逐行翻译成大白话。</p>
+
+    <div class="translation-block animate-in">
+      <div class="translation-code">
+        <span class="translation-label">CODE</span>
+        <pre><code><span class="code-line"><span class="code-keyword">def</span> <span class="code-function">sm2_update</span>(sr_state: dict, score_0_10: float) -> dict:</span>
+<span class="code-line">    quality = <span class="code-built_in">min</span>(<span class="code-number">5</span>, <span class="code-keyword">int</span>(score_0_10 / <span class="code-number">2</span>))</span>
+<span class="code-line">    <span class="code-comment"># 0-10分 → SM-2质量0-5</span></span>
+<span class="code-line">    ef = sr_state.<span class="code-keyword">get</span>(<span class="code-string">"ease_factor"</span>, <span class="code-number">2.5</span>)</span>
+<span class="code-line">    <span class="code-comment"># 难度系数，最小1.3</span></span>
+<span class="code-line">    reps = sr_state.<span class="code-keyword">get</span>(<span class="code-string">"repetitions"</span>, <span class="code-number">0</span>)</span>
+<span class="code-line"></span>
+<span class="code-line">    <span class="code-keyword">if</span> quality >= <span class="code-number">3</span>:  <span class="code-comment"># 通过</span></span>
+<span class="code-line">        <span class="code-keyword">if</span> reps == <span class="code-number">0</span>: interval = <span class="code-number">1</span></span>
+<span class="code-line">        <span class="code-keyword">elif</span> reps == <span class="code-number">1</span>: interval = <span class="code-number">3</span></span>
+<span class="code-line">        <span class="code-keyword">else</span>: interval = <span class="code-keyword">int</span>(sr_state.<span class="code-keyword">get</span>(<span class="code-string">"interval_days"</span>, <span class="code-number">1</span>) * ef)</span>
+<span class="code-highlight">        reps += <span class="code-number">1</span></span>
+<span class="code-line">    <span class="code-keyword">else</span>:  <span class="code-comment"># 失败，重置</span></span>
+<span class="code-line">        interval = <span class="code-number">1</span></span>
+<span class="code-line">        reps = <span class="code-number">0</span></span>
+<span class="code-line"></span>
+<span class="code-line">    ef = <span class="code-built_in">max</span>(<span class="code-number">1.3</span>, ef + (<span class="code-number">0.1</span> - (<span class="code-number">5</span> - quality) * (<span class="code-number">0.08</span> + (<span class="code-number">5</span> - quality) * <span class="code-number">0.02</span>)))</span>
+<span class="code-line">    <span class="code-keyword">return</span> {</span>
+<span class="code-highlight">        <span class="code-string">"interval_days"</span>: interval,</span>
+<span class="code-highlight">        <span class="code-string">"ease_factor"</span>: <span class="code-built_in">round</span>(ef, <span class="code-number">2</span>),</span>
+<span class="code-highlight">        <span class="code-string">"repetitions"</span>: reps,</span>
+<span class="code-highlight">        <span class="code-string">"next_review"</span>: (date.today() + <span class="code-built_in">timedelta</span>(days=interval)).<span class="code-string">isoformat</span>(),</span>
+<span class="code-line">        <span class="code-string">"last_score"</span>: score_0_10,</span>
+<span class="code-line">    }</span></code></pre>
+      </div>
+      <div class="translation-english">
+        <span class="translation-label">PLAIN ENGLISH</span>
+        <div class="translation-lines">
+          <p class="tl">Define a function that takes the current memory state of a question and a score (0-10), then returns the updated state for the next review session.</p>
+          <p class="tl">Convert the 0-10 score into SM-2's internal "quality" scale (0-5) by dividing by 2 and capping at 5. A 10/10 score becomes quality=5.</p>
+          <p class="tl">-</p>
+          <p class="tl">Look up the ease_factor from the current state. If there's no record yet, default to 2.5 — the standard starting difficulty for any new question.</p>
+          <p class="tl">-</p>
+          <p class="tl">Also look up how many times in a row this question has been answered correctly. Start at 0 if it's a fresh question.</p>
+          <p class="tl">-</p>
+          <p class="tl">If the quality is 3 or higher (answered correctly enough): figure out the next review interval.</p>
+          <p class="tl">First time correct → review again in 1 day.</p>
+          <p class="tl">Second time correct → now 3 days.</p>
+          <p class="tl">Third+ time → multiply the previous interval by the ease_factor. This is the compounding magic: each success stretches the interval further.</p>
+          <p class="tl">Increment the consecutive-correct counter by 1.</p>
+          <p class="tl">If the quality is below 3 (failed or shaky): reset the interval to 1 day and start the counter over from zero.</p>
+          <p class="tl">Interval goes back to 1 day.</p>
+          <p class="tl">Counter resets to 0.</p>
+          <p class="tl">-</p>
+          <p class="tl">After all this, update the ease_factor using a formula based on how well the question was answered. Never let it drop below 1.3.</p>
+          <p class="tl">-</p>
+          <p class="tl">Return all four updated values so the system knows when to bring this question back.</p>
+          <p class="tl"><strong>interval_days</strong> — how many days until the next review.</p>
+          <p class="tl"><strong>ease_factor</strong> — updated difficulty coefficient (rounded to 2 decimal places).</p>
+          <p class="tl"><strong>repetitions</strong> — how many times answered correctly in a row now.</p>
+          <p class="tl"><strong>next_review</strong> — the actual calendar date for the next review, calculated as today + interval_days.</p>
+          <p class="tl"><strong>last_score</strong> — the score you just gave, stored for the system's records.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       SCREEN 3-4 — 间隔时间轴
+  ══════════════════════════════════════════════════════════ -->
+  <div class="screen" id="m3-screen-4">
+    <h3 class="screen-title">
+      <span class="screen-num">3-4</span>
+      间隔时间轴：答对拉长，答错重置
+    </h3>
+
+    <p class="screen-lead">SM-2 的复习间隔随着你的表现动态变化。</p>
+
+    <!-- 答对路径 -->
+    <div class="timeline-section animate-in">
+      <h4 class="timeline-heading timeline-heading-good">✅ 连续答对路径</h4>
+      <p class="timeline-subheading">每答对一次，间隔乘以难度系数，越拉越长</p>
+      <div class="timeline-flow">
+        <div class="tf-node">
+          <div class="tf-circle tf-pass">1</div>
+          <div class="tf-label">第1次对了<br><span class="tf-meta">间隔 1 天</span></div>
+        </div>
+        <div class="tf-arrow">×2.5 →</div>
+        <div class="tf-node">
+          <div class="tf-circle tf-pass">2</div>
+          <div class="tf-label">第2次对了<br><span class="tf-meta">间隔 3 天</span></div>
+        </div>
+        <div class="tf-arrow">×2.5 →</div>
+        <div class="tf-node">
+          <div class="tf-circle tf-pass">3</div>
+          <div class="tf-label">第3次对了<br><span class="tf-meta">间隔 7 天</span></div>
+        </div>
+        <div class="tf-arrow">×2.5 →</div>
+        <div class="tf-node">
+          <div class="tf-circle tf-pass">4</div>
+          <div class="tf-label">第4次对了<br><span class="tf-meta">间隔 14 天</span></div>
+        </div>
+        <div class="tf-arrow">×2.5 →</div>
+        <div class="tf-node">
+          <div class="tf-circle tf-pass">5</div>
+          <div class="tf-label">第5次对了<br><span class="tf-meta">间隔 30 天</span></div>
+        </div>
+      </div>
+      <p class="timeline-insight">数学上：<code>间隔_n = 间隔_(n-1) × ease_factor</code>，复合增长。</p>
+    </div>
+
+    <!-- 答错路径 -->
+    <div class="timeline-section animate-in">
+      <h4 class="timeline-heading timeline-heading-bad">❌ 答错重置路径</h4>
+      <p class="timeline-subheading">任何一次失败，都回到1天重新爬坡</p>
+      <div class="timeline-flow">
+        <div class="tf-node">
+          <div class="tf-circle tf-pass">3</div>
+          <div class="tf-label">连续对了3次<br><span class="tf-meta">间隔 7 天</span></div>
+        </div>
+        <div class="tf-arrow tf-reset">✕ 答错</div>
+        <div class="tf-node">
+          <div class="tf-circle tf-fail">!</div>
+          <div class="tf-label">突然答错<br><span class="tf-meta">quality &lt; 3</span></div>
+        </div>
+        <div class="tf-arrow tf-reset">重置</div>
+        <div class="tf-node">
+          <div class="tf-circle tf-reset">↺</div>
+          <div class="tf-label">回到起点<br><span class="tf-meta">间隔 1 天，明天重来</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 两条路径对比 -->
+    <div class="callout callout-accent animate-in">
+      <div class="callout-icon">💡</div>
+      <div class="callout-content">
+        <strong class="callout-title">关键洞察</strong>
+        <p>SM-2 用两个简单的规则模拟了记忆的衰减规律：答对说明记忆还牢固，多给几天让它自然淡忘再回来考；答错说明记忆已经不牢，就不要硬拖时间，立刻回来救你。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       SCREEN 3-5 — Group Chat Animation
+  ══════════════════════════════════════════════════════════ -->
+  <div class="screen" id="m3-screen-5">
+    <h3 class="screen-title">
+      <span class="screen-num">3-5</span>
+      SM-2 和薄弱点心虚对话
+    </h3>
+
+    <p class="screen-lead">当你的薄弱点拿到一个"勉强通过"的评分时，SM-2 会怎么说？</p>
+
+    <div class="chat-window animate-in" id="chat-module3">
+      <div class="chat-messages">
+
+        <div class="chat-message" data-msg="0" data-sender="sm2" style="display:none">
+          <div class="chat-avatar" style="background: var(--color-actor-1)">S</div>
+          <div class="chat-bubble">
+            <span class="chat-sender" style="color: var(--color-actor-1)">SM-2 算法</span>
+            <p>你这题10分中拿了6分，对应 quality=3，刚好及格。</p>
+          </div>
+        </div>
+
+        <div class="chat-message" data-msg="1" data-sender="sm2" style="display:none">
+          <div class="chat-avatar" style="background: var(--color-actor-1)">S</div>
+          <div class="chat-bubble">
+            <span class="chat-sender" style="color: var(--color-actor-1)">SM-2 算法</span>
+            <p>根据你的 reps=2（连续对了2次），下次间隔拉长到 7 天。</p>
+          </div>
+        </div>
+
+        <div class="chat-message" data-msg="2" data-sender="weak" style="display:none">
+          <div class="chat-avatar" style="background: var(--color-actor-3)">W</div>
+          <div class="chat-bubble">
+            <span class="chat-sender" style="color: var(--color-actor-3)">薄弱点心虚</span>
+            <p>等等……我刚才是勉强6分飘过的，间隔拉长了我真的不会忘吗？</p>
+          </div>
+        </div>
+
+        <div class="chat-message" data-msg="3" data-sender="sm2" style="display:none">
+          <div class="chat-avatar" style="background: var(--color-actor-1)">S</div>
+          <div class="chat-bubble">
+            <span class="chat-sender" style="color: var(--color-actor-1)">SM-2 算法</span>
+            <p>这正是我的设计逻辑：你掌握了一些，但还不够牢。间隔拉长给你时间让记忆真正沉淀，同时又不会久到完全忘光。</p>
+          </div>
+        </div>
+
+        <div class="chat-message" data-msg="4" data-sender="sm2" style="display:none">
+          <div class="chat-avatar" style="background: var(--color-actor-1)">S</div>
+          <div class="chat-bubble">
+            <span class="chat-sender" style="color: var(--color-actor-1)">SM-2 算法</span>
+            <p>如果你下次回来答错了，我会立刻把间隔重置回1天。所以你的记忆永远不会真正丢失——我只是在"快要忘"和"来得及巩固"之间找最佳平衡点。</p>
+          </div>
+        </div>
+
+        <div class="chat-message" data-msg="5" data-sender="weak" style="display:none">
+          <div class="chat-avatar" style="background: var(--color-actor-3)">W</div>
+          <div class="chat-bubble">
+            <span class="chat-sender" style="color: var(--color-actor-3)">薄弱点心虚</span>
+            <p>原来如此……那 ease_factor 是什么，它怎么知道我掌握得怎么样？</p>
+          </div>
+        </div>
+
+        <div class="chat-message" data-msg="6" data-sender="sm2" style="display:none">
+          <div class="chat-avatar" style="background: var(--color-actor-1)">S</div>
+          <div class="chat-bubble">
+            <span class="chat-sender" style="color: var(--color-actor-1)">SM-2 算法</span>
+            <p>ease_factor 根据你的得分动态调整。分越低，系数越小，下次间隔增长得越慢——相当于说"这道题对你比较难，别急着拉长"。这就是为什么 ease_factor 永远不会低于 1.3。</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="chat-typing" id="chat-module3-typing-avatar" style="display:none">
+        <div class="chat-avatar">?</div>
+        <div class="chat-typing-dots">
+          <span class="typing-dot"></span>
+          <span class="typing-dot"></span>
+          <span class="typing-dot"></span>
+        </div>
+      </div>
+
+      <div class="chat-controls">
+        <button class="btn chat-next-btn">Next Message</button>
+        <button class="btn chat-all-btn">Play All</button>
+        <button class="btn chat-reset-btn">Replay</button>
+        <span class="chat-progress"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       SCREEN 3-6 — Quiz
+  ══════════════════════════════════════════════════════════ -->
+  <div class="screen" id="m3-screen-6">
+    <h3 class="screen-title">
+      <span class="screen-num">3-6</span>
+      小测验：SM-2 算术挑战
+    </h3>
+
+    <p class="screen-lead">用 SM-2 的逻辑，算出这几道场景题的结果。</p>
+
+    <div class="quiz-container" id="quiz-module3">
+
+      <!-- 题目 1 -->
+      <div class="quiz-question-block"
+           data-correct="q1-c"
+           data-explanation-right="正确！连续答对3次时，reps=2（第3次答对后），按照代码：interval = int(interval_days × ease_factor) = 3 × 2.5 = 7.5，取整为 7 天。"
+           data-explanation-wrong="不对哦。连续答对3次后，reps 变成2，代码走 else 分支：interval = int(上次间隔 × ease_factor) = 3 × 2.5 = 7.5，取整为 7 天。">
+        <h3 class="quiz-question">用户连续答对3次，目前 ease_factor=2.5，上次间隔是3天。下次复习该隔多少天？</h3>
+        <div class="quiz-options">
+          <button class="quiz-option" data-value="q1-a" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>1 天（重置回第一天）</span>
+          </button>
+          <button class="quiz-option" data-value="q1-b" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>3 天（保持不变）</span>
+          </button>
+          <button class="quiz-option" data-value="q1-c" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>7 天（3 × 2.5 = 7.5，取整）</span>
+          </button>
+          <button class="quiz-option" data-value="q1-d" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>14 天（翻倍）</span>
+          </button>
+        </div>
+        <div class="quiz-feedback"></div>
+      </div>
+
+      <!-- 题目 2 -->
+      <div class="quiz-question-block"
+           data-correct="q2-b"
+           data-explanation-right="正确！quality=2（&lt;3，不及格），直接触发 else 分支：interval 重置为 1 天，reps 重置为 0。不管之前连续对了多少次，一次失败全部归零。."
+           data-explanation-wrong="不对哦。quality=2 意味着答题质量低于3（不及格），SM-2 直接判定为失败，执行重置逻辑：interval=1天，repetitions=0。这就是 SM-2 的'一票重置'规则。">
+        <h3 class="quiz-question">用户某天突然在一道题上答错了（quality=2）。下次复习间隔是多少？</h3>
+        <div class="quiz-options">
+          <button class="quiz-option" data-value="q2-a" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>保持上次的间隔不变</span>
+          </button>
+          <button class="quiz-option" data-value="q2-b" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>1 天（重置）</span>
+          </button>
+          <button class="quiz-option" data-value="q2-c" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>缩短一半（比如从7天变成3.5天）</span>
+          </button>
+          <button class="quiz-option" data-value="q2-d" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>直接删除这道题，不再出现</span>
+          </button>
+        </div>
+        <div class="quiz-feedback"></div>
+      </div>
+
+      <!-- 题目 3 -->
+      <div class="quiz-question-block"
+           data-correct="q3-b"
+           data-explanation-right="正确！代码最后一行用 max(1.3, ...) 确保 ease_factor 永远不会低于 1.3。这是为了防止难度系数过低导致间隔几乎不增长，保证算法对极难的题目也有最基本的收敛性。."
+           data-explanation-wrong="不对哦。虽然 ease_factor 会动态调整，但代码用 max(1.3, ...) 设了下限，保证它永远不会低于 1.3。这是为了防止算法在极端情况下崩溃。">
+        <h3 class="quiz-question">如果用户长期答错题，ease_factor 会一直往下降吗？最低能到多少？</h3>
+        <div class="quiz-options">
+          <button class="quiz-option" data-value="q3-a" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>会无限下降，最低到 0</span>
+          </button>
+          <button class="quiz-option" data-value="q3-b" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>不会，最低保底 1.3</span>
+          </button>
+          <button class="quiz-option" data-value="q3-c" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>最低保底 1.0</span>
+          </button>
+          <button class="quiz-option" data-value="q3-d" onclick="selectOption(this)">
+            <div class="quiz-option-radio"></div>
+            <span>不会下降，会一直维持在 2.5</span>
+          </button>
+        </div>
+        <div class="quiz-feedback"></div>
+      </div>
+
+      <div class="quiz-actions">
+        <button class="quiz-check-btn" onclick="checkQuiz('quiz-module3')">Check Answers</button>
+        <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module3')">Try Again</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       MODULE FOOTER NAV
+  ══════════════════════════════════════════════════════════ -->
+  <div class="module-footer-nav">
+    <a href="#module-2" class="footer-nav-link footer-nav-prev">
+      <span class="footer-nav-dir">← 上一模块</span>
+      <span class="footer-nav-title">长期记忆系统</span>
+    </a>
+    <a href="#module-4" class="footer-nav-link footer-nav-next">
+      <span class="footer-nav-dir">下一模块 →</span>
+      <span class="footer-nav-title">简历面试状态机</span>
+    </a>
+  </div>
+
+</section>
+
+<style>
+  /* ══════════════════════════════════════════════════════════
+     MODULE-3 ADDITIONAL STYLES
+     (beyond the global styles.css patterns)
+  ══════════════════════════════════════════════════════════ */
+
+  /* Comparison grid */
+  .comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-6);
+    margin: var(--space-8) 0;
+  }
+  @media (max-width: 640px) {
+    .comparison-grid { grid-template-columns: 1fr; }
+  }
+
+  .comparison-card {
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    box-shadow: var(--shadow-md);
+  }
+  .comparison-bad {
+    background: var(--color-surface);
+    border: 2px solid var(--color-border);
+  }
+  .comparison-good {
+    background: var(--color-surface);
+    border: 2px solid var(--color-accent);
+  }
+  .comparison-icon { font-size: 2rem; margin-bottom: var(--space-2); }
+  .comparison-card h4 {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    margin: 0 0 var(--space-2);
+  }
+  .comparison-desc {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    margin: 0 0 var(--space-5);
+  }
+  .comparison-verdict {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-border-light);
+  }
+  .verdict-icon { font-size: 1.25rem; flex-shrink: 0; }
+  .comparison-verdict p { margin: 0; font-size: var(--text-sm); color: var(--color-text-secondary); font-style: italic; }
+
+  /* Timeline wrong */
+  .timeline-wrong {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    align-items: flex-start;
+  }
+  .timeline-right {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+  }
+  .tl-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-1);
+  }
+  .tl-day {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    background: var(--color-bg-warm);
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-secondary);
+  }
+  .tl-label {
+    font-size: var(--text-xs);
+    font-weight: 600;
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-full);
+  }
+  .tl-forgot { background: #FDE8E8; color: #C93B3B; }
+  .tl-wrong { background: #FDE8E8; color: #C93B3B; }
+  .tl-pass { background: #E8F5EE; color: #2D8B55; }
+  .tl-gap { padding: var(--space-1) var(--space-2); font-size: var(--text-xs); color: var(--color-text-muted); }
+  .tl-arrow { font-size: var(--text-lg); color: var(--color-accent); font-weight: 700; padding: 0 var(--space-1); }
+
+  /* Card formula */
+  .card-formula {
+    margin-top: var(--space-4);
+    padding: var(--space-3);
+    background: var(--color-bg-code);
+    border-radius: var(--radius-sm);
+  }
+  .card-formula code {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: #CBA6F7;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  /* Timeline flow (Screen 3-4) */
+  .timeline-section {
+    margin-bottom: var(--space-10);
+  }
+  .timeline-heading {
+    font-family: var(--font-display);
+    font-size: var(--text-lg);
+    margin: 0 0 var(--space-2);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .timeline-heading-good { color: var(--color-success); }
+  .timeline-heading-bad { color: var(--color-error); }
+  .timeline-subheading {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    margin: 0 0 var(--space-5);
+  }
+  .timeline-flow {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-4);
+  }
+  .tf-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .tf-circle {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: 700;
+    color: white;
+  }
+  .tf-pass { background: var(--color-success); }
+  .tf-fail { background: var(--color-error); }
+  .tf-reset { background: var(--color-actor-3); }
+  .tf-label {
+    text-align: center;
+    font-size: var(--text-xs);
+    color: var(--color-text-secondary);
+    line-height: 1.4;
+  }
+  .tf-label strong { color: var(--color-text); }
+  .tf-meta {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-accent);
+    margin-top: var(--space-1);
+  }
+  .tf-arrow {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+  }
+  .tf-arrow.tf-reset {
+    color: var(--color-error);
+    font-weight: 700;
+  }
+  .timeline-insight {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+  .timeline-insight code {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    background: var(--color-bg-code);
+    color: #CBA6F7;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  /* Quiz actions */
+  .quiz-actions {
+    display: flex;
+    gap: var(--space-3);
+    margin-top: var(--space-6);
+  }
+  .quiz-check-btn, .quiz-reset-btn {
+    padding: var(--space-3) var(--space-6);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all var(--duration-fast);
+  }
+  .quiz-check-btn {
+    background: var(--color-accent);
+    color: white;
+  }
+  .quiz-check-btn:hover { background: var(--color-accent-hover); }
+  .quiz-reset-btn {
+    background: var(--color-surface);
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-border);
+  }
+  .quiz-reset-btn:hover { border-color: var(--color-accent-muted); color: var(--color-text); }
+
+  /* Code highlight */
+  .code-highlight { background: rgba(217, 79, 48, 0.15); border-radius: 2px; }
+
+  /* Module footer nav */
+  .module-footer-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-top: var(--space-16);
+    padding-top: var(--space-8);
+    border-top: 1px solid var(--color-border);
+  }
+  .footer-nav-link {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    text-decoration: none;
+    padding: var(--space-4);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    transition: all var(--duration-fast);
+    flex: 1;
+    max-width: 280px;
+  }
+  .footer-nav-link:hover {
+    border-color: var(--color-accent);
+    box-shadow: var(--shadow-sm);
+  }
+  .footer-nav-next { text-align: right; margin-left: auto; }
+  .footer-nav-dir {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+  }
+  .footer-nav-title {
+    font-family: var(--font-display);
+    font-size: var(--text-base);
+    font-weight: 600;
+    color: var(--color-text);
+  }
+  @media (max-width: 640px) {
+    .module-footer-nav { flex-direction: column; }
+    .footer-nav-link { max-width: 100%; }
+    .footer-nav-next { text-align: left; margin-left: 0; }
+  }
+</style>

@@ -1,0 +1,621 @@
+<section class="module" id="module-4" lang="zh-CN">
+
+<!-- ═══════════════════════════════════════════════════════════════
+     MODULE 4 — 简历面试状态机
+     ═══════════════════════════════════════════════════════════════ -->
+
+<!-- ─── SCREEN 4-1 ─────────────────────────────────────────────
+     Hook + 流程图（5阶段导航）
+     ─────────────────────────────────────────────────────────── -->
+<div class="screen" id="m4-screen-1">
+
+  <div class="screen-label">模块 4 · 屏幕 1 / 5</div>
+
+  <!-- Hook -->
+  <div class="module-intro animate-in">
+    <div class="module-eyebrow">
+      <span class="module-tag">LangGraph 核心</span>
+    </div>
+    <h2 class="module-title">AI 面试官的大脑：<br>它怎么知道什么时候切换问题？</h2>
+    <p class="module-subtitle">
+      它不是"随机问"，而是按<span class="term" data-definition="状态机（State Machine）是一种计算模型，用「当前处于哪个状态」来决定「下一步该做什么」。就像红绿灯：绿灯时只能通行，红灯时必须停下，状态决定行为。">流程推进</span>——每个阶段有固定的名字和转换规则。相当于把面试流程写成了一个<b>可以自动运行的状态机</b>。
+    </p>
+  </div>
+
+  <!-- Flow diagram: 5 phases -->
+  <div class="flow-diagram animate-in">
+    <h3 class="flow-diagram-title">面试状态机的 5 个阶段</h3>
+    <p class="flow-diagram-hint">点击节点可查看该阶段说明 ↓</p>
+
+    <div class="phase-nodes">
+      <div class="phase-node active" data-phase="greeting" onclick="showPhaseCard(this)">
+        <div class="phase-node-icon">👋</div>
+        <div class="phase-node-label">GREETING</div>
+        <div class="phase-node-sub">开场寒暄</div>
+      </div>
+
+      <div class="phase-arrow">
+        <div class="phase-arrow-line"></div>
+        <div class="phase-arrow-head">→</div>
+      </div>
+
+      <div class="phase-node" data-phase="self-intro" onclick="showPhaseCard(this)">
+        <div class="phase-node-icon">🎤</div>
+        <div class="phase-node-label">SELF_INTRO</div>
+        <div class="phase-node-sub">自我介绍</div>
+      </div>
+
+      <div class="phase-arrow">
+        <div class="phase-arrow-line"></div>
+        <div class="phase-arrow-head">→</div>
+      </div>
+
+      <div class="phase-node" data-phase="technical" onclick="showPhaseCard(this)">
+        <div class="phase-node-icon">💻</div>
+        <div class="phase-node-label">TECHNICAL</div>
+        <div class="phase-node-sub">技术问题</div>
+      </div>
+
+      <div class="phase-arrow">
+        <div class="phase-arrow-line"></div>
+        <div class="phase-arrow-head">→</div>
+      </div>
+
+      <div class="phase-node" data-phase="project" onclick="showPhaseCard(this)">
+        <div class="phase-node-icon">🔍</div>
+        <div class="phase-node-label">PROJECT_DEEP_DIVE</div>
+        <div class="phase-node-sub">项目深挖</div>
+      </div>
+
+      <div class="phase-arrow">
+        <div class="phase-arrow-line"></div>
+        <div class="phase-arrow-head">→</div>
+      </div>
+
+      <div class="phase-node" data-phase="reverse-qa" onclick="showPhaseCard(this)">
+        <div class="phase-node-icon">❓</div>
+        <div class="phase-node-label">REVERSE_QA</div>
+        <div class="phase-node-sub">反问环节</div>
+      </div>
+    </div>
+
+    <!-- HARD_MAX fuse badge -->
+    <div class="fuse-badge">
+      <div class="fuse-icon">🔒</div>
+      <div class="fuse-text">
+        <strong>保险丝：</strong>每个阶段最多问 <code class="inline-code">HARD_MAX_PER_PHASE = 10</code> 题，
+        防止在某个阶段无限循环。达到上限后，<span class="term" data-definition="图（Graph）是 LangGraph 的核心概念：由「节点（Node）」和「边（Edge）」组成的有向图。节点=任务，边=转换规则。">图</span>强制切换到下一阶段。
+      </div>
+    </div>
+
+    <!-- Phase detail cards (hidden by default, shown on click) -->
+    <div class="phase-cards-grid" id="phase-cards-grid">
+      <div class="phase-detail-card" id="card-greeting" style="display:none">
+        <div class="phase-detail-header" style="border-left-color: var(--color-actor-1)">
+          <span class="phase-detail-icon">👋</span>
+          <h4>GREETING · 开场寒暄</h4>
+        </div>
+        <p>AI 与候选人打招呼，建立友好氛围。确认候选人状态，然后自然过渡到自我介绍。</p>
+      </div>
+      <div class="phase-detail-card" id="card-self-intro" style="display:none">
+        <div class="phase-detail-header" style="border-left-color: var(--color-actor-2)">
+          <span class="phase-detail-icon">🎤</span>
+          <h4>SELF_INTRO · 自我介绍</h4>
+        </div>
+        <p>让候选人自由介绍背景、工作经验、核心技能。AI 根据自我介绍决定后续技术问题的切入角度。</p>
+      </div>
+      <div class="phase-detail-card" id="card-technical" style="display:none">
+        <div class="phase-detail-header" style="border-left-color: var(--color-actor-3)">
+          <span class="phase-detail-icon">💻</span>
+          <h4>TECHNICAL · 技术问题</h4>
+        </div>
+        <p>系统性地考察算法、系统设计、编程语言等核心技术能力。题目从基础到深入。</p>
+      </div>
+      <div class="phase-detail-card" id="card-project" style="display:none">
+        <div class="phase-detail-header" style="border-left-color: var(--color-actor-4)">
+          <span class="phase-detail-icon">🔍</span>
+          <h4>PROJECT_DEEP_DIVE · 项目深挖</h4>
+        </div>
+        <p>基于候选人简历中的项目经历，深挖技术细节：架构决策、难点攻克、团队协作等。</p>
+      </div>
+      <div class="phase-detail-card" id="card-reverse-qa" style="display:none">
+        <div class="phase-detail-header" style="border-left-color: var(--color-actor-5)">
+          <span class="phase-detail-icon">❓</span>
+          <h4>REVERSE_QA · 反问环节</h4>
+        </div>
+        <p>候选人向 AI 提问，了解团队、技术栈、发展空间等。AI 负责如实回答。</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ─── SCREEN 4-2 ─────────────────────────────────────────────
+     5个阶段分别做什么（阶段卡片）
+     ─────────────────────────────────────────────────────────── -->
+<div class="screen" id="m4-screen-2">
+
+  <div class="screen-label">模块 4 · 屏幕 2 / 5</div>
+
+  <div class="section-intro animate-in">
+    <h2 class="section-title">每个阶段的具体任务</h2>
+    <p class="section-subtitle">
+      LangGraph 的状态机把面试拆成 5 个<span class="term" data-definition="节点（Node）是图中的一个工作单元。每个节点负责一个具体的任务，比如「问一个问题」或「评估回答」。">节点</span>，
+      每个节点只做一件事，然后通过<span class="term" data-definition="边（Edge）是节点之间的连接规则，决定了「当前节点完成后，下一步去哪里」。就像地图上的道路，规定从哪里可以到哪里。">边</span>决定下一步去哪。
+    </p>
+  </div>
+
+  <div class="phase-detail-cards stagger-children">
+
+    <div class="phase-full-card animate-in" style="--stagger-index:0">
+      <div class="phase-full-card-header">
+        <div class="phase-badge" style="background:var(--color-actor-1)">1</div>
+        <div>
+          <h3 class="phase-full-title">GREETING · 开场寒暄</h3>
+          <p class="phase-full-tagline">"你好，欢迎参加面试，今天准备得怎么样？"</p>
+        </div>
+      </div>
+      <div class="phase-full-body">
+        <div class="phase-full-icon">👋</div>
+        <p>AI 问候候选人，确认设备正常、候选人状态放松。目的是消除紧张感，建立自然的对话氛围。这个阶段通常只需要 1–2 条消息即进入下一阶段。</p>
+      </div>
+    </div>
+
+    <div class="phase-full-card animate-in" style="--stagger-index:1">
+      <div class="phase-full-card-header">
+        <div class="phase-badge" style="background:var(--color-actor-2)">2</div>
+        <div>
+          <h3 class="phase-full-title">SELF_INTRO · 自我介绍</h3>
+          <p class="phase-full-tagline">"请简单介绍一下你自己，以及你最近的项目经历。"</p>
+        </div>
+      </div>
+      <div class="phase-full-body">
+        <div class="phase-full-icon">🎤</div>
+        <p>候选人介绍自己的工作背景和技能方向。AI 从中提取关键词，用于后续技术问题的个性化调整。如果候选人回答太简短，AI 会追问一句补充说明。</p>
+      </div>
+    </div>
+
+    <div class="phase-full-card animate-in" style="--stagger-index:2">
+      <div class="phase-full-card-header">
+        <div class="phase-badge" style="background:var(--color-actor-3)">3</div>
+        <div>
+          <h3 class="phase-full-title">TECHNICAL · 技术问题</h3>
+          <p class="phase-full-tagline">"聊聊你对分布式系统的理解，以及你用过的相关技术。"</p>
+        </div>
+      </div>
+      <div class="phase-full-body">
+        <div class="phase-full-icon">💻</div>
+        <p>核心能力考察阶段。AI 从编程语言、算法、系统设计等角度出题，并根据回答深入追问。<strong>关键机制：</strong>每题回答后 AI 会评估回答质量，决定继续追问还是换话题。当该阶段问题数达到 <code class="inline-code">HARD_MAX_PER_PHASE = 10</code> 时，无论是否充分，都强制切换到下一阶段。</p>
+      </div>
+    </div>
+
+    <div class="phase-full-card animate-in" style="--stagger-index:3">
+      <div class="phase-full-card-header">
+        <div class="phase-badge" style="background:var(--color-actor-4)">4</div>
+        <div>
+          <h3 class="phase-full-title">PROJECT_DEEP_DIVE · 项目深挖</h3>
+          <p class="phase-full-tagline">"你简历里提到这个项目，请具体说说用了什么架构？"</p>
+        </div>
+      </div>
+      <div class="phase-full-body">
+        <div class="phase-full-icon">🔍</div>
+        <p>基于简历上下文，深挖项目细节：技术选型原因、最大的技术挑战、如何解决冲突、团队协作方式等。这个阶段会追问多轮，直到问题深度足够或达到 HARD_MAX。</p>
+      </div>
+    </div>
+
+    <div class="phase-full-card animate-in" style="--stagger-index:4">
+      <div class="phase-full-card-header">
+        <div class="phase-badge" style="background:var(--color-actor-5)">5</div>
+        <div>
+          <h3 class="phase-full-title">REVERSE_QA · 反问环节</h3>
+          <p class="phase-full-tagline">"你有什么问题想问我们吗？"</p>
+        </div>
+      </div>
+      <div class="phase-full-body">
+        <div class="phase-full-icon">❓</div>
+        <p>候选人向 AI 提问。AI 切换为"回答者"角色，诚实回复关于团队、技术栈、晋升通道等问题。候选人没有更多问题或达到 HARD_MAX 时，<code class="inline-code">is_finished = True</code>，状态机退出。</p>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ─── SCREEN 4-3 ─────────────────────────────────────────────
+     Code ↔ English — PHASE_ORDER + ResumeInterviewState
+     ─────────────────────────────────────────────────────────── -->
+<div class="screen" id="m4-screen-3">
+
+  <div class="screen-label">模块 4 · 屏幕 3 / 5</div>
+
+  <div class="section-intro animate-in">
+    <h2 class="section-title">代码直译：阶段顺序与状态定义</h2>
+    <p class="section-subtitle">
+      下面两段代码是 LangGraph 面试<span class="term" data-definition="图（Graph）是 LangGraph 的核心概念：由「节点（Node）」和「边（Edge）」组成的有向图。节点=任务，边=转换规则。">图</span>的骨架。
+      左侧是真实代码，右侧是逐行英文翻译。
+    </p>
+  </div>
+
+  <!-- Translation Block 1: PHASE_ORDER -->
+  <div class="translation-block animate-in">
+    <div class="translation-code">
+      <span class="translation-label">CODE</span>
+      <pre><code><span class="code-line"><span class="code-comment"># 阶段执行顺序 — 按这个列表一个接一个跑</span></span>
+<span class="code-line"><span class="code-keyword">PHASE_ORDER</span> = [</span>
+<span class="code-line">    <span class="code-property">InterviewPhase.GREETING</span>.<span class="code-function">value</span>,          <span class="code-comment"># 开场寒暄</span></span>
+<span class="code-line">    <span class="code-property">InterviewPhase.SELF_INTRO</span>.<span class="code-function">value</span>,       <span class="code-comment"># 自我介绍</span></span>
+<span class="code-line">    <span class="code-property">InterviewPhase.TECHNICAL</span>.<span class="code-function">value</span>,         <span class="code-comment"># 技术问题</span></span>
+<span class="code-line">    <span class="code-property">InterviewPhase.PROJECT_DEEP_DIVE</span>.<span class="code-function">value</span>, <span class="code-comment"># 项目深挖</span></span>
+<span class="code-line">    <span class="code-property">InterviewPhase.REVERSE_QA</span>.<span class="code-function">value</span>,        <span class="code-comment"># 反问环节</span></span>
+<span class="code-line">]</span>
+<span class="code-line"><span class="code-keyword">HARD_MAX_PER_PHASE</span> = <span class="code-number">10</span>  <span class="code-comment"># 每阶段最多10题，防止无限循环</span></span></code></pre>
+    </div>
+    <div class="translation-english">
+      <span class="translation-label">PLAIN ENGLISH</span>
+      <div class="translation-lines">
+        <p class="tl">A comment telling developers this list controls the execution order — one phase runs after another.</p>
+        <p class="tl">Define a constant named PHASE_ORDER and assign it a list of values.</p>
+        <p class="tl">Get the string value ("greeting") from the GREETING option in the InterviewPhase enum, and put it first in the list.</p>
+        <p class="tl">Get the string value ("self_intro") from the SELF_INTRO option and put it second.</p>
+        <p class="tl">Get the string value ("technical") and put it third.</p>
+        <p class="tl">Get the string value ("project_deep_dive") and put it fourth.</p>
+        <p class="tl">Get the string value ("reverse_qa") and put it last — the reverse-questioning phase.</p>
+        <p class="tl">End of the list.</p>
+        <p class="tl">Set HARD_MAX_PER_PHASE to 10 — a safety limit so the AI never asks more than 10 questions in any single phase. Prevents infinite loops.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Translation Block 2: ResumeInterviewState -->
+  <div class="translation-block animate-in">
+    <div class="translation-code">
+      <span class="translation-label">CODE</span>
+      <pre><code><span class="code-line"><span class="code-keyword">class</span> <span class="code-class">ResumeInterviewState</span>(<span class="code-class">TypedDict</span>):</span>
+<span class="code-line">    <span class="code-property">messages</span>: <span class="code-type">list[BaseMessage]</span>      <span class="code-comment"># 对话历史</span></span>
+<span class="code-line">    <span class="code-property">resume_context</span>: <span class="code-type">str</span>             <span class="code-comment"># 简历上下文</span></span>
+<span class="code-line">    <span class="code-property">phase</span>: <span class="code-type">str</span>                  <span class="code-comment"># 当前阶段</span></span>
+<span class="code-line">    <span class="code-property">questions_asked</span>: <span class="code-type">list[str]</span>   <span class="code-comment"># 已问问题</span></span>
+<span class="code-line">    <span class="code-property">phase_question_count</span>: <span class="code-type">int</span> <span class="code-comment"># 当前阶段已问题数</span></span>
+<span class="code-line">    <span class="code-property">is_finished</span>: <span class="code-type">bool</span>           <span class="code-comment"># 是否结束</span></span>
+<span class="code-line">    <span class="code-property">eval_history</span>: <span class="code-type">list[dict]</span>     <span class="code-comment"># 每题评估历史</span></span></code></pre>
+    </div>
+    <div class="translation-english">
+      <span class="translation-label">PLAIN ENGLISH</span>
+      <div class="translation-lines">
+        <p class="tl">Define a class named ResumeInterviewState that inherits from TypedDict — this is a typed dictionary where each field has a known type. Think of it as a structured form that the state machine fills in.</p>
+        <p class="tl">A field called "messages" holds a list of BaseMessage objects — every back-and-forth in the conversation gets recorded here so the AI remembers what was said.</p>
+        <p class="tl">A field called "resume_context" holds the candidate's resume as a plain text string — the AI reads this to know what projects and skills to ask about.</p>
+        <p class="tl">A field called "phase" holds a string like "greeting" or "technical" — this tells the state machine which phase we are currently in.</p>
+        <p class="tl">A field called "questions_asked" holds a list of strings — every question the AI has already asked, so it doesn't ask the exact same thing twice.</p>
+        <p class="tl">A field called "phase_question_count" holds an integer — counts how many questions have been asked in the current phase. Used to check if HARD_MAX has been reached.</p>
+        <p class="tl">A field called "is_finished" holds a True/False value — when this becomes True, the state machine knows to exit and end the interview.</p>
+        <p class="tl">A field called "eval_history" holds a list of dictionaries — after each question, the AI records its evaluation of the answer here, like a grading log.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Callout -->
+  <div class="callout callout-accent animate-in">
+    <div class="callout-icon">💡</div>
+    <div class="callout-content">
+      <strong class="callout-title">关键洞察</strong>
+      <p>所有 6 个字段加在一起，就是 LangGraph 的<span class="term" data-definition="状态（State）是整个系统在某个时刻的快照——所有变量的当前值。在面试场景中，State 包含当前处于哪个阶段、问了几个问题、对话历史等信息。">状态</span>。
+      每当 AI 问一个问题，状态就更新一次：<code class="inline-code">phase_question_count + 1</code>，
+      直到 <code class="inline-code">phase_question_count == HARD_MAX</code> 时，触发阶段切换。
+      这就是"状态机"的工作方式——<strong>状态驱动行为</strong>。</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ─── SCREEN 4-4 ─────────────────────────────────────────────
+     Group Chat Animation — 5阶段交接棒
+     ─────────────────────────────────────────────────────────── -->
+<div class="screen" id="m4-screen-4">
+
+  <div class="screen-label">模块 4 · 屏幕 4 / 5</div>
+
+  <div class="section-intro animate-in">
+    <h2 class="section-title">实战演示：5 阶段交接棒</h2>
+    <p class="section-subtitle">
+      点击<span style="color:var(--color-accent)">Next Message</span>，看 AI 面试官如何在 5 个阶段之间传递"交接棒"。
+      注意每次阶段切换时，<code class="inline-code">phase</code> 字段如何变化。
+    </p>
+  </div>
+
+  <div class="chat-window" id="chat-module4">
+
+    <div class="chat-messages">
+
+      <!-- Message 0: GREETING from AI -->
+      <div class="chat-message" data-msg="0" data-sender="ai" style="display:none">
+        <div class="chat-avatar" style="background: var(--color-actor-1)">🤖</div>
+        <div class="chat-bubble">
+          <span class="chat-sender" style="color: var(--color-actor-1)">AI 面试官</span>
+          <p>你好，欢迎参加技术面试！今天准备得怎么样？设备都正常吗？</p>
+          <div class="chat-meta">phase: <strong>"greeting"</strong> &rarr; 等待候选人回应</div>
+        </div>
+      </div>
+
+      <!-- Message 1: Candidate responds in GREETING -->
+      <div class="chat-message" data-msg="1" data-sender="candidate" style="display:none">
+        <div class="chat-avatar" style="background: var(--color-actor-5)">👤</div>
+        <div class="chat-bubble">
+          <span class="chat-sender" style="color: var(--color-actor-5)">候选人</span>
+          <p>你好！我准备好了，设备都没问题，请开始吧。</p>
+          <div class="chat-meta">状态更新: phase_question_count = 0 → AI 判定可以进入下一阶段</div>
+        </div>
+      </div>
+
+      <!-- Message 2: SELF_INTRO question -->
+      <div class="chat-message" data-msg="2" data-sender="ai" style="display:none">
+        <div class="chat-avatar" style="background: var(--color-actor-2)">🤖</div>
+        <div class="chat-bubble">
+          <span class="chat-sender" style="color: var(--color-actor-2)">AI 面试官</span>
+          <p>好的，请简单介绍一下你自己，以及你最近做的一个项目。</p>
+          <div class="chat-meta">phase: <strong>"greeting"</strong> → <strong>"self_intro"</strong> 🔄 交接棒！</div>
+        </div>
+      </div>
+
+      <!-- Message 3: Candidate self intro (short) -->
+      <div class="chat-message" data-msg="3" data-sender="candidate" style="display:none">
+        <div class="chat-avatar" style="background: var(--color-actor-5)">👤</div>
+        <div class="chat-bubble">
+          <span class="chat-sender" style="color: var(--color-actor-5)">候选人</span>
+          <p>我叫张三，做过后端开发，用过 Python 和 Go。</p>
+          <div class="chat-meta">phase_question_count = 1 | AI 判断：回答太简短，追问补充</div>
+        </div>
+      </div>
+
+      <!-- Message 4: AI asks follow-up in SELF_INTRO -->
+      <div class="chat-message" data-msg="4" data-sender="ai" style="display:none">
+        <div class="chat-avatar" style="background: var(--color-actor-2)">🤖</div>
+        <div class="chat-bubble">
+          <span class="chat-sender" style="color: var(--color-actor-2)">AI 面试官</span>
+          <p>了解，能具体说说用 Go 做过什么项目吗？遇到过什么技术挑战？</p>
+          <div class="chat-meta">phase_question_count = 2 → 充分了解，进入 TECHNICAL</div>
+        </div>
+      </div>
+
+      <!-- Message 5: Candidate talks about Go project -->
+      <div class="chat-message" data-msg="5" data-sender="candidate" style="display:none">
+        <div class="chat-avatar" style="background: var(--color-actor-5)">👤</div>
+        <div class="chat-bubble">
+          <span class="chat-sender" style="color: var(--color-actor-5)">候选人</span>
+          <p>做过一个微服务网关，用 Go 写的，主要处理鉴权和限流。</p>
+          <div class="chat-meta">phase: <strong>"self_intro"</strong> → <strong>"technical"</strong> 🔄 交接棒！</div>
+        </div>
+      </div>
+
+      <!-- Message 6: TECHNICAL question -->
+      <div class="chat-message" data-msg="6" data-sender="ai" style="display:none">
+        <div class="chat-avatar" style="background: var(--color-actor-3)">🤖</div>
+        <div class="chat-bubble">
+          <span class="chat-sender" style="color: var(--color-actor-3)">AI 面试官</span>
+          <p>好问题！聊聊你对分布式系统的理解，以及如何在 Go 中实现一个高效的限流器？</p>
+          <div class="chat-meta">phase: <strong>"technical"</strong> | 问题深入追问模式开启</div>
+        </div>
+      </div>
+
+      <!-- Message 7: Candidate answers -->
+      <div class="chat-message" data-msg="7" data-sender="candidate" style="display:none">
+        <div class="chat-avatar" style="background: var(--color-actor-5)">👤</div>
+        <div class="chat-bubble">
+          <span class="chat-sender" style="color: var(--color-actor-5)">候选人</span>
+          <p>我用过令牌桶算法，Go 里可以用 channel 实现……（继续深入回答）</p>
+          <div class="chat-meta">phase_question_count 持续增加中……</div>
+        </div>
+      </div>
+
+      <!-- Message 8: HARD_MAX triggered -->
+      <div class="chat-message" data-msg="8" data-sender="ai" style="display:none">
+        <div class="chat-avatar" style="background: var(--color-actor-3)">🤖</div>
+        <div class="chat-bubble">
+          <span class="chat-sender" style="color: var(--color-actor-3)">AI 面试官</span>
+          <p>你的思路很清晰，问得很好。我们换个方向——你的简历里提到做过微服务网关，请具体说说用的什么架构？</p>
+          <div class="chat-meta">⚠️ phase_question_count = 10 → HARD_MAX 触发！强制切到 PROJECT_DEEP_DIVE</div>
+        </div>
+      </div>
+
+      <!-- Message 9: PROJECT_DEEP_DIVE -->
+      <div class="chat-message" data-msg="9" data-sender="ai" style="display:none">
+        <div class="chat-avatar" style="background: var(--color-actor-4)">🤖</div>
+        <div class="chat-bubble">
+          <span class="chat-sender" style="color: var(--color-actor-4)">AI 面试官</span>
+          <p>你简历里提到这个微服务网关，请具体说说当时用的什么架构？团队有多少人？</p>
+          <div class="chat-meta">phase: <strong>"technical"</strong> → <strong>"project_deep_dive"</strong> 🔄 交接棒！</div>
+        </div>
+      </div>
+
+      <!-- Message 10: Candidate talks about project -->
+      <div class="chat-message" data-msg="10" data-sender="candidate" style="display:none">
+        <div class="chat-avatar" style="background: var(--color-actor-5)">👤</div>
+        <div class="chat-bubble">
+          <span class="chat-sender" style="color: var(--color-actor-5)">候选人</span>
+          <p>用的是 Go + gRPC，服务发现用 Consul，团队 5 个人……</p>
+          <div class="chat-meta">AI 继续追问技术细节中</div>
+        </div>
+      </div>
+
+      <!-- Message 11: REVERSE_QA -->
+      <div class="chat-message" data-msg="11" data-sender="ai" style="display:none">
+        <div class="chat-avatar" style="background: var(--color-actor-5)">🤖</div>
+        <div class="chat-bubble">
+          <span class="chat-sender" style="color: var(--color-actor-5)">AI 面试官</span>
+          <p>好的，非常感谢你的回答！最后，你有什么问题想问我们吗？</p>
+          <div class="chat-meta">phase: <strong>"project_deep_dive"</strong> → <strong>"reverse_qa"</strong> 🔄 交接棒！</div>
+        </div>
+      </div>
+
+      <!-- Message 12: Interview ends -->
+      <div class="chat-message" data-msg="12" data-sender="ai" style="display:none">
+        <div class="chat-avatar" style="background: var(--color-actor-5)">🤖</div>
+        <div class="chat-bubble">
+          <span class="chat-sender" style="color: var(--color-actor-5)">AI 面试官</span>
+          <p>好的，感谢你的提问！面试到此结束，<strong>is_finished = True</strong>，状态机退出 🎉</p>
+          <div class="chat-meta">✅ is_finished = True → 状态机结束面试，输出评估报告</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Typing indicator -->
+    <div class="chat-typing" id="chat-module4-typing" style="display:none">
+      <div class="chat-avatar" id="chat-module4-typing-avatar">?</div>
+      <div class="chat-typing-dots">
+        <span class="typing-dot"></span>
+        <span class="typing-dot"></span>
+        <span class="typing-dot"></span>
+      </div>
+    </div>
+
+    <div class="chat-controls">
+      <button class="btn chat-next-btn">Next Message</button>
+      <button class="btn chat-all-btn">Play All</button>
+      <button class="btn chat-reset-btn">Replay</button>
+      <span class="chat-progress"></span>
+    </div>
+  </div>
+
+  <!-- State snapshot after animation -->
+  <div class="state-snapshot animate-in" id="state-snapshot">
+    <h4 class="state-snapshot-title">面试结束时的完整状态快照</h4>
+    <div class="state-snapshot-grid">
+      <div class="state-item">
+        <span class="state-key">phase</span>
+        <span class="state-value" style="color: var(--color-actor-5)">"reverse_qa"</span>
+      </div>
+      <div class="state-item">
+        <span class="state-key">is_finished</span>
+        <span class="state-value" style="color: var(--color-success)">True ✅</span>
+      </div>
+      <div class="state-item">
+        <span class="state-key">questions_asked</span>
+        <span class="state-value">13 条问题记录</span>
+      </div>
+      <div class="state-item">
+        <span class="state-key">eval_history</span>
+        <span class="state-value">13 条评估记录</span>
+      </div>
+    </div>
+    <p class="state-snapshot-note">这个快照会被传递给下一个<span class="term" data-definition="节点（Node）是图中的一个工作单元，负责执行具体任务。在面试图里，每个阶段有一个专门的节点负责产生问题。">节点</span>或用于生成最终评估报告。</p>
+  </div>
+
+</div>
+
+<!-- ─── SCREEN 4-5 ─────────────────────────────────────────────
+     Quiz（3题）
+     ─────────────────────────────────────────────────────────── -->
+<div class="screen" id="m4-screen-5">
+
+  <div class="screen-label">模块 4 · 屏幕 5 / 5</div>
+
+  <div class="section-intro animate-in">
+    <h2 class="section-title">小测验</h2>
+    <p class="section-subtitle">用今天学到的知识，分析这几个场景。</p>
+  </div>
+
+  <div class="quiz-container" id="quiz-module4">
+
+    <!-- Question 1 -->
+    <div class="quiz-question-block"
+         data-correct="option-b"
+         data-explanation-right="完全正确！HARD_MAX_PER_PHASE = 10 是一个安全阀。如果 AI 在 TECHNICAL 阶段一直问项目问题，说明系统可能在项目深挖阶段就已经达到了 HARD_MAX 上限，触发了强制切换，但 TECHNICAL 阶段本身的问题还没问完，导致跨越了阶段边界。"
+         data-explanation-wrong="不完全对。HARD_MAX_PER_PHASE = 10 是每阶段的问题上限，用来防止无限循环。如果 AI 在 TECHNICAL 阶段问的是项目问题，可能是因为项目阶段的问题已经用完了 HARD_MAX 配额，强制切换到了 TECHNICAL，但候选人的项目经历还没充分展现，所以继续追问。">
+      <h3 class="quiz-question">题目 1：如果 AI 在 TECHNICAL 阶段一直问项目问题，可能是什么原因？</h3>
+      <div class="quiz-options">
+        <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>AI 自己判断需要深挖项目，所以一直在问</span>
+        </button>
+        <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>HARD_MAX 触发导致上一阶段（项目深挖）被跳过，直接在 TECHNICAL 里补问</span>
+        </button>
+        <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>候选人回答太短，AI 无法识别当前阶段</span>
+        </button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <!-- Question 2 -->
+    <div class="quiz-question-block"
+         data-correct="option-a"
+         data-explanation-right="对！当 phase_question_count 还很少时，AI 会认为信息不足，自然地追问一句补充说明。SELF_INTRO 阶段的问题数较少（通常 2–3 题），AI 会主动引导候选人展开。短的回复不直接触发阶段切换，而是触发同阶段的追问。"
+         data-explanation-wrong="不完全准确。阶段切换不是由回答长度直接触发的，而是由 AI 对信息的评估结果决定的。回答太简短会让 AI 在同阶段追加追问（phase_question_count 继续增加），而不是立即跳到下一阶段。">
+      <h3 class="quiz-question">题目 2：用户在 SELF_INTRO 阶段回答得太简短，系统会怎么做？</h3>
+      <div class="quiz-options">
+        <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>AI 在同一阶段（SELF_INTRO）追加追问，而不是直接切换阶段</span>
+        </button>
+        <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>立即切换到 TECHNICAL 阶段，加快面试节奏</span>
+        </button>
+        <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>标记 is_finished = True，结束面试</span>
+        </button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <!-- Question 3 -->
+    <div class="quiz-question-block"
+         data-correct="option-c"
+         data-explanation-right="正是！当 is_finished = True 时，状态机的「退出路径」被激活。LangGraph 会停止调度新的节点执行，转而输出最终的评估报告——汇总所有 eval_history，给出录用建议。"
+         data-explanation-wrong="不太对。is_finished = True 不是简单地"打印结果"，而是激活状态机的退出逻辑。系统会汇总整个 eval_history，生成最终评估报告，决定是否推荐录用。这是 LangGraph checkpoint 保存最终状态后的正常退出行为。">
+      <h3 class="quiz-question">题目 3：面试结束后 is_finished = True 时，系统会做什么？</h3>
+      <div class="quiz-options">
+        <button class="quiz-option" data-value="option-a" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>开始新一轮面试，重新从 GREETING 开始</span>
+        </button>
+        <button class="quiz-option" data-value="option-b" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>给候选人发送面试结果邮件</span>
+        </button>
+        <button class="quiz-option" data-value="option-c" onclick="selectOption(this)">
+          <div class="quiz-option-radio"></div>
+          <span>触发状态机退出路径，汇总 eval_history 生成最终评估报告</span>
+        </button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <div class="quiz-actions">
+      <button class="quiz-check-btn" onclick="checkQuiz('quiz-module4')">提交答案</button>
+      <button class="quiz-reset-btn" onclick="resetQuiz('quiz-module4')">重新作答</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     JAVASCRIPT — Phase node interaction only (chat/quiz handled by main.js)
+     ═══════════════════════════════════════════════════════════════ -->
+<script>
+  function showPhaseCard(node) {
+    // Remove active from all nodes
+    document.querySelectorAll('.phase-node').forEach(function(n) {
+      n.classList.remove('active');
+    });
+    // Activate clicked node
+    node.classList.add('active');
+
+    // Show corresponding detail card
+    var phase = node.dataset.phase;
+    document.querySelectorAll('.phase-detail-card').forEach(function(card) {
+      card.style.display = 'none';
+    });
+    var targetCard = document.getElementById('card-' + phase);
+    if (targetCard) {
+      targetCard.style.display = 'block';
+    }
+  }
+</script>
+
+</section>
